@@ -1,0 +1,87 @@
+# Root creation
+dn: dc=company,dc=net
+objectClass: dcObject
+objectClass: organization
+dc: company
+o: Company
+
+# People
+dn: ou=People,dc=company,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: People
+
+# RealmRoles
+dn: ou=RealmRoles,dc=company,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: RealmRoles
+
+dn: uid=rsmith,ou=People,dc=company,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+uid: rsmith
+cn: Rachel Smith
+sn: Smith
+givenName: Rachel
+mail: rsmith@keycloak.org
+postalAddress: 606 Shaina Drive, Katrinehaven, AL 86665, USA
+telephonenumber: 3033375240
+userPassword: test
+
+dn: uid=jpatel,ou=People,dc=company,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+uid: jpatel
+cn: Jason Patel
+sn: Patel
+givenName: Jason
+mail: jpatel@keycloak.org
+postalAddress: 36 Mia Lane, Apt 894, West Claudie, MA 06262-6261, USA
+telephonenumber: 3636344482
+userPassword: test
+
+dn: uid=fwatkins,ou=People,dc=company,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+uid: fwatkins
+cn: Frank Watkins
+sn: Watkins
+givenName: Frank
+mail: fwatkins@keycloak.org
+postalAddress: 923 Main Street, Kuhlmanview, ME 74125-6284, USA
+telephonenumber: 6363636811
+userPassword: test
+
+dn: cn=admin,ou=RealmRoles,dc=company,dc=net
+objectclass: top
+objectclass: groupOfNames
+cn: admin
+member: uid=rsmith,ou=People,dc=company,dc=net
+
+dn: cn=user,ou=RealmRoles,dc=company,dc=net
+objectclass: top
+objectclass: groupOfNames
+cn: user
+member: uid=rsmith,ou=People,dc=company,dc=net
+member: uid=fwatkins,ou=People,dc=company,dc=net
+
+dn: cn=guest,ou=RealmRoles,dc=company,dc=net
+objectclass: top
+objectclass: groupOfNames
+cn: guest
+member: uid=jpatel,ou=People,dc=company,dc=net
+
+dn: cn=default-roles-demo,ou=RealmRoles,dc=company,dc=net
+objectclass: top
+objectclass: groupOfNames
+cn: default-roles-demo
+member: uid=rsmith,ou=People,dc=company,dc=net
+member: uid=fwatkins,ou=People,dc=company,dc=net
+member: uid=jpatel,ou=People,dc=company,dc=net

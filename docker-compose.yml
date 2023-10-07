@@ -1,0 +1,95 @@
+version: "3.8"
+
+services:
+
+  postgres-service:
+    container_name: postgres-service
+    image: postgres:16.0
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-service/init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - local
+    restart: always
+    ports:
+      - 5432:5432
+
+  ldap-service:
+    container_name: ldap-service
+    image: bitnami/openldap:latest
+    ports:
+      - 1389:1389
+      - 1636:1636
+    environment:
+      LDAP_ADMIN_USERNAME: ${LDAP_ADMIN_USERNAME}
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
+      LDAP_CUSTOM_LDIF_DIR: /ldifs
+      LDAP_ROOT: dc=company,dc=net
+    networks:
+      - local
+    volumes:
+      - openldap_data:/bitnami/openldap
+      - ./ldap-service:/ldifs
+  
+  keycloak-service:
+    container_name: keycloak-service
+    image: quay.io/keycloak/keycloak:22.0.3
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+    command: 
+      - --import-realm
+    depends_on:
+      - postgres-service
+      - ldap-service
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres-service:5432/${POSTGRES_DB}
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./keycloak-service:/opt/keycloak/data/import
+    networks:
+      - local
+
+  angular-service:
+    container_name: angular-service
+    restart: always
+    build:
+      context: ./angular-service
+      dockerfile: Dockerfile
+    depends_on:
+      - keycloak-service
+      - postgres-service
+      - ldap-service
+    ports:
+      - 2000:2000
+    environment:
+      - PORT=2000
+    networks:
+      - local
+
+volumes:
+  openldap_data:
+    driver: local
+  postgres_data:
+    driver: local
+
+networks:
+  local:
+    name: local
+    driver: bridge
