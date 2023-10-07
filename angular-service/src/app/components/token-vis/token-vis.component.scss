@@ -1,0 +1,21 @@
+.token-vis {
+    .mat-mdc-card {
+        margin: 16px 0;
+
+        &:first-of-type {
+            margin: 0 0 16px 0;
+        }
+
+        &:last-of-type {
+            margin: 16px 0 0 0;
+        }
+
+        .mat-mdc-card-content {
+            span {
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+        }
+    }
+}

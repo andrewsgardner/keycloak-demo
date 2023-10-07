@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+    <span class="branding">Angular Service</span>
+    <div class="controls">
+        <ng-container *ngIf="userProfile$ | async as user; else noUser">
+            <button 
+                mat-button 
+                [matMenuTriggerFor]="menu" 
+                aria-label="User profile menu">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ user.username }}</span>
+            </button>
+            <mat-menu #menu="matMenu" backdropClass="user-menu">
+                <mat-toolbar>{{ user.firstName }} {{ user.lastName }}</mat-toolbar>
+                <mat-list>
+                    <div mat-subheader>Roles</div>
+                    <mat-list-item *ngFor="let r of authRoles()">
+                        <mat-icon matListItemIcon>settings</mat-icon>
+                        <div matListItemTitle>{{ r }}</div>
+                    </mat-list-item>
+                </mat-list>
+                <div class="logout">
+                    <button mat-raised-button color="primary">Logout</button>
+                </div>
+            </mat-menu>
+        </ng-container>
+        <ng-template #noUser>
+            <button 
+                mat-icon-button 
+                (click)="logout()"
+                aria-label="Logout">
+                <mat-icon>logout</mat-icon>
+            </button>
+        </ng-template>
+    </div>
+</mat-toolbar>
