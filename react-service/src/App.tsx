@@ -1,6 +1,7 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import './App.scss';
 import routes from './routes';
@@ -14,7 +15,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Toolbar />
       <main>
-        <RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />
+        <RouterProvider router={router} fallbackElement={<CircularProgress />} />
       </main>
     </ThemeProvider>
   );
