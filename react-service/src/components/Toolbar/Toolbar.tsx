@@ -97,10 +97,14 @@ const Toolbar = () => {
                         <AppBar
                             position="static"
                             elevation={0}>
-                            <AppToolbar sx={{
-                                backgroundColor: theme.palette.secondary.main,
-                                color: theme.palette.text.primary,
-                            }}>
+                            <AppToolbar 
+                                disableGutters={true}
+                                sx={{
+                                    backgroundColor: theme.palette.secondary.main,
+                                    color: theme.palette.text.primary,
+                                    paddingRight: '16px',
+                                    paddingLeft: '16px',
+                                }}>
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Test</Typography>
                             </AppToolbar>
                             <Typography variant="inherit" component="div" sx={{
