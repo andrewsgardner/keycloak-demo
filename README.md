@@ -15,6 +15,6 @@ This project explores using Keycloak as an SSO solution to handle identity and a
 | Role | Users | Description |
 | --- | --- | --- |
 | `admin` | rsmith | Grants administrative privileges. |
-| `user` | rsmith, fwatkins | Grants read/write privileges.  |
-| `guest` | rsmith, jpatel | Grants read privileges |
-| `default-roles-demo` | rsmith, fwatkins, jpatel | Grants default Keycloak realm roles to user. |
+| `user` | rsmith, fwatkins | Grants read/write privileges. |
+| `guest` | rsmith, jpatel | Grants read privileges. |
+| `default-roles-demo` | rsmith, fwatkins, jpatel | Grants default Keycloak realm roles. |
