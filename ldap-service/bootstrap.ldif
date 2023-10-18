@@ -76,6 +76,7 @@ dn: cn=guest,ou=RealmRoles,dc=company,dc=net
 objectclass: top
 objectclass: groupOfNames
 cn: guest
+member: uid=rsmith,ou=People,dc=company,dc=net
 member: uid=jpatel,ou=People,dc=company,dc=net
 
 dn: cn=default-roles-demo,ou=RealmRoles,dc=company,dc=net
