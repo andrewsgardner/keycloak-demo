@@ -8,8 +8,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import './Toolbar.scss';
-import { Avatar, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Theme, Tooltip, useTheme } from '@mui/material';
-import { Value } from 'sass';
+import { List, ListItem, ListItemIcon, ListItemText, Menu, Theme, Tooltip, useTheme } from '@mui/material';
 
 const Toolbar = () => {
     const theme: Theme = useTheme();
@@ -23,12 +22,6 @@ const Toolbar = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const getRoles = (element: React.ReactElement) => {
-        return roles.map((value: string) => React.cloneElement(element), {
-            key: Value,
-        });
     };
 
     return (
@@ -116,14 +109,16 @@ const Toolbar = () => {
                                 backgroundColor: theme.palette.background.paper,
                                 color: theme.palette.text.primary,
                             }}>
-                                {getRoles(
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <SettingsIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Single-line item" />
-                                    </ListItem>
-                                )}
+                                {roles.map((r: string, i: number) => {
+                                    return (
+                                        <ListItem key={i}>
+                                            <ListItemIcon>
+                                                <SettingsIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary={r} />
+                                        </ListItem>
+                                    );
+                                })}
                             </List>
                             <Box
                                 sx={{
