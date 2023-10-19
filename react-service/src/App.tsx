@@ -7,7 +7,7 @@ import { CssBaseline } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import './App.scss';
-import theme from './theme';
+import theme from './providers/theme';
 import routes from './routes';
 import Toolbar from './components/Toolbar/Toolbar';
 
