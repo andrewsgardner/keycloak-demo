@@ -24,7 +24,7 @@ const App = () => {
   const keycloakProviderInitConfig: KeycloakInitOptions = {
     onLoad: 'login-required',
   }
-  
+
   return (
     <ReactKeycloakProvider 
       authClient={keycloak}
@@ -32,9 +32,9 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Toolbar />
-        <main>
-          <RouterProvider router={router} fallbackElement={<CircularProgress />} />
-        </main>
+          <main>
+            <RouterProvider router={router} fallbackElement={<CircularProgress />} />
+          </main>
       </ThemeProvider>
     </ReactKeycloakProvider>
   );
