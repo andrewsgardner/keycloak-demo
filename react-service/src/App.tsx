@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import './App.scss';
 import theme from './providers/theme';
-import routes from './routes';
+import routes from './providers/routes';
 import Toolbar from './components/Toolbar/Toolbar';
 
 const router = createBrowserRouter(routes);
