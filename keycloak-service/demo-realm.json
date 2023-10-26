@@ -653,10 +653,9 @@
         "http://localhost:4201/*"
       ],
       "webOrigins": [
-        "http://localhost:2000/*",
-        "http://localhost:4200/*",
-        "http://localhost:4201/*",
-        "+"
+        "http://localhost:4201",
+        "http://localhost:2000",
+        "http://localhost:4200"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -671,7 +670,7 @@
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "http://localhost:4200##http://localhost:4201##http://localhost:2000",
+        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4201/*##http://localhost:2000/*",
         "display.on.consent.screen": "false",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
@@ -746,10 +745,10 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "/*"
+        "http://localhost:3000/*"
       ],
       "webOrigins": [
-        "/*"
+        "http://localhost:3000"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -763,9 +762,10 @@
       "protocol": "openid-connect",
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
-        "post.logout.redirect.uris": "+",
-        "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "http://localhost:3000/*",
+        "display.on.consent.screen": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -1456,14 +1456,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-property-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "oidc-address-mapper",
             "saml-user-attribute-mapper",
-            "oidc-full-name-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-address-mapper",
             "oidc-usermodel-property-mapper",
-            "saml-role-list-mapper"
+            "oidc-usermodel-attribute-mapper",
+            "oidc-full-name-mapper",
+            "saml-role-list-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
+            "saml-user-property-mapper"
           ]
         }
       },
@@ -1498,14 +1498,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-role-list-mapper",
             "saml-user-property-mapper",
-            "saml-user-attribute-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "oidc-full-name-mapper",
             "oidc-address-mapper",
             "oidc-usermodel-attribute-mapper",
-            "oidc-usermodel-property-mapper"
+            "saml-role-list-mapper",
+            "oidc-full-name-mapper",
+            "oidc-usermodel-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
+            "saml-user-attribute-mapper"
           ]
         }
       },
@@ -1561,10 +1561,10 @@
                 "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1581,10 +1581,10 @@
                 "ldap.attribute": [
                   "uid"
                 ],
-                "is.mandatory.in.ldap": [
+                "attribute.force.default": [
                   "true"
                 ],
-                "attribute.force.default": [
+                "is.mandatory.in.ldap": [
                   "true"
                 ],
                 "is.binary.attribute": [
@@ -1619,10 +1619,10 @@
                 "is.binary.attribute": [
                   "false"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1648,17 +1648,17 @@
                 "user.roles.retrieve.strategy": [
                   "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
                 ],
-                "membership.user.ldap.attribute": [
-                  "dn"
-                ],
                 "membership.ldap.attribute": [
                   "member"
                 ],
-                "role.name.ldap.attribute": [
-                  "cn"
+                "membership.user.ldap.attribute": [
+                  "dn"
                 ],
                 "memberof.ldap.attribute": [
                   "memberOf"
+                ],
+                "role.name.ldap.attribute": [
+                  "cn"
                 ],
                 "use.realm.roles.mapping": [
                   "true"
@@ -1735,10 +1735,10 @@
                 "is.binary.attribute": [
                   "false"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1758,10 +1758,10 @@
                 "is.mandatory.in.ldap": [
                   "false"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1787,11 +1787,11 @@
                 "user.roles.retrieve.strategy": [
                   "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
                 ],
-                "membership.ldap.attribute": [
-                  "member"
-                ],
                 "membership.user.ldap.attribute": [
                   "dn"
+                ],
+                "membership.ldap.attribute": [
+                  "member"
                 ],
                 "memberof.ldap.attribute": [
                   "memberOf"
@@ -1822,10 +1822,10 @@
                 "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1843,20 +1843,20 @@
           ]
         },
         "config": {
-          "pagination": [
-            "false"
-          ],
           "fullSyncPeriod": [
             "-1"
+          ],
+          "pagination": [
+            "false"
           ],
           "startTls": [
             "false"
           ],
-          "usersDn": [
-            "dc=company,dc=net"
-          ],
           "connectionPooling": [
             "false"
+          ],
+          "usersDn": [
+            "dc=company,dc=net"
           ],
           "cachePolicy": [
             "DEFAULT"
@@ -1870,17 +1870,17 @@
           "enabled": [
             "true"
           ],
-          "changedSyncPeriod": [
-            "-1"
+          "bindDn": [
+            "cn=admin,dc=company,dc=net"
           ],
           "bindCredential": [
             "${KEYCLOAK_ADMIN_PASSWORD}"
           ],
-          "bindDn": [
-            "cn=admin,dc=company,dc=net"
-          ],
           "usernameLDAPAttribute": [
             "uid"
+          ],
+          "changedSyncPeriod": [
+            "-1"
           ],
           "lastSync": [
             "1696287325"
@@ -1891,11 +1891,11 @@
           "uuidLDAPAttribute": [
             "entryDN"
           ],
-          "allowKerberosAuthentication": [
-            "false"
-          ],
           "connectionUrl": [
             "ldap://ldap-service:1389"
+          ],
+          "allowKerberosAuthentication": [
+            "false"
           ],
           "syncRegistrations": [
             "true"
