@@ -79,7 +79,8 @@ services:
     ports:
       - 2000:2000
     environment:
-      - PORT=2000
+      PORT: 2000
+      KC_URL: http://localhost:8080/
     networks:
       - local
 
