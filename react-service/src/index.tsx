@@ -4,9 +4,37 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider, AuthProviderProps } from 'react-oidc-context';
+import { KeycloakConfig } from 'keycloak-js';
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(<App />);
+const keycloakConfig: KeycloakConfig = {
+    url: 'http://localhost:8080',
+    realm: 'demo',
+    clientId: 'react-client',
+};
+const oidcConfig: AuthProviderProps = {
+    authority: `${keycloakConfig.url}/realms/${keycloakConfig.realm}`,
+    client_id: keycloakConfig.clientId,
+    redirect_uri: 'http://localhost:3000',
+    post_logout_redirect_uri: 'http://localhost:3000',
+    revokeTokensOnSignout: true,
+    metadataUrl: '',
+};
+
+const onSigninCallback = (): void => {
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+};
+
+root.render(
+    <AuthProvider {...oidcConfig} onSigninCallback={onSigninCallback}>
+        <App />
+    </AuthProvider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

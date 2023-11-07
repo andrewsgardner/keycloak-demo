@@ -1,8 +1,9 @@
-import { createTheme } from '@mui/material/styles';
-import { grey, red, teal } from '@mui/material/colors';
+import { ThemeOptions } from "@mui/material";
+import { grey, red, teal } from "@mui/material/colors";
 
-const theme = createTheme({
+export const lightTheme: ThemeOptions = {
     palette: {
+        mode: 'light',
         primary: {
             main: teal[400],
         },
@@ -13,6 +14,4 @@ const theme = createTheme({
             main: red.A400,
         },
     },
-});
-
-export default theme;
+};

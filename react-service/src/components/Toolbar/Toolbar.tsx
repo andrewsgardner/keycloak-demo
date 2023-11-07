@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { useKeycloak } from '@react-keycloak/web';
-import { KeycloakProfile } from 'keycloak-js';
+import React, { useContext } from 'react';
+import { useAuth } from 'react-oidc-context';
 
 import './Toolbar.scss';
 import { IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, Theme, Tooltip, useTheme } from '@mui/material';
@@ -13,26 +12,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AuthRole } from '../../enums/auth-role.enum';
+import { AppContext } from '../../contexts/AppContext';
 
 const Toolbar = () => {
-    const { keycloak } = useKeycloak();
+    const auth = useAuth();
+    const appCtx = useContext(AppContext);
     const theme: Theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [profile, setProfile] = React.useState<KeycloakProfile>();
-    const [roles, setRoles] = React.useState<string[]>([]);
     const open = Boolean(anchorEl);
-
-    useEffect(() => {
-        keycloak.onAuthSuccess = () => {
-            keycloak.loadUserProfile()
-                .then((x: KeycloakProfile) => setProfile(x))
-                .catch(() => console.warn('Failed to load user profile.'));
-
-            if (keycloak.realmAccess && keycloak.realmAccess?.roles) {
-                setRoles(keycloak.realmAccess?.roles);
-            }
-        };
-    }, []);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
         setAnchorEl(event.currentTarget);
@@ -43,11 +30,15 @@ const Toolbar = () => {
     };
 
     const logout = (): void => {
-        keycloak.logout();
+        auth.signoutRedirect();
     };
 
-    const authRoles = () => {
-        return roles.filter((x: string) => (Object.values(AuthRole) as string[]).includes(x));
+    const authRoles = (): string[] => {
+        if (!appCtx.state.roles) {
+            return [];
+        }
+
+        return appCtx.state.roles.filter((x: string) => (Object.values(AuthRole) as string[]).includes(x));
     };
 
     return (
@@ -59,7 +50,7 @@ const Toolbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         React Service
                     </Typography>
-                    {keycloak.authenticated ? 
+                    {auth.isAuthenticated ? 
                     <>
                         <Tooltip title="Account settings">
                             <Button
@@ -76,7 +67,7 @@ const Toolbar = () => {
                                 aria-controls={open ? 'account-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}>
-                                {profile?.username}
+                                {appCtx.state.profile?.preferred_username}
                             </Button>
                         </Tooltip>
                         <Menu
@@ -126,7 +117,7 @@ const Toolbar = () => {
                                         paddingRight: '16px',
                                         paddingLeft: '16px',
                                     }}>
-                                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, minWidth: 252 }}>{profile?.firstName} {profile?.lastName}</Typography>
+                                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, minWidth: 252 }}>{appCtx.state.profile?.given_name} {appCtx.state.profile?.family_name}</Typography>
                                 </AppToolbar>
                                 <Typography variant="inherit" component="div" sx={{
                                     backgroundColor: theme.palette.background.paper,
