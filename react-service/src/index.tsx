@@ -19,7 +19,6 @@ const oidcConfig: AuthProviderProps = {
     redirect_uri: 'http://localhost:3000',
     post_logout_redirect_uri: 'http://localhost:3000',
     revokeTokensOnSignout: true,
-    metadataUrl: '',
 };
 
 const onSigninCallback = (): void => {
