@@ -84,6 +84,24 @@ services:
     networks:
       - local
 
+  react-service:
+    container_name: react-service
+    restart: always
+    build:
+      context: ./react-service
+      dockerfile: Dockerfile
+    depends_on:
+      - keycloak-service
+      - postgres-service
+      - ldap-service
+    ports:
+      - 4000:4000
+    environment:
+      PORT: 4000
+      KC_URL: http://localhost:8080/
+    networks:
+      - local
+
 volumes:
   openldap_data:
     driver: local
