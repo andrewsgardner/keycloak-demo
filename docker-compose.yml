@@ -90,15 +90,16 @@ services:
     build:
       context: ./react-service
       dockerfile: Dockerfile
+      args:
+        KC_URL: http://localhost:8080
+        CLIENT_HOST: localhost
+        CLIENT_PORT: 4000
     depends_on:
       - keycloak-service
       - postgres-service
       - ldap-service
     ports:
       - 4000:4000
-    environment:
-      PORT: 4000
-      KC_URL: http://localhost:8080/
     networks:
       - local
 
