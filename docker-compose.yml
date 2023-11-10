@@ -100,7 +100,7 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - ./react-service/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./react-service/nginx.conf.template:/etc/nginx/templates/default.conf.template
     environment:
       NGINX_PORT: 4000
     networks:
