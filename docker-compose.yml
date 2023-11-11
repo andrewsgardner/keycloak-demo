@@ -78,8 +78,10 @@ services:
       - ldap-service
     ports:
       - 2000:2000
+    volumes:
+      - ./angular-service/nginx.conf.template:/etc/nginx/templates/default.conf.template
     environment:
-      PORT: 2000
+      NGINX_PORT: 2000
       KC_URL: http://localhost:8080/
     networks:
       - local

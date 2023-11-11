@@ -1,6 +1,6 @@
 server {
-    listen       2000;
-    listen  [::]:2000;
+    listen       ${NGINX_PORT};
+    listen  [::]:${NGINX_PORT};
     server_name  localhost;
 
     location / {
