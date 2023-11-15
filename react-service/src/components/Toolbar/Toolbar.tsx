@@ -42,7 +42,7 @@ const Toolbar = () => {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
             <AppBar
                 position="static"
                 elevation={0}>
