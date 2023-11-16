@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TokenVisComponent } from './components/token-vis/token-vis.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: TokenVisComponent, canActivate: [AuthGuard]},
+  { path: '', component: DashboardComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

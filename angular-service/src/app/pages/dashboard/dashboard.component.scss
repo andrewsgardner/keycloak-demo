@@ -1,0 +1,34 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0;
+
+    .mat-accordion {
+        margin: 0 0 16px 0;
+
+        .mat-expansion-panel {
+            .mat-expansion-panel-header {
+                .mat-expansion-panel-header-title {
+                    font-size: 16px;
+                }
+        
+                .mat-expansion-panel-header-description {
+                    justify-content: space-between;
+                    align-items: center;
+                }
+            }
+
+            .description {
+                margin: 0 0 16px 0;
+            }
+
+            pre {
+                margin: 0;
+            }
+        }
+
+        &:last-of-type {
+            margin: 0;
+        }
+    }
+}

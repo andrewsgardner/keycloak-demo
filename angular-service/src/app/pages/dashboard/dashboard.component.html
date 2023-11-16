@@ -1,0 +1,47 @@
+<section class="dashboard">
+    <mat-accordion multi>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Access Token</mat-panel-title>
+                <mat-panel-description>OpenID Connect <mat-icon>key</mat-icon></mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="description">
+                <p>A token that allows a client to access a specific resource to perform specific actions on behalf of the user.</p>
+            </div>
+            <pre *ngIf="accessTokenParsed">{{ accessTokenParsed | json }}</pre>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Identity Token</mat-panel-title>
+                <mat-panel-description>OpenID Connect <mat-icon>key</mat-icon></mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="description">
+                <p>A token that provides identity information about the user.</p>
+            </div>
+            <pre *ngIf="idTokenParsed">{{ idTokenParsed | json }}</pre>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Refresh Token</mat-panel-title>
+                <mat-panel-description>OpenID Connect <mat-icon>key</mat-icon></mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="description">
+                <p>A token used to request a new access token in cases where it is expired.</p>
+            </div>
+            <pre *ngIf="refreshTokenParsed">{{ refreshTokenParsed | json }}</pre>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>App Data</mat-panel-title>
+                <mat-panel-description>Access Control <mat-icon>account_circle</mat-icon></mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>Test...</p>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>

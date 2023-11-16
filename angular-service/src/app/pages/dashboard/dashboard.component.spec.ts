@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TokenVisComponent } from './token-vis.component';
+import { DashboardComponent } from './dashboard.component';
 
-describe('TokenVisComponent', () => {
-  let component: TokenVisComponent;
-  let fixture: ComponentFixture<TokenVisComponent>;
+describe('DashboardComponent', () => {
+  let component: DashboardComponent;
+  let fixture: ComponentFixture<DashboardComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TokenVisComponent]
+      declarations: [DashboardComponent]
     });
-    fixture = TestBed.createComponent(TokenVisComponent);
+    fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

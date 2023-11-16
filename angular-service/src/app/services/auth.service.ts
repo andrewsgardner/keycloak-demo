@@ -24,11 +24,31 @@ export class AuthService {
     return this.keycloakService.getUserRoles();
   }
 
-  public getToken(): Observable<string> {
-    return scheduled(this.keycloakService.getToken(), asapScheduler);
+  public getAccessToken(): string | undefined {
+    return this.keycloakService.getKeycloakInstance().token;
   }
 
-  public getParsedToken(): KeycloakTokenParsed | undefined {
+  public getAccessTokenParsed(): KeycloakTokenParsed | undefined {
     return this.keycloakService.getKeycloakInstance().tokenParsed;
+  }
+
+  public getIdToken(): string | undefined {
+    return this.keycloakService.getKeycloakInstance().idToken;
+  }
+
+  public getIdTokenParsed(): KeycloakTokenParsed | undefined {
+    return this.keycloakService.getKeycloakInstance().idTokenParsed;
+  }
+
+  public getRefreshToken(): string | undefined {
+    return this.keycloakService.getKeycloakInstance().refreshToken;
+  }
+
+  public getRefreshTokenParsed(): KeycloakTokenParsed | undefined {
+    return this.keycloakService.getKeycloakInstance().refreshTokenParsed;
+  }
+
+  public getToken(): Observable<string> {
+    return scheduled(this.keycloakService.getToken(), asapScheduler);
   }
 }
