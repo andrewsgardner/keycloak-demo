@@ -66,11 +66,11 @@ services:
     networks:
       - local
 
-  angular-service:
-    container_name: angular-service
+  angular-client:
+    container_name: angular-client
     restart: always
     build:
-      context: ./angular-service
+      context: ./angular-client
       dockerfile: Dockerfile
     depends_on:
       - keycloak-service
@@ -79,7 +79,7 @@ services:
     ports:
       - 2000:2000
     volumes:
-      - ./angular-service/nginx.conf.template:/etc/nginx/templates/default.conf.template
+      - ./angular-client/nginx.conf.template:/etc/nginx/templates/default.conf.template
     environment:
       NGINX_PORT: 2000
       KC_URL: http://localhost:8080/
