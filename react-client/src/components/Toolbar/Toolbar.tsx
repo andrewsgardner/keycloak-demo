@@ -48,7 +48,7 @@ const Toolbar = () => {
                 elevation={0}>
                 <AppToolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        React Service
+                        React Client
                     </Typography>
                     {auth.isAuthenticated ? 
                     <>

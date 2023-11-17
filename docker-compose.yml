@@ -86,11 +86,11 @@ services:
     networks:
       - local
 
-  react-service:
-    container_name: react-service
+  react-client:
+    container_name: react-client
     restart: always
     build:
-      context: ./react-service
+      context: ./react-client
       dockerfile: Dockerfile
       args:
         KC_URL: http://localhost:8080
@@ -102,7 +102,7 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - ./react-service/nginx.conf.template:/etc/nginx/templates/default.conf.template
+      - ./react-client/nginx.conf.template:/etc/nginx/templates/default.conf.template
     environment:
       NGINX_PORT: 4000
     networks:
