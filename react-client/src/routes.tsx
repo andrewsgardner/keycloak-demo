@@ -1,11 +1,11 @@
 import { RouteObject } from "react-router";
-import TokenViz from "./components/TokenViz/TokenViz";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 const routes: RouteObject[] = [
     {
         path: '/',
         //loader() { return true; },
-        element: <TokenViz />
+        element: <Dashboard />
     },
 ];
 

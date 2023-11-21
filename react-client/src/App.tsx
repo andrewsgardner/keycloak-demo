@@ -16,8 +16,9 @@ import { AppContext } from './contexts/AppContext';
 const initialState: IReducerState = {
   colorMode: 'light',
   profile: undefined,
-  accessToken: undefined,
   accessTokenParsed: undefined,
+  idTokenParsed: undefined,
+  refreshTokenParsed: undefined,
   roles: [],
 };
 
@@ -33,15 +34,20 @@ const reducer = (state: IReducerState, action: IReducerAction) => {
         ...state,
         profile: action.payload,
       };
-    case ReducerActionKind.UPDATE_ACCESS_TOKEN:
-      return {
-        ...state,
-        accessToken: action.payload,
-      };
     case ReducerActionKind.UPDATE_ACCESS_TOKEN_PARSED:
       return {
         ...state,
         accessTokenParsed: action.payload,
+      };
+    case ReducerActionKind.UPDATE_ID_TOKEN_PARSED:
+      return {
+        ...state,
+        idTokenParsed: action.payload,
+      };
+    case ReducerActionKind.UPDATE_REFRESH_TOKEN_PARSED:
+      return {
+        ...state,
+        refreshTokenParsed: action.payload,
       };
     case ReducerActionKind.UPDATE_ROLES:
       return {
@@ -74,23 +80,28 @@ const App = () => {
       payload: auth?.user?.profile,
     });
 
-    dispatch({
-      type: ReducerActionKind.UPDATE_ACCESS_TOKEN,
-      payload: auth?.user?.access_token,
-    });
-
-    const parsedToken = parseJwt(auth?.user?.access_token);
+    const accessTokenParsed = parseJwt(auth?.user?.access_token);
 
     dispatch({
       type: ReducerActionKind.UPDATE_ACCESS_TOKEN_PARSED,
-      payload: parsedToken,
+      payload: accessTokenParsed,
     });
 
-    const roles: string[] = parsedToken?.realm_access?.roles;
+    const roles: string[] = accessTokenParsed?.realm_access?.roles;
     
     dispatch({
       type: ReducerActionKind.UPDATE_ROLES,
       payload: roles,
+    });
+
+    dispatch({
+      type: ReducerActionKind.UPDATE_ID_TOKEN_PARSED,
+      payload: parseJwt(auth?.user?.id_token),
+    });
+    
+    dispatch({
+      type: ReducerActionKind.UPDATE_REFRESH_TOKEN_PARSED,
+      payload: parseJwt(auth?.user?.refresh_token),
     });
   }, [auth?.user]);
 
