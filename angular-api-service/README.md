@@ -1,6 +1,6 @@
 # Angular API Service
 
-A FastAPI service for Angular Client.
+A FastAPI server for Angular Client.
 
 ## Requirements
 
