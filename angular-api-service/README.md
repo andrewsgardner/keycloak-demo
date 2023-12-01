@@ -8,7 +8,7 @@ A FastAPI server for Angular Client.
 
 ## Run Local
 
-## Setup virtual environment
+### Setup virtual environment
 
 ```
 python3 -m venv venv
