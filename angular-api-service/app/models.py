@@ -1,7 +1,6 @@
-from typing import Union
+import uuid
 from datetime import datetime
 from sqlmodel import Field, SQLModel
-import uuid
 
 class UserBase(SQLModel):
     username: str
