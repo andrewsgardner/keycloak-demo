@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlmodel import Field, SQLModel
+from typing import Union, Optional
 
 class UserBase(SQLModel):
     username: str
@@ -16,9 +17,9 @@ class User(UserBase, table=True):
     )
 
 class PostBase(SQLModel):
-    userid: str
-    post_text: str
-    update_date: datetime
+    post_text: Optional[str]
+    userid: Union[str, None] = None
+    update_date: Union[datetime, None] = None
 
 class Post(PostBase, table=True):
     __tablename__: str = "posts"
