@@ -52,3 +52,17 @@ def update_post(*, session: SessionDep, id: UUID, post_in: PostUpdate) -> PostOu
     session.commit()
     session.refresh(post)
     return post
+
+@router.delete("/{id}")
+def delete_post(session: SessionDep, id: UUID) -> PostOut:
+    """
+    Delete a post.
+    """
+    post = session.get(Post, id)
+
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    session.delete(post)
+    session.commit()
+    return post
