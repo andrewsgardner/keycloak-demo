@@ -322,7 +322,7 @@
           "attributes": {}
         }
       ],
-      "angular-client": [],
+      "blog-client": [],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],
@@ -637,8 +637,8 @@
     },
     {
       "id": "24549ca1-b16e-49ee-aba0-56e9580d1c28",
-      "clientId": "angular-client",
-      "name": "Angular Client",
+      "clientId": "blog-client",
+      "name": "Blog Client",
       "description": "",
       "rootUrl": "",
       "adminUrl": "",
@@ -1632,7 +1632,7 @@
             },
             {
               "id": "c3093fc3-0a7f-47ce-a4ea-745d505f847f",
-              "name": "RealmRoles to angular-client mapper",
+              "name": "RealmRoles to blog-client mapper",
               "providerId": "role-ldap-mapper",
               "subComponents": {},
               "config": {
@@ -1664,7 +1664,7 @@
                   "true"
                 ],
                 "client.id": [
-                  "angular-client"
+                  "blog-client"
                 ],
                 "role.object.classes": [
                   "groupOfNames"
