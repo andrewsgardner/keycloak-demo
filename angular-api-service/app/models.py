@@ -38,6 +38,7 @@ class Post(PostBase, table=True):
 
 class PostCreate(PostBase):
     post_text: str
+    userid: str
 
 class PostUpdate(PostBase):
     post_text: str
