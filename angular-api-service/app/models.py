@@ -32,7 +32,7 @@ class Post(PostBase, table=True):
         index=True,
     )
     update_date: Union[datetime, None] = Field(
-        default_factory=datetime.now(),
+        default_factory=datetime.utcnow,
         index=True
     )
 
