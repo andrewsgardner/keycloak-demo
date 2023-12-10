@@ -18,8 +18,6 @@ class User(UserBase, table=True):
 
 class PostBase(SQLModel):
     post_text: Optional[str]
-    userid: Union[str, None] = None
-    update_date: Union[datetime, None] = None
 
 class Post(PostBase, table=True):
     __tablename__: str = "posts"
@@ -30,6 +28,13 @@ class Post(PostBase, table=True):
         index=True,
         nullable=False
     )
+    userid: Union[str, None] = Field(
+        index=True,
+    )
+    update_date: Union[datetime, None] = Field(
+        default_factory=datetime.now(),
+        index=True
+    )
 
 class PostCreate(PostBase):
     post_text: str
@@ -39,3 +44,5 @@ class PostUpdate(PostBase):
 
 class PostOut(PostBase):
     id: uuid.UUID
+    userid: Union[str, None]
+    update_date: Union[datetime, None]
