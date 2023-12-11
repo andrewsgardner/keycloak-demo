@@ -1,6 +1,6 @@
-# Angular API Service
+# Blog API Service
 
-A FastAPI server for Angular Client.
+A FastAPI server for the Blog Client.
 
 ## Requirements
 

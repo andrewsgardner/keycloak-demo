@@ -5,12 +5,12 @@ from pydantic import AnyHttpUrl, PostgresDsn, BaseSettings, validator
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     SERVER_HOST: AnyHttpUrl = "http://localhost:8000"
-    PROJECT_NAME: str = "Angular API Service"
+    PROJECT_NAME: str = "Blog API Service"
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
     POSTGRES_SERVER: str = "localhost:5432"
     POSTGRES_USER: str = "postgres" # os.getenv('POSTGRES_USER')
     POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "angular_data"
+    POSTGRES_DB: str = "blog_data"
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
