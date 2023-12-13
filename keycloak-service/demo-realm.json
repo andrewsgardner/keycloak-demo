@@ -110,6 +110,7 @@
       }
     ],
     "client": {
+      "blog-api": [],
       "realm-management": [
         {
           "id": "7869d22a-74d6-467e-8f1b-7996bd31f235",
@@ -322,7 +323,6 @@
           "attributes": {}
         }
       ],
-      "blog-client": [],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],
@@ -425,7 +425,8 @@
           "containerId": "cfb55539-7b4b-4a45-8ab8-c8ada9861fd6",
           "attributes": {}
         }
-      ]
+      ],
+      "blog-client": []
     }
   },
   "groups": [],
@@ -448,9 +449,9 @@
   "otpPolicyPeriod": 30,
   "otpPolicyCodeReusable": false,
   "otpSupportedApplications": [
-    "totpAppGoogleName",
     "totpAppFreeOTPName",
-    "totpAppMicrosoftAuthenticatorName"
+    "totpAppMicrosoftAuthenticatorName",
+    "totpAppGoogleName"
   ],
   "webAuthnPolicyRpEntityName": "keycloak",
   "webAuthnPolicySignatureAlgorithms": [
@@ -636,9 +637,61 @@
       ]
     },
     {
+      "id": "f8752677-dad2-441e-a2e7-f240fc9adcb3",
+      "clientId": "blog-api",
+      "name": "Blog API",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://localhost:8000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8000"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "post.logout.redirect.uris": "http://localhost:8000/*",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
       "id": "24549ca1-b16e-49ee-aba0-56e9580d1c28",
       "clientId": "blog-client",
-      "name": "Blog Client",
+      "name": "Angular Client",
       "description": "",
       "rootUrl": "",
       "adminUrl": "",
@@ -1456,13 +1509,13 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-property-mapper",
-            "oidc-full-name-mapper",
-            "oidc-usermodel-property-mapper",
-            "saml-user-attribute-mapper",
             "saml-role-list-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-attribute-mapper",
+            "oidc-full-name-mapper",
+            "saml-user-property-mapper",
+            "oidc-usermodel-property-mapper",
             "oidc-address-mapper"
           ]
         }
@@ -1498,14 +1551,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-full-name-mapper",
-            "oidc-usermodel-property-mapper",
-            "saml-user-property-mapper",
             "oidc-address-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "saml-role-list-mapper",
+            "saml-user-property-mapper",
+            "oidc-usermodel-property-mapper",
             "saml-user-attribute-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "saml-role-list-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "oidc-full-name-mapper"
           ]
         }
       },
@@ -1561,10 +1614,10 @@
                 "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1581,19 +1634,19 @@
                 "ldap.attribute": [
                   "uid"
                 ],
-                "is.mandatory.in.ldap": [
+                "attribute.force.default": [
                   "true"
                 ],
-                "attribute.force.default": [
+                "is.mandatory.in.ldap": [
                   "true"
                 ],
                 "is.binary.attribute": [
                   "false"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1610,11 +1663,11 @@
                 "ldap.attribute": [
                   "postalAddress"
                 ],
-                "is.mandatory.in.ldap": [
-                  "false"
-                ],
                 "attribute.force.default": [
                   "true"
+                ],
+                "is.mandatory.in.ldap": [
+                  "false"
                 ],
                 "is.binary.attribute": [
                   "false"
@@ -1627,6 +1680,47 @@
                 ],
                 "user.model.attribute": [
                   "postalAddress"
+                ]
+              }
+            },
+            {
+              "id": "11a940ac-64e2-43a5-90c8-866790af6c38",
+              "name": "RealmRoles to blog-api mapper",
+              "providerId": "role-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "mode": [
+                  "READ_ONLY"
+                ],
+                "membership.attribute.type": [
+                  "DN"
+                ],
+                "user.roles.retrieve.strategy": [
+                  "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
+                ],
+                "roles.dn": [
+                  "ou=RealmRoles,dc=company,dc=net"
+                ],
+                "membership.ldap.attribute": [
+                  "member"
+                ],
+                "membership.user.ldap.attribute": [
+                  "dn"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
+                ],
+                "role.name.ldap.attribute": [
+                  "cn"
+                ],
+                "use.realm.roles.mapping": [
+                  "true"
+                ],
+                "client.id": [
+                  "blog-api"
+                ],
+                "role.object.classes": [
+                  "groupOfNames"
                 ]
               }
             },
@@ -1706,10 +1800,10 @@
                 "is.mandatory.in.ldap": [
                   "false"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1735,10 +1829,10 @@
                 "is.binary.attribute": [
                   "false"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1787,17 +1881,17 @@
                 "user.roles.retrieve.strategy": [
                   "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
                 ],
-                "membership.ldap.attribute": [
-                  "member"
-                ],
                 "membership.user.ldap.attribute": [
                   "dn"
                 ],
-                "memberof.ldap.attribute": [
-                  "memberOf"
+                "membership.ldap.attribute": [
+                  "member"
                 ],
                 "role.name.ldap.attribute": [
                   "cn"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
                 ],
                 "use.realm.roles.mapping": [
                   "true"
@@ -1843,20 +1937,20 @@
           ]
         },
         "config": {
-          "fullSyncPeriod": [
-            "-1"
-          ],
           "pagination": [
             "false"
+          ],
+          "fullSyncPeriod": [
+            "-1"
           ],
           "startTls": [
             "false"
           ],
-          "connectionPooling": [
-            "false"
-          ],
           "usersDn": [
             "dc=company,dc=net"
+          ],
+          "connectionPooling": [
+            "false"
           ],
           "cachePolicy": [
             "DEFAULT"
@@ -1873,14 +1967,14 @@
           "bindCredential": [
             "${KEYCLOAK_ADMIN_PASSWORD}"
           ],
-          "bindDn": [
-            "cn=admin,dc=company,dc=net"
+          "changedSyncPeriod": [
+            "-1"
           ],
           "usernameLDAPAttribute": [
             "uid"
           ],
-          "changedSyncPeriod": [
-            "-1"
+          "bindDn": [
+            "cn=admin,dc=company,dc=net"
           ],
           "lastSync": [
             "1696287325"

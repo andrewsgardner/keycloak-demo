@@ -1,20 +1,25 @@
 import uuid
 from datetime import datetime
 from sqlmodel import Field, SQLModel
+from pydantic import BaseModel
 from typing import Union, Optional
 
-class UserBase(SQLModel):
+class User(BaseModel):
+    id: str
     username: str
+    email: str
+    first_name: str
+    last_name: str
+    realm_roles: list
+    client_roles: list
 
-class User(UserBase, table=True):
-    __tablename__: str = "users"
-
-    id: uuid.UUID = Field(
-        default_factory=uuid.uuid4,
-        primary_key=True,
-        index=True,
-        nullable=False
-    )
+class authConfiguration(BaseModel):
+    server_url: str
+    realm: str
+    client_id: str
+    client_secret: str
+    authorization_url: str
+    token_url: str
 
 class PostBase(SQLModel):
     post_text: Optional[str]
