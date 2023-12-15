@@ -5,16 +5,17 @@ from sqlmodel import Session
 from keycloak import KeycloakOpenID
 from app.db.engine import engine
 from app.models import User
+from app.core.config import settings
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
-    authorizationUrl="http://localhost:8080/realms/demo/protocol/openid-connect/auth",
-    tokenUrl="http://localhost:8080/realms/demo/protocol/openid-connect/token"
+    authorizationUrl = f"{settings.KC_URL}/realms/{settings.KC_REALM}/protocol/openid-connect/auth",
+    tokenUrl = f"{settings.KC_URL}/realms/{settings.KC_REALM}/protocol/openid-connect/token"
 )
 
 keycloak_openid = KeycloakOpenID(
-    server_url="http://localhost:8080",
-    client_id="blog-api",
-    realm_name="demo",
+    server_url = settings.KC_URL,
+    client_id = settings.KC_CLIENT_ID,
+    realm_name = settings.KC_REALM,
     # client_secret_key=settings.client_secret,
     verify=True
 )

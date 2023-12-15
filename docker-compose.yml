@@ -67,6 +67,30 @@ services:
     networks:
       - local
 
+  blog-api-service:
+    container_name: blog-api-service
+    restart: always
+    build:
+      context: ./blog-api-service
+      dockerfile: Dockerfile
+    depends_on:
+      - keycloak-service
+      - postgres-service
+      - ldap-service
+    ports:
+      - 8000:8000
+    environment:
+      SERVER_HOST: http://localhost:8000
+      POSTGRES_SERVER: postgres-service:5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: blog_data
+      KC_URL: http://keycloak-service:8080
+      KC_CLIENT_ID: blog-api
+      KC_REALM: demo
+    networks:
+      - local
+
   blog-client:
     container_name: blog-client
     restart: always
@@ -74,6 +98,7 @@ services:
       context: ./blog-client
       dockerfile: Dockerfile
     depends_on:
+      - blog-api-service
       - keycloak-service
       - postgres-service
       - ldap-service
@@ -83,7 +108,8 @@ services:
       - ./blog-client/nginx.conf.template:/etc/nginx/templates/default.conf.template
     environment:
       NGINX_PORT: 2000
-      KC_URL: http://localhost:8080/
+      KC_URL: http://localhost:8080
+      API_URL: http://localhost:8000
     networks:
       - local
 
