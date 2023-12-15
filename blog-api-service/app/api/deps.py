@@ -50,6 +50,7 @@ async def get_user_info(payload: dict = Depends(get_payload)) -> User:
             id = payload.get("sub"),
             username = payload.get("preferred_username"),
             email = payload.get("email"),
+            first_name = payload.get("given_name"),
             last_name = payload.get("family_name"),
             realm_roles = payload.get("realm_access", {}).get("roles", []),
             client_roles = payload.get("realm_access", {}).get("roles", [])
