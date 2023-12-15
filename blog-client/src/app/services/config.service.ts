@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { KeycloakOptions } from 'keycloak-angular';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,11 @@ export class ConfigService {
 
   public getKeycloakInit(): KeycloakOptions {
     return {
-        config: environment.keycloak,
+        config: {
+          url: (window as any)['env']['kcUrl'],
+          realm: 'demo',
+          clientId: 'blog-client'
+        },
         initOptions: {
           onLoad: 'login-required'
         }

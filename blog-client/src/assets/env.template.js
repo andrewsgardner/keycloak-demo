@@ -3,4 +3,5 @@
 
     // Environment variables
     window['env']['kcUrl'] = `${KC_URL}`;
+    window['env']['apiUrl'] = `${API_URL}`;
 })(this);
