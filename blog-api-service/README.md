@@ -27,6 +27,16 @@ pip3 install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+## Run With Docker
+
+### Run server
+
+```
+// From project root
+docker-compose build --no-cache blog-api-service
+docker-compose up -d
+```
+
 ## API documentation (provided by Swagger UI)
 
 ```
