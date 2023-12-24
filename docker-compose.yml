@@ -86,7 +86,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: blog_data
-      KC_URL: http://keycloak-service:8080
+      KC_SERVER_URL: http://keycloak-service:8080
+      KC_AUTH_URL: http://localhost:8080
+      KC_TOKEN_URL: http://localhost:8080
       KC_CLIENT_ID: blog-api
       KC_REALM: demo
     networks:

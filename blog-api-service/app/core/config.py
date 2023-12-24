@@ -29,7 +29,9 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
     
-    KC_URL: str = os.getenv("KC_URL")
+    KC_SERVER_URL: str = os.getenv("KC_SERVER_URL")
+    KC_AUTH_URL = os.getenv("KC_AUTH_URL")
+    KC_TOKEN_URL = os.getenv("KC_TOKEN_URL")
     KC_CLIENT_ID: str = os.getenv("KC_CLIENT_ID")
     KC_REALM: str = os.getenv("KC_REALM")
 

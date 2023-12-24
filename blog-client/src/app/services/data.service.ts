@@ -15,6 +15,14 @@ export class DataService extends BaseApiService {
     super()
   }
 
+  public getUsers() {
+    const url: string = `${this.apiBaseUrl}/users`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError((err: HttpErrorResponse) => this.handleError(err)),
+    );
+  }
+
   // Get all posts
   public getPosts(skip: number = 0, limit: number = 10): Observable<IPost[]> {
     const url: string = `${this.apiBaseUrl}/posts`;

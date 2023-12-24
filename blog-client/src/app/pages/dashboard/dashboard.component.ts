@@ -25,6 +25,13 @@ export class DashboardComponent {
     this.refreshTokenParsed = this.authService.getRefreshTokenParsed();
 
     // TODO: delete...
+    this.dataService.getUsers().pipe(
+      take(1),
+    ).subscribe((res: any) => {
+      console.log('users: ', res);
+    });
+
+    // TODO: delete...
     this.dataService.getPosts().pipe(
       take(1),
     ).subscribe((res: IPost[]) => {
