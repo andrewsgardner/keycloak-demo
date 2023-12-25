@@ -37,7 +37,7 @@ def create_post(*, session: SessionDep, post_in: PostCreate, token_user: TokenUs
     session.refresh(post)
     return post
 
-@router.put("/{id}")
+@router.patch("/{id}")
 def update_post(*, session: SessionDep, id: UUID, post_in: PostUpdate, token_user: TokenUser = Depends(get_user_info)) -> PostOut:
     """
     Update a post.
