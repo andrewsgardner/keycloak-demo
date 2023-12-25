@@ -3,6 +3,7 @@ import { BaseApiService } from './base-api.service';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { IPost } from '../models/post.interface';
+import { IUser } from '../models/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,11 @@ export class DataService extends BaseApiService {
     super()
   }
 
-  public getUsers() {
+  // Get all users
+  public getUsers(): Observable<IUser[]> {
     const url: string = `${this.apiBaseUrl}/users`;
-    
-    return this.http.get<any[]>(url).pipe(
+
+    return this.http.get<IUser[]>(url).pipe(
       catchError((err: HttpErrorResponse) => this.handleError(err)),
     );
   }

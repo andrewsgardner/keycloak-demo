@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { KeycloakTokenParsed } from 'keycloak-js';
 import { take } from 'rxjs';
 import { IPost } from 'src/app/models/post.interface';
+import { IUser } from 'src/app/models/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -27,7 +28,7 @@ export class DashboardComponent {
     // TODO: delete...
     this.dataService.getUsers().pipe(
       take(1),
-    ).subscribe((res: any) => {
+    ).subscribe((res: IUser[]) => {
       console.log('users: ', res);
     });
 
