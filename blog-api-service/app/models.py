@@ -4,7 +4,7 @@ from sqlmodel import Field, SQLModel
 from pydantic import BaseModel
 from typing import Union, Optional
 
-class User(BaseModel):
+class TokenUser(BaseModel):
     id: str
     username: str
     email: str
@@ -13,13 +13,21 @@ class User(BaseModel):
     realm_roles: list
     client_roles: list
 
-class authConfiguration(BaseModel):
-    server_url: str
-    realm: str
-    client_id: str
-    client_secret: str
-    authorization_url: str
-    token_url: str
+class UserBase(SQLModel):
+    username: Optional[str]
+
+class User(UserBase, table=True):
+    __tablename__: str = "users"
+
+    id: uuid.UUID = Field(
+        default_factory=uuid.uuid4,
+        primary_key=True,
+        index=True,
+        nullable=False
+    )
+
+class UserOut(UserBase):
+    id: uuid.UUID
 
 class PostBase(SQLModel):
     post_text: Optional[str]

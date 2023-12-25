@@ -4,7 +4,7 @@ from fastapi.security import OAuth2AuthorizationCodeBearer
 from sqlmodel import Session
 from keycloak import KeycloakOpenID
 from app.db.engine import engine
-from app.models import User
+from app.models import TokenUser
 from app.core.config import settings
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
@@ -41,13 +41,13 @@ async def get_payload(token: str = Security(oauth2_scheme)) -> dict:
     except Exception as e:
         raise HTTPException(
             status_code = status.HTTP_401_UNAUTHORIZED,
-            detail = str(e), # "Invalid authentication credentials",
+            detail = str(e),
             headers = {"WWW-Authenticate": "Bearer"},
         )
 
-async def get_user_info(payload: dict = Depends(get_payload)) -> User:
+async def get_user_info(payload: dict = Depends(get_payload)) -> TokenUser:
     try:
-        return User(
+        return TokenUser(
             id = payload.get("sub"),
             username = payload.get("preferred_username"),
             email = payload.get("email"),
@@ -59,7 +59,7 @@ async def get_user_info(payload: dict = Depends(get_payload)) -> User:
     except Exception as e:
         raise HTTPException(
             status_code = status.HTTP_400_BAD_REQUEST,
-            detail = str(e), # "Invalid authentication credentials",
+            detail = str(e),
             headers = {"WWW-Authenticate": "Bearer"},
         )
 
