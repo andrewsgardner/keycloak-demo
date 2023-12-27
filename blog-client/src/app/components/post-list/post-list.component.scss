@@ -1,0 +1,12 @@
+.post-list {
+    display: flex;
+    flex-direction: column;
+
+    .post {
+        margin: 0 0 16px 0;
+    }
+
+    &:last-of-type {
+        margin: 0;
+    }
+}

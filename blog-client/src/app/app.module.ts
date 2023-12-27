@@ -11,12 +11,20 @@ import { ConfigService } from './services/config.service';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { PostListComponent } from './components/post-list/post-list.component';
+import { PostComponent } from './components/post/post.component';
+import { NewPostComponent } from './components/new-post/new-post.component';
+import { DateAgoPipe } from './pipes/date-ago.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     DashboardComponent,
+    PostListComponent,
+    PostComponent,
+    NewPostComponent,
+    DateAgoPipe,
   ],
   imports: [
     BrowserModule,

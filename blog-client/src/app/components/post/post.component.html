@@ -1,0 +1,17 @@
+<mat-card *ngIf="post" appearance="outlined">
+    <div class="card-header">
+        <div class="avatar">{{ getInitials() }}</div>
+        <header>
+            <h1>{{ firstName }} {{ lastName }}</h1>
+            <h2>{{ post.update_date | dateAgo }}</h2>
+        </header>
+        <div class="actions">
+            <button mat-icon-button aria-label="Actions for this post">
+                <mat-icon>more_horiz</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="card-content">
+        <span class="mat-body-1">{{ post.post_text }}</span>
+    </div>
+</mat-card>

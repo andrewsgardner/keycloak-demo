@@ -14,7 +14,9 @@ class TokenUser(BaseModel):
     client_roles: list
 
 class UserBase(SQLModel):
-    username: Optional[str]
+    username: str
+    first_name: str
+    last_name: str
 
 class User(UserBase, table=True):
     __tablename__: str = "users"
