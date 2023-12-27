@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IPost } from 'src/app/models/post.interface';
 import { DataService } from 'src/app/services/data.service';
 
@@ -15,14 +15,6 @@ export class PostListComponent {
   constructor(
     private dataService: DataService,
   ) {
-    // TODO: delete...
-    /*
-    this.userService.users$.pipe(
-      take(1),
-    ).subscribe((res: IUser[]) => {
-      console.log('users: ', res);
-    });
-    */
     this.posts$ = this.dataService.getPosts();
   }
 
