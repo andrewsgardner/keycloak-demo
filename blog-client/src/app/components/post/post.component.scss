@@ -46,5 +46,18 @@
 
     .card-content {
         margin: 0 0 0 65px;
+
+        .mat-mdc-form-field {
+            display: flex;
+        }
+
+        .cancel {
+            margin: 4px 0 0 0;
+            
+            a {
+                font-weight: 500;
+                cursor: pointer;
+            }
+        }
     }
 }

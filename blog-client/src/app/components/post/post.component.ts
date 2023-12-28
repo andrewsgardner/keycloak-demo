@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { take } from 'rxjs';
 import { IPost } from 'src/app/models/post.interface';
 import { IUser } from 'src/app/models/user.interface';
 import { UserService } from 'src/app/services/user.service';
@@ -16,6 +17,8 @@ export class PostComponent implements OnInit {
 
   public firstName: string = '';
   public lastName: string  = '';
+  public editMode: boolean = false;
+  public newPostValue: FormControl<string | null> = new FormControl('');
 
   constructor(
     private userService: UserService,
@@ -37,5 +40,16 @@ export class PostComponent implements OnInit {
 
   public getInitials(): string {
     return `${this.firstName[0]?.toUpperCase()} ${this.lastName[0]?.toUpperCase()}`;
+  }
+
+  public toggleEditMode(): void {
+    this.editMode = !this.editMode;
+    this.newPostValue.setValue(this.post?.post_text ? this.post?.post_text : '');
+  }
+
+  public updatePost(): void {
+  }
+
+  public deletePost(): void {
   }
 }

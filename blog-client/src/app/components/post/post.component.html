@@ -6,12 +6,45 @@
             <h2>{{ post.update_date | dateAgo }}</h2>
         </header>
         <div class="actions">
-            <button mat-icon-button aria-label="Actions for this post">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions for this post">
                 <mat-icon>more_horiz</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="toggleEditMode()" [disabled]="editMode">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button mat-menu-item disabled>
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </mat-menu>
         </div>
     </div>
     <div class="card-content">
-        <span class="mat-body-1">{{ post.post_text }}</span>
+        <ng-container *ngIf="editMode; else displayMode">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <textarea 
+                    matInput 
+                    [formControl]="newPostValue" 
+                    placeholder="Write a comment...">
+                </textarea>
+                <button 
+                    mat-icon-button 
+                    matSuffix 
+                    aria-label="Update post"
+                    (click)="updatePost()" 
+                    color="primary">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </mat-form-field>
+            <div class="cancel">
+                <span>Press ESC or <a role="button" (click)="toggleEditMode()">Cancel</a></span>
+            </div>
+        </ng-container>
+
+        <ng-template #displayMode>
+            <span class="mat-body-1">{{ post.post_text }}</span>
+        </ng-template>
     </div>
 </mat-card>
