@@ -32,6 +32,7 @@
                 <button 
                     mat-icon-button 
                     matSuffix 
+                    [disabled]="!newPostValue.valid"
                     aria-label="Update post"
                     (click)="updatePost()" 
                     color="primary">

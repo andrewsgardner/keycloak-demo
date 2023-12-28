@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { throwError } from 'rxjs';
 export class BaseApiService {
 
   public apiBaseUrl: string = `${(window as any)['env']['apiUrl']}/api/v1`;
+  public baseHeaders: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor() { }
 

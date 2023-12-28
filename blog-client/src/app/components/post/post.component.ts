@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { take } from 'rxjs';
+import { IPostUpdate } from 'src/app/models/post-update.interface';
 import { IPost } from 'src/app/models/post.interface';
 import { IUser } from 'src/app/models/user.interface';
 import { UserService } from 'src/app/services/user.service';
@@ -15,10 +16,13 @@ export class PostComponent implements OnInit {
   @Input()
   public post: IPost | undefined = undefined;
 
-  public firstName: string = '';
-  public lastName: string  = '';
+  @Output()
+  public update: EventEmitter<IPostUpdate> = new EventEmitter<IPostUpdate>();
+
+  public firstName: string | undefined = undefined;
+  public lastName: string | undefined  = undefined;
   public editMode: boolean = false;
-  public newPostValue: FormControl<string | null> = new FormControl('');
+  public newPostValue: FormControl<string | null> = new FormControl<string | null>('', [Validators.required]);
 
   constructor(
     private userService: UserService,
@@ -39,6 +43,10 @@ export class PostComponent implements OnInit {
   }
 
   public getInitials(): string {
+    if (!this.firstName || !this.lastName) {
+      return '';
+    }
+
     return `${this.firstName[0]?.toUpperCase()} ${this.lastName[0]?.toUpperCase()}`;
   }
 
@@ -48,6 +56,17 @@ export class PostComponent implements OnInit {
   }
 
   public updatePost(): void {
+    if (!this.newPostValue.valid || !this.post?.id || !this.newPostValue.value) {
+      return;
+    }
+
+    this.update.emit({
+      id: this.post.id,
+      post_text: this.newPostValue.value,
+    });
+    
+    this.post.post_text = this.newPostValue.value;
+    this.toggleEditMode();
   }
 
   public deletePost(): void {
