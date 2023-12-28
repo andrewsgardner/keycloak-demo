@@ -1,6 +1,7 @@
 <div class="post-list">
     <ng-container *ngIf="posts$ | async as posts; else noPosts">
         <app-post *ngFor="let p of posts" [post]="p" class="post"></app-post>
+        <button mat-raised-button (click)="loadMore()" color="primary">Load More</button>
     </ng-container>
 
     <ng-template #noPosts>
