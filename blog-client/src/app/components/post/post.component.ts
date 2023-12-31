@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 import { IPostUpdate } from 'src/app/models/post-update.interface';
 import { IPost } from 'src/app/models/post.interface';
 import { IUser } from 'src/app/models/user.interface';
+import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,9 +17,6 @@ export class PostComponent implements OnInit {
   @Input()
   public post: IPost | undefined = undefined;
 
-  @Output()
-  public update: EventEmitter<IPostUpdate> = new EventEmitter<IPostUpdate>();
-
   public firstName: string | undefined = undefined;
   public lastName: string | undefined  = undefined;
   public editMode: boolean = false;
@@ -26,6 +24,7 @@ export class PostComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private postService: PostService,
   ) {
   }
 
@@ -60,12 +59,12 @@ export class PostComponent implements OnInit {
       return;
     }
 
-    this.update.emit({
+    const update: IPostUpdate = {
       id: this.post.id,
       post_text: this.newPostValue.value,
-    });
-    
-    this.post.post_text = this.newPostValue.value;
+    };
+
+    this.postService.updatePost(update);
     this.toggleEditMode();
   }
 
