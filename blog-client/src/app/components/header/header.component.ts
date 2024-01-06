@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KeycloakProfile } from 'keycloak-js';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthRole } from 'src/app/enums/auth-role.enum';
+import { IUser } from 'src/app/models/user.interface';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +12,14 @@ import { AuthRole } from 'src/app/enums/auth-role.enum';
 })
 export class HeaderComponent {
 
-  public userProfile$: Observable<KeycloakProfile>;
+  public authUser$: Observable<IUser>;
   public roles: string[] = [];
 
   constructor(
+    private userService: UserService,
     private authService: AuthService,
   ) {
-    this.userProfile$ = this.authService.userProfile();
+    this.authUser$ = this.userService.authUser$;
     this.roles = this.authService.getRoles();
   }
 

@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
     <span class="branding">Blog Client</span>
     <div class="controls">
-        <ng-container *ngIf="userProfile$ | async as user; else noUser">
+        <ng-container *ngIf="authUser$ | async as user; else noUser">
             <button 
                 mat-button 
                 [matMenuTriggerFor]="menu" 
@@ -10,7 +10,7 @@
                 <span>{{ user.username }}</span>
             </button>
             <mat-menu #menu="matMenu" backdropClass="user-menu">
-                <mat-toolbar>{{ user.firstName }} {{ user.lastName }}</mat-toolbar>
+                <mat-toolbar>{{ user.first_name }} {{ user.last_name }}</mat-toolbar>
                 <mat-list>
                     <div mat-subheader>Roles</div>
                     <mat-list-item *ngFor="let r of authRoles()">
