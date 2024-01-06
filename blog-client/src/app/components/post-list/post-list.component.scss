@@ -6,6 +6,15 @@
         margin: 0 0 16px 0;
     }
 
+    .load-more {
+        display: flex;
+        justify-content: center;
+
+        button {
+            width: 300px;
+        }
+    }
+
     &:last-of-type {
         margin: 0;
     }
