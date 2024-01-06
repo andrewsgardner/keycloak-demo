@@ -1,0 +1,24 @@
+.mat-mdc-card {
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+
+    .avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        width: 50px;
+        height: 50px;
+        line-height: normal;
+        font-weight: 600;
+        color: #ffffff;
+        background: lighten(#878f99, 20%);
+    }
+
+    .mat-mdc-form-field {
+        flex-grow: 1;
+        display: flex;
+        margin: 0 0 0 16px;
+    }
+}

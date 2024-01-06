@@ -1,1 +1,19 @@
-<p>new-post works!</p>
+<mat-card *ngIf="authUser$ | async as user" appearance="outlined">
+    <div class="avatar">{{ getInitials(user) }}</div>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <textarea 
+            matInput 
+            [formControl]="newPostValue" 
+            placeholder="Write a post...">
+        </textarea>
+        <button 
+            mat-icon-button 
+            matSuffix 
+            [disabled]="!newPostValue.valid"
+            aria-label="Submit post"
+            (click)="submitPost()" 
+            color="primary">
+            <mat-icon>send</mat-icon>
+        </button>
+    </mat-form-field>
+</mat-card>

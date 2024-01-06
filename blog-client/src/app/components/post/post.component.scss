@@ -2,21 +2,21 @@
     display: flex;
     padding: 16px;
 
-    .avatar {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 100%;
-        width: 50px;
-        height: 50px;
-        line-height: normal;
-        font-weight: 600;
-        color: #ffffff;
-        background: lighten(#878f99, 20%);
-    }
-
     .card-header {
         display: flex;
+
+        .avatar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 100%;
+            width: 50px;
+            height: 50px;
+            line-height: normal;
+            font-weight: 600;
+            color: #ffffff;
+            background: lighten(#878f99, 20%);
+        }
 
         header {
             h1 {
