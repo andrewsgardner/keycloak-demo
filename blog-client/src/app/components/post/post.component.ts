@@ -83,13 +83,20 @@ export class PostComponent {
       post_text: this.newPostValue.value,
     };
 
-    this.postService.updatePost(update).pipe(
+    this.postService.updatePost$(update).pipe(
       take(1),
     ).subscribe(() => {
       this.toggleEditMode(post_text);
     });
   }
 
-  public deletePost(): void {
+  public deletePost(id: string | undefined): void {
+    if (!id) {
+      return;
+    }
+
+    this.postService.deletePost$(id).pipe(
+      take(1),
+    ).subscribe();
   }
 }

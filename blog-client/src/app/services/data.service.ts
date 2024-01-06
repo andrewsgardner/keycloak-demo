@@ -50,4 +50,13 @@ export class DataService extends BaseApiService {
       catchError((err: HttpErrorResponse) => this.handleError(err)),
     );
   }
+
+  // Delete a post
+  public deletePost(id: string): Observable<IPost> {
+    const url: string = `${this.apiBaseUrl}/posts/${id}`;
+    
+    return this.http.delete<IPost>(url, { headers: this.baseHeaders }).pipe(
+      catchError((err: HttpErrorResponse) => this.handleError(err)),
+    );
+  }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, map, mergeMap, scan, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, filter, map, mergeMap, of, scan, shareReplay, switchMap, tap } from 'rxjs';
 import { IPost } from '../models/post.interface';
 import { ISearchParams } from '../models/search-params.interface';
 import { DataService } from './data.service';
@@ -69,7 +69,7 @@ export class PostService {
     this.doSearch();
   }
 
-  public updatePost(update: IPostUpdate): Observable<void> {
+  public updatePost$(update: IPostUpdate): Observable<void> {
     return this.posts.pipe(
       switchMap((posts: IPost[]) => this.dataService.patchPost(update.id, update.post_text).pipe(
         map((res: IPost) => {
@@ -83,6 +83,19 @@ export class PostService {
 
           this.posts = newPosts;
           console.log('[PostService]: Updated post: ', res);
+        }),
+      )),
+    );
+  }
+  
+  public deletePost$(id: string | undefined): Observable<void> {
+    return this.posts.pipe(
+      switchMap((posts: IPost[]) => of(id).pipe(
+        filter((id: string | undefined): id is string => !!id),
+        switchMap((id: string) => this.dataService.deletePost(id)),
+        map((res: IPost) => {
+          this.posts = posts.filter((x: IPost) => x.id !== id);
+          console.log('[PostService]: Deleted post: ', res);
         }),
       )),
     );
