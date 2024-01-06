@@ -24,7 +24,7 @@ export class UserService {
     this.searchTrigger$.next();
   }
 
-  public getUserByUsername$(username: string | undefined): Observable<IUser | undefined> {
+  public getUserByUsername$(username: string): Observable<IUser | undefined> {
     return this.users$.pipe(
       map((users: IUser[]) => users.find((x: IUser) => x.username === username)),
     );

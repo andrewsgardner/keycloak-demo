@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, mergeMap, scan, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, mergeMap, scan, shareReplay, switchMap, tap } from 'rxjs';
 import { IPost } from '../models/post.interface';
 import { ISearchParams } from '../models/search-params.interface';
 import { DataService } from './data.service';
@@ -43,6 +43,7 @@ export class PostService {
         return acc.sort((a: IPost, b: IPost) => Date.parse(b.update_date) - Date.parse(a.update_date));
       }, []),
       tap(() => this.isLoading$.next(false)),
+      shareReplay(),
     );
   }
 
@@ -68,20 +69,28 @@ export class PostService {
     this.doSearch();
   }
 
-  public updatePost(update: IPostUpdate): void {
-    this.dataService.patchPost(update.id, update.post_text).pipe(
-      take(1),
-    ).subscribe((res: IPost) => {
-      const newPosts: IPost[] = this.postsData$.getValue();
+  public updatePost(update: IPostUpdate): Observable<void> {
+    return this.posts.pipe(
+      switchMap((posts: IPost[]) => this.dataService.patchPost(update.id, update.post_text).pipe(
+        map((res: IPost) => {
+          const newPosts: IPost[] = posts;
 
-      for (const p of newPosts) {
-        if (p.id === update.id) {
-          p.post_text = update.post_text;
-        }
-      }
+          for (const p of newPosts) {
+            if (p.id === update.id) {
+              p.post_text = update.post_text;
+            }
+          }
 
-      this.posts = newPosts;
-      console.log('[PostService]: Updated post: ', res);
-    });
+          this.posts = newPosts;
+          console.log('[PostService]: Updated post: ', res);
+        }),
+      )),
+    );
+  }
+
+  public getPostById$(id: string): Observable<IPost | undefined> {
+    return this.posts.pipe(
+      map((posts: IPost[]) => posts.find((p: IPost) => p.id === id)),
+    );
   }
 }

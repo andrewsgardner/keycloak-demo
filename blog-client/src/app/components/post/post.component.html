@@ -1,16 +1,16 @@
-<mat-card *ngIf="post" appearance="outlined">
+<mat-card *ngIf="{ post: post$ | async, user: user$ | async } as data" appearance="outlined">
     <div class="card-header">
-        <div class="avatar">{{ getInitials() }}</div>
+        <div *ngIf="data.user" class="avatar">{{ getInitials(data.user) }}</div>
         <header>
-            <h1>{{ firstName }} {{ lastName }}</h1>
-            <h2>{{ post.update_date | dateAgo }}</h2>
+            <h1 >{{ data.user?.first_name }} {{ data.user?.last_name }}</h1>
+            <h2>{{ data.post?.update_date | dateAgo }}</h2>
         </header>
         <div class="actions">
             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions for this post">
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="toggleEditMode()" [disabled]="editMode">
+                <button mat-menu-item (click)="toggleEditMode(data.post?.post_text)" [disabled]="editMode">
                     <mat-icon>edit</mat-icon>
                     <span>Edit</span>
                 </button>
@@ -34,18 +34,18 @@
                     matSuffix 
                     [disabled]="!newPostValue.valid"
                     aria-label="Update post"
-                    (click)="updatePost()" 
+                    (click)="updatePost(data.post?.id, data.post?.post_text)" 
                     color="primary">
                     <mat-icon>send</mat-icon>
                 </button>
             </mat-form-field>
             <div class="cancel">
-                <span>Press ESC or <a role="button" (click)="toggleEditMode()">Cancel</a></span>
+                <span>Press ESC or <a role="button" (click)="toggleEditMode(data.post?.post_text)">Cancel</a></span>
             </div>
         </ng-container>
 
         <ng-template #displayMode>
-            <span class="mat-body-1">{{ post.post_text }}</span>
+            <span class="mat-body-1">{{ data.post?.post_text }}</span>
         </ng-template>
     </div>
 </mat-card>
