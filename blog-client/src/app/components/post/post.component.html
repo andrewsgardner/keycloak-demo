@@ -1,4 +1,4 @@
-<mat-card *ngIf="{ post: post$ | async, user: user$ | async } as data" appearance="outlined">
+<mat-card *ngIf="{ post: post$ | async, user: user$ | async, isAuthUser: isAuthUser$ | async } as data" appearance="outlined">
     <div class="card-header">
         <div *ngIf="data.user" class="avatar">{{ getInitials(data.user) }}</div>
         <header>
@@ -6,15 +6,21 @@
             <h2>{{ data.post?.update_date | dateAgo }}</h2>
         </header>
         <div class="actions">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions for this post">
+            <button 
+                mat-icon-button 
+                *ngIf="data?.isAuthUser" 
+                [matMenuTriggerFor]="menu" 
+                aria-label="Actions for this post">
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="toggleEditMode(data.post?.post_text)" [disabled]="editMode">
+                <button 
+                    mat-menu-item (click)="toggleEditMode(data.post?.post_text)" 
+                    [disabled]="editMode">
                     <mat-icon>edit</mat-icon>
                     <span>Edit</span>
                 </button>
-                <button mat-menu-item disabled>
+                <button mat-menu-item>
                     <mat-icon>delete</mat-icon>
                     <span>Delete</span>
                 </button>

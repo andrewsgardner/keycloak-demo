@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, filter, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { IPostUpdate } from 'src/app/models/post-update.interface';
 import { IPost } from 'src/app/models/post.interface';
 import { IUser } from 'src/app/models/user.interface';
@@ -21,12 +21,14 @@ export class PostComponent {
   
   public post$: Observable<IPost | undefined>;
   public user$: Observable<IUser | undefined>;
+  public isAuthUser$: Observable<boolean>;
   public firstName: string | undefined = undefined;
   public lastName: string | undefined  = undefined;
   public editMode: boolean = false;
   public newPostValue: FormControl<string | null> = new FormControl<string | null>('', [Validators.required]);
 
   private postId$: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
+  private authUser$: Observable<IUser>;
 
   constructor(
     private userService: UserService,
@@ -37,9 +39,20 @@ export class PostComponent {
       switchMap((postId: string) => this.postService.getPostById$(postId)),
     );
 
+    this.authUser$ = this.userService.authUser$;
+
     this.user$ = this.post$.pipe(
       filter((post: IPost | undefined): post is IPost => !!post),
       switchMap((post: IPost) => this.userService.getUserByUsername$(post.userid)),
+    );
+
+    this.isAuthUser$ = combineLatest([
+      this.authUser$,
+      this.user$,
+    ]).pipe(
+      map(([authUser, user]: [IUser, IUser | undefined]) => {
+        return authUser.username === user?.username
+      }),
     );
   }
 
