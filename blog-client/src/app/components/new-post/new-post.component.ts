@@ -27,7 +27,7 @@ export class NewPostComponent {
 
     return `${user.first_name[0]?.toUpperCase()} ${user.last_name[0]?.toUpperCase()}`;
   }
-
+  
   public submitPost(): void {
   }
 }

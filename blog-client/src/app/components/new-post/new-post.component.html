@@ -2,9 +2,11 @@
     <div class="avatar">{{ getInitials(user) }}</div>
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <textarea 
-            matInput 
+            matInput
+            cdkTextareaAutosize
             [formControl]="newPostValue" 
-            placeholder="Write a post...">
+            placeholder="Write a post..."
+            rows="2">
         </textarea>
         <button 
             mat-icon-button 
