@@ -5,6 +5,7 @@ import { Observable, catchError } from 'rxjs';
 import { IPost } from '../models/post.interface';
 import { IUser } from '../models/user.interface';
 import { ISearchParams } from '../models/search-params.interface';
+import { IPostCreate } from '../models/post-create.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,19 @@ export class DataService extends BaseApiService {
     );
   }
 
+  // Create a post
+  public createPost(params: IPostCreate): Observable<IPost> {
+    const url: string = `${this.apiBaseUrl}/posts`;
+    const body: string = JSON.stringify(new Object({
+      post_text: params.post_text,
+      userid: params.userid,
+    }));
+
+    return this.http.post<IPost>(url, body, { headers: this.baseHeaders }).pipe(
+      catchError((err: HttpErrorResponse) => this.handleError(err)),
+    );
+  }
+
   // Update a post
   public patchPost(id: string, post_text: string): Observable<IPost> {
     const url: string = `${this.apiBaseUrl}/posts/${id}`;
@@ -54,7 +68,7 @@ export class DataService extends BaseApiService {
   // Delete a post
   public deletePost(id: string): Observable<IPost> {
     const url: string = `${this.apiBaseUrl}/posts/${id}`;
-    
+
     return this.http.delete<IPost>(url, { headers: this.baseHeaders }).pipe(
       catchError((err: HttpErrorResponse) => this.handleError(err)),
     );

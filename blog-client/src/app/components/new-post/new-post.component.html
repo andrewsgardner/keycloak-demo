@@ -13,7 +13,7 @@
             matSuffix 
             [disabled]="!newPostValue.valid"
             aria-label="Submit post"
-            (click)="submitPost()" 
+            (click)="createPost(user.username)" 
             color="primary">
             <mat-icon>send</mat-icon>
         </button>

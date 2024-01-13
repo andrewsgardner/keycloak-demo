@@ -4,6 +4,7 @@ import { IPost } from '../models/post.interface';
 import { ISearchParams } from '../models/search-params.interface';
 import { DataService } from './data.service';
 import { IPostUpdate } from '../models/post-update.interface';
+import { IPostCreate } from '../models/post-create.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,17 @@ export class PostService {
     params.page = params.page + 1;
     this.searchParams$.next(params);
     this.doSearch();
+  }
+
+  public createPost$(create: IPostCreate): Observable<void> {
+    return this.posts.pipe(
+      switchMap((posts) => this.dataService.createPost(create).pipe(
+        map((res: IPost) => {
+          this.posts = [...posts, res];
+          console.log('[PostService]: Created post: ', res);
+        }),
+      )),
+    );
   }
 
   public updatePost$(update: IPostUpdate): Observable<void> {
