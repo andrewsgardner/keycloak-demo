@@ -74,7 +74,9 @@ export class PostService {
     return this.posts.pipe(
       switchMap((posts) => this.dataService.createPost(create).pipe(
         map((res: IPost) => {
-          this.posts = [...posts, res];
+          const newPosts: IPost[] = posts;
+          newPosts.push(res);
+          this.posts = newPosts;
           console.log('[PostService]: Created post: ', res);
         }),
       )),

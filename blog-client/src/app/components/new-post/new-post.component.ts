@@ -31,8 +31,8 @@ export class NewPostComponent {
     return `${user.first_name[0]?.toUpperCase()} ${user.last_name[0]?.toUpperCase()}`;
   }
 
-  public createPost(username: string): void {
-    if (!this.newPostValue.valid || !username || !this.newPostValue.value) {
+  public createPost(username: string, el: HTMLTextAreaElement): void {
+    if (!this.newPostValue.valid || !username || !el|| !this.newPostValue.value) {
       return;
     }
 
@@ -43,6 +43,9 @@ export class NewPostComponent {
 
     this.postService.createPost$(create).pipe(
       take(1),
-    ).subscribe();
+    ).subscribe(() => {
+      el.blur();
+      this.newPostValue.reset();
+    });
   }
 }

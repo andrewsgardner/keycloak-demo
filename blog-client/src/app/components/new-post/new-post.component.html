@@ -3,6 +3,7 @@
     <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <textarea 
             matInput
+            #textareaEl
             cdkTextareaAutosize
             [formControl]="newPostValue" 
             placeholder="Write a post..."
@@ -13,7 +14,7 @@
             matSuffix 
             [disabled]="!newPostValue.valid"
             aria-label="Submit post"
-            (click)="createPost(user.username)" 
+            (click)="createPost(user.username, textareaEl)" 
             color="primary">
             <mat-icon>send</mat-icon>
         </button>
