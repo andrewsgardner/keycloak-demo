@@ -88,13 +88,15 @@ export class PostService {
       switchMap((posts: IPost[]) => this.dataService.patchPost(update.id, update.post_text).pipe(
         map((res: IPost) => {
           const newPosts: IPost[] = posts;
+          const index: number = newPosts.findIndex((x: IPost) => x.id === update.id);
 
-          for (const p of newPosts) {
-            if (p.id === update.id) {
-              p.post_text = update.post_text;
-            }
+          try {
+            const post: IPost = newPosts[index];
+            post.post_text = update.post_text;
+          } catch {
+            throw new Error(`[PostService]: Could not update local copy of post id '${update.id}'!`);
           }
-
+          
           this.posts = newPosts;
           console.log('[PostService]: Updated post: ', res);
         }),
@@ -108,7 +110,16 @@ export class PostService {
         filter((id: string | undefined): id is string => !!id),
         switchMap((id: string) => this.dataService.deletePost(id)),
         map((res: IPost) => {
-          this.posts = posts.filter((x: IPost) => x.id !== id);
+          const newPosts: IPost[] = posts;
+          const index: number = newPosts.findIndex((x: IPost) => x.id === id);
+
+          try {
+            newPosts.splice(index, 1);
+          } catch {
+            throw new Error(`[PostService]: Could not delete local copy of post id '${id}'!`);
+          }
+          
+          this.posts = newPosts;
           console.log('[PostService]: Deleted post: ', res);
         }),
       )),
