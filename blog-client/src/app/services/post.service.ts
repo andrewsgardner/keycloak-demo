@@ -75,7 +75,14 @@ export class PostService {
       switchMap((posts) => this.dataService.createPost(create).pipe(
         map((res: IPost) => {
           const newPosts: IPost[] = posts;
-          newPosts.push(res);
+          
+          try {
+            const post: IPost = res;
+            newPosts.push(post);
+          } catch {
+            throw new Error(`[PostService]: Could not create local copy of post id '${res.id}'!`);
+          }
+          
           this.posts = newPosts;
           console.log('[PostService]: Created post: ', res);
         }),
