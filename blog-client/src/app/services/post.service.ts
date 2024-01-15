@@ -112,7 +112,7 @@ export class PostService {
         map((res: IPost) => {
           const newPosts: IPost[] = posts;
           const index: number = newPosts.findIndex((x: IPost) => x.id === id);
-
+          
           try {
             newPosts.splice(index, 1);
           } catch {
