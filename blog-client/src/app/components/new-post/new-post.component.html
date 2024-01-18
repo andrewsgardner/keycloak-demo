@@ -7,6 +7,7 @@
             cdkTextareaAutosize
             [formControl]="newPostValue" 
             placeholder="Write a post..."
+            (keydown.enter)="createPost(user.username, textareaEl)"
             rows="2">
         </textarea>
         <button 
