@@ -13,7 +13,8 @@ INSERT INTO users (username, first_name, last_name) VALUES ('rsmith', 'Rachel', 
 CREATE TABLE IF NOT EXISTS posts (
   id uuid DEFAULT uuid_generate_v4(), 
   userid varchar references users(username), 
-  post_text text, 
+  post_text text,
+  create_date timestamp default current_timestamp,
   update_date timestamp default current_timestamp
 );
 

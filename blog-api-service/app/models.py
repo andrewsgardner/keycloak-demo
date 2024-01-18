@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from sqlmodel import Field, SQLModel
 from pydantic import BaseModel
+from sqlalchemy import text
 from typing import Union, Optional
 
 class TokenUser(BaseModel):
@@ -46,9 +47,20 @@ class Post(PostBase, table=True):
     userid: Union[str, None] = Field(
         index=True,
     )
-    update_date: Union[datetime, None] = Field(
+    create_date: datetime = Field(
         default_factory=datetime.utcnow,
-        index=True
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp")
+        }
+    )
+    update_date: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp"),
+            "onupdate": text("current_timestamp")
+       }
     )
 
 class PostCreate(PostBase):
@@ -61,4 +73,5 @@ class PostUpdate(PostBase):
 class PostOut(PostBase):
     id: uuid.UUID
     userid: Union[str, None]
-    update_date: Union[datetime, None]
+    create_date: datetime
+    update_date: datetime
