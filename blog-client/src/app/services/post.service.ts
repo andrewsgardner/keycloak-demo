@@ -41,7 +41,7 @@ export class PostService {
           acc.push(curr);
         }
         
-        return acc.sort((a: IPost, b: IPost) => Date.parse(b.update_date) - Date.parse(a.update_date));
+        return acc.sort((a: IPost, b: IPost) => Date.parse(a.create_date) - Date.parse(b.create_date));
       }, []),
       tap(() => this.isLoading$.next(false)),
       shareReplay(),
@@ -75,7 +75,7 @@ export class PostService {
       switchMap((posts) => this.dataService.createPost(create).pipe(
         map((res: IPost) => {
           const newPosts: IPost[] = posts;
-          
+
           try {
             const post: IPost = res;
             newPosts.push(post);
