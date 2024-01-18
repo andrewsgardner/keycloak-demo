@@ -8,8 +8,8 @@ export class DateAgoPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if (value) {
-      const seconds: number = Math.floor((+new Date() - +new Date(value)) / 1000);
-
+      const seconds: number = Math.floor((+new Date() - +new Date(`${value}Z`)) / 1000);
+      
       if (seconds < 29) {
         return 'Just now';
       }
