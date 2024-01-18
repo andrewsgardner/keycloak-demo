@@ -37,7 +37,8 @@
                     matInput 
                     cdkTextareaAutosize
                     [formControl]="newPostValue" 
-                    placeholder="Write a comment...">
+                    placeholder="Write a comment..."
+                    (keydown.enter)="updatePost(data.post?.id, data.post?.post_text)">
                 </textarea>
                 <button 
                     mat-icon-button 
