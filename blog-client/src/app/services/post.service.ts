@@ -5,6 +5,8 @@ import { ISearchParams } from '../models/search-params.interface';
 import { DataService } from './data.service';
 import { IPostUpdate } from '../models/post-update.interface';
 import { IPostCreate } from '../models/post-create.interface';
+import { IPaginatedResponse } from '../models/paginated-response.interface';
+import { IPagination } from '../models/pagination.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,27 +16,47 @@ export class PostService {
   public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private postsData$: BehaviorSubject<IPost[]> = new BehaviorSubject<IPost[]>([]);
   private postsDataObs$: Observable<IPost[]> = this.postsData$.asObservable();
+  private paginatedResponse$: Observable<IPaginatedResponse<IPost>>;
+  private pagination$: Observable<IPagination>;
 
   private searchTrigger$: Subject<void> = new Subject<void>();
-  private pageLimitOpts: number[] = [5, 10, 25, 100];
   private readonly DEFAULT_SEARCH_PARAMS: ISearchParams = {
     page: 1,
-    skip: 0,
-    limit: this.pageLimitOpts[1],
+    limit: 10,
+    offset: 0,
   };
   private searchParams$: BehaviorSubject<ISearchParams> = new BehaviorSubject<ISearchParams>(this.DEFAULT_SEARCH_PARAMS);
 
   constructor(
     private dataService: DataService,
   ) {
-    const batch$ = this.searchTrigger$.pipe(
+    this.paginatedResponse$ = this.searchTrigger$.pipe(
       switchMap(() => {
         this.isLoading$.next(true);
         return this.dataService.getPosts(this.searchParams$.getValue());
       }),
     );
+
+    this.pagination$ = this.paginatedResponse$.pipe(
+      map((response: IPaginatedResponse<IPost>) => {
+        const totalPages: number = Math.ceil(response.total/response.limit);
+        const perPage: number = response.limit;
+        const currentPage: number = this.searchParams$.getValue().page;
+        
+        return {
+          totalPages: totalPages,
+          total: response.total,
+          perPage: perPage,
+          currentPage: this.searchParams$.getValue().page,
+          from: ((currentPage -1) * totalPages) + 1,
+          to: totalPages === currentPage ? (perPage * (currentPage - 1)) + response.items.length : perPage * currentPage,
+        }
+      }),
+      shareReplay(),
+    );
     
-    this.postsDataObs$ = batch$.pipe(
+    this.postsDataObs$ = this.paginatedResponse$.pipe(
+      map((x: IPaginatedResponse<IPost>) => x.items),
       mergeMap((res: IPost[]) => res),
       scan((acc: IPost[], curr: IPost) => {
         if (!acc.some((x: IPost) => curr.id === x.id)) {
@@ -60,11 +82,15 @@ export class PostService {
     this.searchTrigger$.next();
   }
 
+  public getPagination$(): Observable<IPagination> {
+    return this.pagination$;
+  }
+
   public loadMore(): void {
     const params: ISearchParams = this.searchParams$.getValue();
     const offset: number = params.page * params.limit;
 
-    params.skip = offset;
+    params.offset = offset;
     params.page = params.page + 1;
     this.searchParams$.next(params);
     this.doSearch();

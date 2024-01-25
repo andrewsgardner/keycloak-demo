@@ -1,18 +1,22 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlmodel import select
 from app.api.deps import SessionDep, get_user_info
 from app.models import Post, PostOut, PostCreate, PostUpdate, TokenUser
+from app.schemas import PostSchema, PaginatedResponse
+from app.utils import paginate
 from uuid import UUID
 
 router = APIRouter()
 
-@router.get("/")
-def read_posts(session: SessionDep, skip: int = 0, limit: int = 100, token_user: TokenUser = Depends(get_user_info)) -> list[PostOut]:
+@router.get("/", response_model=PaginatedResponse[PostSchema])
+def read_posts(session: SessionDep, limit: int = Query(10, ge=0), offset: int = Query(0, ge=0), token_user: TokenUser = Depends(get_user_info)) -> PaginatedResponse[PostSchema]:
     """
-    Retrieve all posts.
+    Retrieve posts by page.
     """
-    statement = select(Post).offset(skip).limit(limit)
-    return session.exec(statement).all()
+    query = select(Post)
+    
+    return paginate(session, query, limit, offset)
+    
 
 @router.get("/{id}")
 def read_post(session: SessionDep, id: UUID, token_user: TokenUser = Depends(get_user_info)) -> PostOut:

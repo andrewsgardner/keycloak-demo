@@ -6,6 +6,7 @@ import { IPost } from '../models/post.interface';
 import { IUser } from '../models/user.interface';
 import { ISearchParams } from '../models/search-params.interface';
 import { IPostCreate } from '../models/post-create.interface';
+import { IPaginatedResponse } from '../models/paginated-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +29,14 @@ export class DataService extends BaseApiService {
   }
 
   // Get all posts
-  public getPosts(search: ISearchParams): Observable<IPost[]> {
+  public getPosts(search: ISearchParams): Observable<IPaginatedResponse<IPost>> {
     const url: string = `${this.apiBaseUrl}/posts`;
     let params: HttpParams = new HttpParams();
     
-    params = params.append('skip', search.skip);
     params = params.append('limit', search.limit);
+    params = params.append('offset', search.offset);
 
-    return this.http.get<IPost[]>(url, { params: params, headers: this.baseHeaders }).pipe(
+    return this.http.get<IPaginatedResponse<IPost>>(url, { params: params, headers: this.baseHeaders }).pipe(
       catchError((err: HttpErrorResponse) => this.handleError(err)),
     );
   }

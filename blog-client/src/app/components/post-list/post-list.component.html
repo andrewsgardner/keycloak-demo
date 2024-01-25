@@ -1,14 +1,17 @@
-<div class="post-list">
-    <ng-container *ngIf="posts$ | async as posts; else noPosts">
-        <app-post *ngFor="let p of posts" [postId]="p.id" class="post"></app-post>
-        <div class="load-more">
-            <button mat-raised-button (click)="loadMore()" color="primary">Load More</button>
-        </div>
-    </ng-container>
-
-    <ng-template #noPosts>
-        <span>There are no posts to view.</span>
-    </ng-template>
-
-    <app-new-post class="new-post"></app-new-post>
-</div>
+<ng-container *ngIf="{ posts: posts$ | async, pagination: pagination$ | async } as data">
+    <div class="post-list">
+        <ng-container *ngIf="data?.posts; else noPosts">
+            <app-post *ngFor="let p of data.posts" [postId]="p.id" class="post"></app-post>
+            <div *ngIf="showPagination(data?.pagination)" class="load-more">
+                <button mat-raised-button (click)="loadMore()" color="primary">Load More</button>
+                <span>{{ data.pagination?.from }} - {{ data.pagination?.to }} of {{ data.pagination?.total }} posts</span>
+            </div>
+        </ng-container>
+    
+        <ng-template #noPosts>
+            <span>There are no posts to view.</span>
+        </ng-template>
+    
+        <app-new-post class="new-post"></app-new-post>
+    </div>
+</ng-container>
