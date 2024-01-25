@@ -105,12 +105,12 @@ export class PostService {
           try {
             const post: IPost = res;
             newPosts.push(post);
+
+            this.posts = newPosts;
+            console.log('[PostService]: Created post: ', res);
           } catch {
             throw new Error(`[PostService]: Could not create local copy of post id '${res.id}'!`);
           }
-          
-          this.posts = newPosts;
-          console.log('[PostService]: Created post: ', res);
         }),
       )),
     );
@@ -121,17 +121,17 @@ export class PostService {
       switchMap((posts: IPost[]) => this.dataService.patchPost(update.id, update.post_text).pipe(
         map((res: IPost) => {
           const newPosts: IPost[] = posts;
-          const index: number = newPosts.findIndex((x: IPost) => x.id === update.id);
 
           try {
+            const index: number = newPosts.findIndex((x: IPost) => x.id === update.id);
             const post: IPost = newPosts[index];
             post.post_text = update.post_text;
+
+            this.posts = newPosts;
+            console.log('[PostService]: Updated post: ', res);
           } catch {
             throw new Error(`[PostService]: Could not update local copy of post id '${update.id}'!`);
           }
-          
-          this.posts = newPosts;
-          console.log('[PostService]: Updated post: ', res);
         }),
       )),
     );
@@ -144,16 +144,16 @@ export class PostService {
         switchMap((id: string) => this.dataService.deletePost(id)),
         map((res: IPost) => {
           const newPosts: IPost[] = posts;
-          const index: number = newPosts.findIndex((x: IPost) => x.id === id);
           
           try {
+            const index: number = newPosts.findIndex((x: IPost) => x.id === id);
             newPosts.splice(index, 1);
+            
+            this.posts = newPosts;
+            console.log('[PostService]: Deleted post: ', res);
           } catch {
             throw new Error(`[PostService]: Could not delete local copy of post id '${id}'!`);
           }
-          
-          this.posts = newPosts;
-          console.log('[PostService]: Deleted post: ', res);
         }),
       )),
     );
