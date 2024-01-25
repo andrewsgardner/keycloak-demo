@@ -1,4 +1,4 @@
-<ng-container *ngIf="{ posts: posts$ | async, pagination: pagination$ | async } as data">
+<ng-container *ngIf="{ isLoading: isLoading$ | async, posts: posts$ | async, pagination: pagination$ | async } as data">
     <div class="post-list">
         <ng-container *ngIf="data?.posts; else noPosts">
             <app-post *ngFor="let p of data.posts" [postId]="p.id" class="post"></app-post>
@@ -7,7 +7,11 @@
                 <span>{{ data.pagination?.from }} - {{ data.pagination?.to }} of {{ data.pagination?.total }} posts</span>
             </div>
         </ng-container>
-    
+
+        <div *ngIf="data?.isLoading" class="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+        
         <ng-template #noPosts>
             <span>There are no posts to view.</span>
         </ng-template>
