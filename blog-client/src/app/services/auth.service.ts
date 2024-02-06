@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import { Observable, asapScheduler, scheduled } from 'rxjs';
+import { AuthRole } from '../enums/auth-role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,9 @@ export class AuthService {
 
   public getToken(): Observable<string> {
     return scheduled(this.keycloakService.getToken(), asapScheduler);
+  }
+
+  public isUserInRole(role: AuthRole): boolean {
+    return this.keycloakService.isUserInRole(role);
   }
 }

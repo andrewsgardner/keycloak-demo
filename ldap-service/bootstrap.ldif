@@ -59,24 +59,25 @@ postalAddress: 923 Main Street, Kuhlmanview, ME 74125-6284, USA
 telephonenumber: 6363636811
 userPassword: test
 
-dn: cn=admin,ou=RealmRoles,dc=company,dc=net
+dn: cn=administrator,ou=RealmRoles,dc=company,dc=net
 objectclass: top
 objectclass: groupOfNames
-cn: admin
+cn: administrator
 member: uid=rsmith,ou=People,dc=company,dc=net
 
-dn: cn=user,ou=RealmRoles,dc=company,dc=net
+dn: cn=contributor,ou=RealmRoles,dc=company,dc=net
 objectclass: top
 objectclass: groupOfNames
-cn: user
+cn: contributor
 member: uid=rsmith,ou=People,dc=company,dc=net
 member: uid=fwatkins,ou=People,dc=company,dc=net
 
-dn: cn=guest,ou=RealmRoles,dc=company,dc=net
+dn: cn=observer,ou=RealmRoles,dc=company,dc=net
 objectclass: top
 objectclass: groupOfNames
-cn: guest
+cn: observer
 member: uid=rsmith,ou=People,dc=company,dc=net
+member: uid=fwatkins,ou=People,dc=company,dc=net
 member: uid=jpatel,ou=People,dc=company,dc=net
 
 dn: cn=default-roles-demo,ou=RealmRoles,dc=company,dc=net

@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable, combineLatest, filter, map, switchMap, take } from 'rxjs';
+import { AuthRole } from 'src/app/enums/auth-role.enum';
 import { IPostUpdate } from 'src/app/models/post-update.interface';
 import { IPost } from 'src/app/models/post.interface';
 import { IUser } from 'src/app/models/user.interface';
+import { AuthService } from 'src/app/services/auth.service';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -31,6 +33,7 @@ export class PostComponent {
   private authUser$: Observable<IUser>;
 
   constructor(
+    private authService: AuthService,
     private userService: UserService,
     private postService: PostService,
   ) {
@@ -54,6 +57,26 @@ export class PostComponent {
         return authUser.username === user?.username
       }),
     );
+  }
+
+  public isAccessAllowed(isAuthUser: boolean | null | undefined): boolean {
+    const administrator: boolean = this.authService.isUserInRole(AuthRole.Administrator);
+    const contributor: boolean = this.authService.isUserInRole(AuthRole.Contributor);
+    const observer: boolean = this.authService.isUserInRole(AuthRole.Contributor);
+
+    if (administrator) {
+      // Administrators can edit/delete posts created by any user.
+      return true;
+    } else if (isAuthUser && contributor) {
+      // Contributors can only edit/delete posts they have created.
+      return true;
+    } else if (observer) {
+      // Observers can't edit/delete posts.
+      return false;
+    } else {
+      // Refuse access for everything else.
+      return false;
+    }
   }
 
   public getInitials(user: IUser): string {

@@ -1,7 +1,9 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthRole } from 'src/app/enums/auth-role.enum';
 import { IPagination } from 'src/app/models/pagination.interface';
 import { IPost } from 'src/app/models/post.interface';
+import { AuthService } from 'src/app/services/auth.service';
 import { PostService } from 'src/app/services/post.service';
 
 @Component({
@@ -16,6 +18,7 @@ export class PostListComponent implements AfterViewInit {
   public pagination$: Observable<IPagination>;
 
   constructor(
+    private authService: AuthService,
     private postService: PostService,
   ) {
     this.isLoading$ = this.postService.isLoading$;
@@ -37,5 +40,9 @@ export class PostListComponent implements AfterViewInit {
     }
     
     return pagination.currentPage < pagination.totalPages;
+  }
+
+  public isAccessAllowed(): boolean {
+    return this.authService.isUserInRole(AuthRole.Contributor);
   }
 }

@@ -47,7 +47,7 @@
     "realm": [
       {
         "id": "e736aa2a-1cc0-44a7-993c-34e87776ab56",
-        "name": "admin",
+        "name": "administrator",
         "composite": false,
         "clientRole": false,
         "containerId": "eefb090b-1ae4-4efb-a1ec-f33647422125",
@@ -94,7 +94,7 @@
       },
       {
         "id": "e1705d90-2744-4bd5-befb-6bfc25e45aef",
-        "name": "user",
+        "name": "contributor",
         "composite": false,
         "clientRole": false,
         "containerId": "eefb090b-1ae4-4efb-a1ec-f33647422125",
@@ -102,7 +102,7 @@
       },
       {
         "id": "1f110c4b-3bad-40d4-8dc5-86c5aa7f63fd",
-        "name": "guest",
+        "name": "observer",
         "composite": false,
         "clientRole": false,
         "containerId": "eefb090b-1ae4-4efb-a1ec-f33647422125",
@@ -300,8 +300,8 @@
                 "create-client",
                 "view-clients",
                 "query-clients",
-                "view-events",
                 "manage-identity-providers",
+                "view-events",
                 "view-users",
                 "view-authorization",
                 "view-realm",
@@ -1509,14 +1509,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-role-list-mapper",
-            "saml-user-attribute-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "oidc-full-name-mapper",
             "saml-user-property-mapper",
+            "oidc-full-name-mapper",
+            "saml-user-attribute-mapper",
             "oidc-usermodel-property-mapper",
-            "oidc-address-mapper"
+            "oidc-address-mapper",
+            "saml-role-list-mapper",
+            "oidc-usermodel-attribute-mapper"
           ]
         }
       },
@@ -1551,14 +1551,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-address-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-property-mapper",
+            "oidc-full-name-mapper",
             "oidc-usermodel-property-mapper",
-            "saml-user-attribute-mapper",
-            "saml-role-list-mapper",
+            "saml-user-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-attribute-mapper",
-            "oidc-full-name-mapper"
+            "saml-role-list-mapper",
+            "oidc-address-mapper",
+            "saml-user-attribute-mapper"
           ]
         }
       },
@@ -1614,10 +1614,10 @@
                 "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1634,10 +1634,10 @@
                 "ldap.attribute": [
                   "uid"
                 ],
-                "attribute.force.default": [
+                "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "is.mandatory.in.ldap": [
+                "attribute.force.default": [
                   "true"
                 ],
                 "is.binary.attribute": [
@@ -1701,11 +1701,11 @@
                 "roles.dn": [
                   "ou=RealmRoles,dc=company,dc=net"
                 ],
-                "membership.ldap.attribute": [
-                  "member"
-                ],
                 "membership.user.ldap.attribute": [
                   "dn"
+                ],
+                "membership.ldap.attribute": [
+                  "member"
                 ],
                 "memberof.ldap.attribute": [
                   "memberOf"
@@ -1716,11 +1716,11 @@
                 "use.realm.roles.mapping": [
                   "true"
                 ],
-                "client.id": [
-                  "blog-api"
-                ],
                 "role.object.classes": [
                   "groupOfNames"
+                ],
+                "client.id": [
+                  "blog-api"
                 ]
               }
             },
@@ -1742,11 +1742,11 @@
                 "user.roles.retrieve.strategy": [
                   "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
                 ],
-                "membership.user.ldap.attribute": [
-                  "dn"
-                ],
                 "membership.ldap.attribute": [
                   "member"
+                ],
+                "membership.user.ldap.attribute": [
+                  "dn"
                 ],
                 "memberof.ldap.attribute": [
                   "memberOf"
@@ -1757,11 +1757,11 @@
                 "use.realm.roles.mapping": [
                   "true"
                 ],
-                "client.id": [
-                  "blog-client"
-                ],
                 "role.object.classes": [
                   "groupOfNames"
+                ],
+                "client.id": [
+                  "blog-client"
                 ]
               }
             },
@@ -1820,19 +1820,19 @@
                 "ldap.attribute": [
                   "telephonenumber"
                 ],
-                "is.mandatory.in.ldap": [
-                  "false"
-                ],
                 "attribute.force.default": [
                   "true"
+                ],
+                "is.mandatory.in.ldap": [
+                  "false"
                 ],
                 "is.binary.attribute": [
                   "false"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1852,10 +1852,10 @@
                 "is.mandatory.in.ldap": [
                   "false"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1881,17 +1881,17 @@
                 "user.roles.retrieve.strategy": [
                   "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
                 ],
-                "membership.user.ldap.attribute": [
-                  "dn"
-                ],
                 "membership.ldap.attribute": [
                   "member"
                 ],
-                "role.name.ldap.attribute": [
-                  "cn"
+                "membership.user.ldap.attribute": [
+                  "dn"
                 ],
                 "memberof.ldap.attribute": [
                   "memberOf"
+                ],
+                "role.name.ldap.attribute": [
+                  "cn"
                 ],
                 "use.realm.roles.mapping": [
                   "true"
@@ -1916,10 +1916,10 @@
                 "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1964,9 +1964,6 @@
           "enabled": [
             "true"
           ],
-          "bindCredential": [
-            "${KEYCLOAK_ADMIN_PASSWORD}"
-          ],
           "changedSyncPeriod": [
             "-1"
           ],
@@ -1974,10 +1971,13 @@
             "uid"
           ],
           "bindDn": [
-            "cn=admin,dc=company,dc=net"
+            "cn=${LDAP_ADMIN_USERNAME},dc=company,dc=net"
+          ],
+          "bindCredential": [
+            "${LDAP_ADMIN_PASSWORD}"
           ],
           "lastSync": [
-            "1696287325"
+            "1707180398"
           ],
           "vendor": [
             "ad"
@@ -1985,11 +1985,11 @@
           "uuidLDAPAttribute": [
             "entryDN"
           ],
-          "allowKerberosAuthentication": [
-            "false"
-          ],
           "connectionUrl": [
             "ldap://ldap-service:1389"
+          ],
+          "allowKerberosAuthentication": [
+            "false"
           ],
           "syncRegistrations": [
             "true"

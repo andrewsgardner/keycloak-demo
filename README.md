@@ -9,14 +9,14 @@ Centralized authentication is provided using OpenLDAP, which stores the organiza
 | User | LDAP Attributes |
 | --- | --- |
 | `rsmith` | cn, sn, givenName, mail, postalAddress, telephonenumber, uid, userPassword |
-| `jpatel` | cn, sn, givenName, mail, postalAddress, telephonenumber, uid, userPassword |
 | `fwatkins` | cn, sn, givenName, mail, postalAddress, telephonenumber, uid, userPassword |
+| `jpatel` | cn, sn, givenName, mail, postalAddress, telephonenumber, uid, userPassword |
 
 **OU: RealmRoles**
 
 | Role | Users | Description |
 | --- | --- | --- |
-| `admin` | rsmith | Grants administrative privileges. |
-| `user` | rsmith, fwatkins | Grants read/write privileges. |
-| `guest` | rsmith, jpatel | Grants read privileges. |
+| `administrator` | rsmith | Grants administrative privileges. |
+| `contributor` | rsmith, fwatkins | Grants write privileges. |
+| `observer` | rsmith, fwatkins, jpatel | Grants read privileges. |
 | `default-roles-demo` | rsmith, fwatkins, jpatel | Grants default Keycloak realm roles. |

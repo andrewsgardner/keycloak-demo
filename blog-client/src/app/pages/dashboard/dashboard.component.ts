@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { KeycloakTokenParsed } from 'keycloak-js';
+import { AuthRole } from 'src/app/enums/auth-role.enum';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -19,5 +20,9 @@ export class DashboardComponent {
     this.accessTokenParsed = this.authService.getAccessTokenParsed();
     this.idTokenParsed = this.authService.getIdTokenParsed();
     this.refreshTokenParsed = this.authService.getRefreshTokenParsed();
+  }
+
+  public isAccessAllowed(): boolean {
+    return this.authService.isUserInRole(AuthRole.Observer);
   }
 }

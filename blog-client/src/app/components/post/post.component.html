@@ -8,7 +8,7 @@
         <div class="actions">
             <button 
                 mat-icon-button 
-                *ngIf="data?.isAuthUser" 
+                *ngIf="isAccessAllowed(data?.isAuthUser)" 
                 [matMenuTriggerFor]="menu" 
                 aria-label="Actions for this post">
                 <mat-icon>more_horiz</mat-icon>
