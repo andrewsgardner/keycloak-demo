@@ -337,7 +337,7 @@
           "attributes": {}
         }
       ],
-      "react-client": [],
+      "issue-tracker-client": [],
       "account": [
         {
           "id": "5da82a65-02f5-4711-a3e8-ddf49a157c8b",
@@ -785,8 +785,8 @@
     },
     {
       "id": "a812d77b-5a44-40c1-bb2e-1069cf34f8a5",
-      "clientId": "react-client",
-      "name": "React Client",
+      "clientId": "issue-tracker-client",
+      "name": "Issue Tracker Client",
       "description": "",
       "rootUrl": "",
       "adminUrl": "",
@@ -1865,7 +1865,7 @@
             },
             {
               "id": "2f356501-6720-4bda-9a8b-0ad3f1e994e3",
-              "name": "RealmRoles to react-client mapper",
+              "name": "RealmRoles to issue-tracker-client mapper",
               "providerId": "role-ldap-mapper",
               "subComponents": {},
               "config": {
@@ -1897,7 +1897,7 @@
                   "true"
                 ],
                 "client.id": [
-                  "react-client"
+                  "issue-tracker-client"
                 ],
                 "role.object.classes": [
                   "groupOfNames"

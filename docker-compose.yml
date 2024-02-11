@@ -118,11 +118,11 @@ services:
     networks:
       - local
 
-  react-client:
-    container_name: react-client
+  issue-tracker-client:
+    container_name: issue-tracker-client
     restart: always
     build:
-      context: ./react-client
+      context: ./issue-tracker-client
       dockerfile: Dockerfile
       args:
         KC_URL: http://localhost:8080
@@ -134,7 +134,7 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - ./react-client/nginx.conf.template:/etc/nginx/templates/default.conf.template
+      - ./issue-tracker-client/nginx.conf.template:/etc/nginx/templates/default.conf.template
     environment:
       NGINX_PORT: 4000
     networks:

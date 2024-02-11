@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 const keycloakConfig: KeycloakConfig = {
     url: process.env.REACT_APP_KC_URL || 'http://localhost:8080',
     realm: 'demo',
-    clientId: 'react-client',
+    clientId: 'issue-tracker-client',
 };
 const oidcConfig: AuthProviderProps = {
     authority: `${keycloakConfig.url}/realms/${keycloakConfig.realm}`,
