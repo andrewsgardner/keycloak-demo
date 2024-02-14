@@ -1,2 +1,5 @@
-# Docker Environment Varsgu
+# Docker Environment Vars
 .env
+
+# PyCharm Files
+.idea
