@@ -32,13 +32,38 @@ CREATE TABLE IF NOT EXISTS issues (
     create_date TIMESTAMP DEFAULT current_timestamp,
     modified_by VARCHAR REFERENCES users(username),
     modified_date TIMESTAMP DEFAULT current_timestamp,
-    /* status */
+    issue_status VARCHAR(30) NOT NULL,
     /* priority */
-    /* target_resolution_date */
-    /* actual_resolution_date */
+    target_resolution_date DATE,
+    actual_resolution_date DATE,
     resolution_summary VARCHAR(4000),
     assigned_to VARCHAR REFERENCES users(username),
     PRIMARY KEY (id)
 );
+
+CREATE OR REPLACE FUNCTION issue_status_trg()
+  RETURNS trigger AS
+$func$ 
+BEGIN  
+   CASE TG_OP
+    WHEN 'INSERT' THEN
+        IF NEW.issue_status IS NULL THEN 
+            NEW.issue_status := 'Open';
+        END IF;
+    WHEN 'UPDATE' THEN
+        IF NEW.actual_resolution_date IS NOT NULL THEN 
+            NEW.issue_status := 'Closed';
+        END IF;
+    ELSE
+        RAISE EXCEPTION '[issue_status_trg]: This trigger function expects INSERT or UPDATE!';
+   END CASE;
+   RETURN NEW;
+END
+$func$  LANGUAGE plpgsql;
+
+-- Add trigger to process changes to issue_status
+CREATE TRIGGER issue_status_change
+BEFORE INSERT OR UPDATE ON issues
+FOR EACH ROW EXECUTE PROCEDURE issue_status_trg();
 
 INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, assigned_to) VALUES ('Hook up endpoints in new XYZ service', 'Integrate the client application with all endpoints of the XYZ service. This includes GET, POST, PUT, and DELETE operations.', 'rsmith', 'rsmith', 'fwatkins');
