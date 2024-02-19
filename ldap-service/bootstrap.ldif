@@ -26,7 +26,7 @@ uid: rsmith
 cn: Rachel Smith
 sn: Smith
 givenName: Rachel
-mail: rsmith@keycloak.org
+mail: rsmith@example.org
 postalAddress: 606 Shaina Drive, Katrinehaven, AL 86665, USA
 telephonenumber: 3033375240
 userPassword: test
@@ -40,7 +40,7 @@ uid: jpatel
 cn: Jason Patel
 sn: Patel
 givenName: Jason
-mail: jpatel@keycloak.org
+mail: jpatel@example.org
 postalAddress: 36 Mia Lane, Apt 894, West Claudie, MA 06262-6261, USA
 telephonenumber: 3636344482
 userPassword: test
@@ -54,7 +54,7 @@ uid: fwatkins
 cn: Frank Watkins
 sn: Watkins
 givenName: Frank
-mail: fwatkins@keycloak.org
+mail: fwatkins@example.org
 postalAddress: 923 Main Street, Kuhlmanview, ME 74125-6284, USA
 telephonenumber: 6363636811
 userPassword: test
