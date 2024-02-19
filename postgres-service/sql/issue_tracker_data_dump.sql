@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS issues (
     create_date TIMESTAMP DEFAULT current_timestamp,
     modified_by VARCHAR REFERENCES users(username),
     modified_date TIMESTAMP DEFAULT current_timestamp,
-    issue_status VARCHAR(30) NOT NULL,
-    /* priority */
+    issue_status VARCHAR(30) NOT NULL CHECK (issue_status IN ('Open', 'On-Hold', 'Closed')),
+    issue_priority VARCHAR(30) CHECK (issue_priority IN ('High', 'Medium', 'Low')),
     target_resolution_date DATE,
     actual_resolution_date DATE,
     resolution_summary VARCHAR(4000),
@@ -66,4 +66,4 @@ CREATE TRIGGER issue_status_change
 BEFORE INSERT OR UPDATE ON issues
 FOR EACH ROW EXECUTE PROCEDURE issue_status_trg();
 
-INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, assigned_to) VALUES ('Hook up endpoints in new XYZ service', 'Integrate the client application with all endpoints of the XYZ service. This includes GET, POST, PUT, and DELETE operations.', 'rsmith', 'rsmith', 'fwatkins');
+INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, issue_priority, assigned_to) VALUES ('Hook up endpoints in new XYZ service', 'Integrate the client application with all endpoints of the XYZ service. This includes GET, POST, PUT, and DELETE operations.', 'rsmith', 'rsmith', 'High', 'fwatkins');
