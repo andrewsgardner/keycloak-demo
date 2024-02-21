@@ -24,7 +24,7 @@ pip3 install -r requirements.txt
 ### Run server
 
 ```
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 9000
 ```
 
 ## Run With Docker
