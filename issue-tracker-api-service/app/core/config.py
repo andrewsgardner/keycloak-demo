@@ -1,11 +1,16 @@
 import os
-from typing import List, Dict, Any, Optional
-from pydantic import AnyHttpUrl, PostgresDsn, BaseSettings, validator
+from typing import List, Any, Optional, Union
+from pydantic_settings import BaseSettings
+from pydantic import AnyHttpUrl, PostgresDsn, field_validator, ValidationInfo
+from app.core.tags import tags_metadata
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     SERVER_HOST: AnyHttpUrl = "http://localhost:9000" # os.getenv("SERVER_HOST")
-    PROJECT_NAME: str = "Issue Tracker API Service"
+    PROJECT_TITLE: str = "Issue Tracker API Service"
+    PROJECT_DESCRIPTION: str = "A FastAPI server for the Issue Tracker Client."
+    PROJECT_VERSION: str = "1.0.0"
+    PROJECT_TAGS: List = tags_metadata
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
         "http://localhost:3000",
         "http://localhost:4000"
@@ -14,18 +19,18 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres" # os.getenv("POSTGRES_USER")
     POSTGRES_PASSWORD: str = "postgres" # os.getenv("POSTGRES_PASSWORD")
     POSTGRES_DB: str = "issue_tracker_data" #os.getenv("POSTGRES_DB")
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
+    SQLALCHEMY_DATABASE_URI: Union[Optional[PostgresDsn], Optional[str]] = None
 
-    @validator("SQLALCHEMY_DATABASE_URI", pre=True)
-    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
+    @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
+    def assemble_db_connection(cls, v: Optional[str], values: ValidationInfo) -> Any:
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
             scheme="postgresql+psycopg",
-            user=values.get("POSTGRES_USER"),
-            password=values.get("POSTGRES_PASSWORD"),
-            host=values.get("POSTGRES_SERVER"),
-            path=f"/{values.get('POSTGRES_DB') or ''}",
+            username=values.data.get("POSTGRES_USER"),
+            password=values.data.get("POSTGRES_PASSWORD"),
+            host=values.data.get("POSTGRES_SERVER"),
+            path=f"/{values.data.get('POSTGRES_DB') or ''}",
         )
     
     KC_SERVER_URL: str = "http://keycloak-service:8080" # os.getenv("KC_SERVER_URL")
