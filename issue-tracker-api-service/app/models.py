@@ -79,3 +79,11 @@ class ProjectCreate(ProjectBase):
 
 class ProjectUpdate(ProjectBase):
     project_name: str
+
+class ProjectOut(ProjectBase):
+    id: int
+    project_id: str
+    created_by: Union[str, None]
+    create_date: datetime
+    modified_by: Union[str, None]
+    modified_date: datetime
