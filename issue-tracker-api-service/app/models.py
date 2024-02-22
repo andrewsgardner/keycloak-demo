@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
 from sqlalchemy import text
-from typing import List, Optional
+from typing import List, Optional, Union
 
 class TokenUser(BaseModel):
     id: str
@@ -35,7 +35,7 @@ class UserOut(UserBase):
 
 
 class ProjectBase(SQLModel):
-    project_name: str
+    project_name: Optional[str]
 
 class Project(ProjectBase, table=True):
     __tablename__: str = "projects"
@@ -46,8 +46,13 @@ class Project(ProjectBase, table=True):
         index=True,
         nullable=False
     )
-    project_id: str
-    created_by: str
+    project_id: Optional[str] = Field(
+        default=None,
+        nullable=False
+    )
+    created_by: Union[str, None] = Field(
+        index=True,
+    )
     create_date: datetime = Field(
         default_factory=datetime.utcnow,
         nullable=False,
@@ -55,7 +60,9 @@ class Project(ProjectBase, table=True):
             "server_default": text("current_timestamp")
         }
     )
-    modified_by: str
+    modified_by: Union[str, None] = Field(
+        index=True,
+    )
     modified_date: datetime = Field(
         default_factory=datetime.utcnow,
         nullable=False,
@@ -64,3 +71,8 @@ class Project(ProjectBase, table=True):
             "onupdate": text("current_timestamp")
        }
     )
+
+class ProjectCreate(ProjectBase):
+    project_name: str
+    created_by: Union[str, None]
+    modified_by: Union[str, None]
