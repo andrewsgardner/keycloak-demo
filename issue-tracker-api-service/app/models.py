@@ -33,18 +33,19 @@ class User(UserBase, table=True):
 class UserOut(UserBase):
     id: uuid.UUID
 
-""""
+
 class ProjectBase(SQLModel):
     project_name: str
 
 class Project(ProjectBase, table=True):
     __tablename__: str = "projects"
-
-    id: int = Field(
+    
+    id: Optional[int] = Field(
+        default=None, 
         primary_key=True,
         index=True,
         nullable=False
-    ),
+    )
     project_id: str
     created_by: str
     create_date: datetime = Field(
@@ -63,4 +64,3 @@ class Project(ProjectBase, table=True):
             "onupdate": text("current_timestamp")
        }
     )
-    """
