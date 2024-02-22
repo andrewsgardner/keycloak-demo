@@ -76,3 +76,6 @@ class ProjectCreate(ProjectBase):
     project_name: str
     created_by: Union[str, None]
     modified_by: Union[str, None]
+
+class ProjectUpdate(ProjectBase):
+    project_name: str
