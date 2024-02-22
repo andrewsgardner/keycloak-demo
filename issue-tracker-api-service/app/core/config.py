@@ -15,14 +15,14 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "http://localhost:4000"
     ]
-    POSTGRES_SERVER: str = "postgres-service:5432" # os.getenv("POSTGRES_SERVER")
+    POSTGRES_SERVER: str = "localhost:5432" # os.getenv("POSTGRES_SERVER") - postgres-service
     POSTGRES_USER: str = "postgres" # os.getenv("POSTGRES_USER")
     POSTGRES_PASSWORD: str = "postgres" # os.getenv("POSTGRES_PASSWORD")
     POSTGRES_DB: str = "issue_tracker_data" #os.getenv("POSTGRES_DB")
     SQLALCHEMY_DATABASE_URI: Union[Optional[PostgresDsn], Optional[str]] = None
 
-    @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
-    def assemble_db_connection(cls, v: Optional[str], values: ValidationInfo) -> Any:
+    @field_validator("SQLALCHEMY_DATABASE_URI", mode="after")
+    def assemble_db_connection(cls, v: Optional[Union[PostgresDsn, str]], values: ValidationInfo) -> PostgresDsn:
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
@@ -30,8 +30,8 @@ class Settings(BaseSettings):
             username=values.data.get("POSTGRES_USER"),
             password=values.data.get("POSTGRES_PASSWORD"),
             host=values.data.get("POSTGRES_SERVER"),
-            path=f"/{values.data.get('POSTGRES_DB') or ''}",
-        )
+            path=values.data.get("POSTGRES_DB")
+        ).unicode_string()
     
     KC_SERVER_URL: str = "http://keycloak-service:8080" # os.getenv("KC_SERVER_URL")
     KC_AUTH_URL: str = "http://localhost:8080" # os.getenv("KC_AUTH_URL")
