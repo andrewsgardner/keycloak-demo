@@ -323,6 +323,8 @@
           "attributes": {}
         }
       ],
+      "issue-tracker-client": [],
+      "issue-tracker-api": [],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],
@@ -337,7 +339,6 @@
           "attributes": {}
         }
       ],
-      "issue-tracker-client": [],
       "account": [
         {
           "id": "5da82a65-02f5-4711-a3e8-ddf49a157c8b",
@@ -449,9 +450,9 @@
   "otpPolicyPeriod": 30,
   "otpPolicyCodeReusable": false,
   "otpSupportedApplications": [
-    "totpAppFreeOTPName",
+    "totpAppGoogleName",
     "totpAppMicrosoftAuthenticatorName",
-    "totpAppGoogleName"
+    "totpAppFreeOTPName"
   ],
   "webAuthnPolicyRpEntityName": "keycloak",
   "webAuthnPolicySignatureAlgorithms": [
@@ -769,6 +770,59 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "7a37f2c4-265a-49ad-96b4-5ebe5ea583a7",
+      "clientId": "issue-tracker-api",
+      "name": "Issue Tracker API",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://localhost:9000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:9000"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "http://localhost:9000/*",
+        "display.on.consent.screen": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
       "defaultClientScopes": [
         "web-origins",
         "acr",
@@ -1509,14 +1563,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-usermodel-attribute-mapper",
             "saml-user-property-mapper",
-            "oidc-full-name-mapper",
-            "saml-user-attribute-mapper",
-            "oidc-usermodel-property-mapper",
-            "oidc-address-mapper",
             "saml-role-list-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "saml-user-attribute-mapper",
+            "oidc-full-name-mapper",
+            "oidc-address-mapper",
+            "oidc-usermodel-property-mapper",
+            "oidc-sha256-pairwise-sub-mapper"
           ]
         }
       },
@@ -1551,14 +1605,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
+            "oidc-sha256-pairwise-sub-mapper",
+            "saml-user-attribute-mapper",
             "oidc-full-name-mapper",
             "oidc-usermodel-property-mapper",
-            "saml-user-property-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
             "oidc-usermodel-attribute-mapper",
             "saml-role-list-mapper",
-            "oidc-address-mapper",
-            "saml-user-attribute-mapper"
+            "saml-user-property-mapper",
+            "oidc-address-mapper"
           ]
         }
       },
@@ -1634,10 +1688,10 @@
                 "ldap.attribute": [
                   "uid"
                 ],
-                "is.mandatory.in.ldap": [
+                "attribute.force.default": [
                   "true"
                 ],
-                "attribute.force.default": [
+                "is.mandatory.in.ldap": [
                   "true"
                 ],
                 "is.binary.attribute": [
@@ -1663,23 +1717,64 @@
                 "ldap.attribute": [
                   "postalAddress"
                 ],
-                "attribute.force.default": [
-                  "true"
-                ],
                 "is.mandatory.in.ldap": [
                   "false"
+                ],
+                "attribute.force.default": [
+                  "true"
                 ],
                 "is.binary.attribute": [
                   "false"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
                   "postalAddress"
+                ]
+              }
+            },
+            {
+              "id": "41060b3e-0ba3-400a-b9a9-22af7fdb53bb",
+              "name": "RealmRoles to issue-tracker-api mapper",
+              "providerId": "role-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "mode": [
+                  "READ_ONLY"
+                ],
+                "membership.attribute.type": [
+                  "DN"
+                ],
+                "roles.dn": [
+                  "ou=RealmRoles,dc=company,dc=net"
+                ],
+                "user.roles.retrieve.strategy": [
+                  "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
+                ],
+                "membership.ldap.attribute": [
+                  "member"
+                ],
+                "membership.user.ldap.attribute": [
+                  "dn"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
+                ],
+                "role.name.ldap.attribute": [
+                  "cn"
+                ],
+                "use.realm.roles.mapping": [
+                  "true"
+                ],
+                "client.id": [
+                  "issue-tracker-api"
+                ],
+                "role.object.classes": [
+                  "groupOfNames"
                 ]
               }
             },
@@ -1695,11 +1790,11 @@
                 "membership.attribute.type": [
                   "DN"
                 ],
-                "user.roles.retrieve.strategy": [
-                  "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
-                ],
                 "roles.dn": [
                   "ou=RealmRoles,dc=company,dc=net"
+                ],
+                "user.roles.retrieve.strategy": [
+                  "LOAD_ROLES_BY_MEMBER_ATTRIBUTE"
                 ],
                 "membership.user.ldap.attribute": [
                   "dn"
@@ -1707,11 +1802,11 @@
                 "membership.ldap.attribute": [
                   "member"
                 ],
-                "memberof.ldap.attribute": [
-                  "memberOf"
-                ],
                 "role.name.ldap.attribute": [
                   "cn"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
                 ],
                 "use.realm.roles.mapping": [
                   "true"
@@ -1748,11 +1843,11 @@
                 "membership.user.ldap.attribute": [
                   "dn"
                 ],
-                "memberof.ldap.attribute": [
-                  "memberOf"
-                ],
                 "role.name.ldap.attribute": [
                   "cn"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
                 ],
                 "use.realm.roles.mapping": [
                   "true"
@@ -1852,10 +1947,10 @@
                 "is.mandatory.in.ldap": [
                   "false"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1887,11 +1982,11 @@
                 "membership.user.ldap.attribute": [
                   "dn"
                 ],
-                "memberof.ldap.attribute": [
-                  "memberOf"
-                ],
                 "role.name.ldap.attribute": [
                   "cn"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
                 ],
                 "use.realm.roles.mapping": [
                   "true"
@@ -1916,10 +2011,10 @@
                 "is.mandatory.in.ldap": [
                   "true"
                 ],
-                "always.read.value.from.ldap": [
+                "read.only": [
                   "true"
                 ],
-                "read.only": [
+                "always.read.value.from.ldap": [
                   "true"
                 ],
                 "user.model.attribute": [
@@ -1937,11 +2032,11 @@
           ]
         },
         "config": {
-          "pagination": [
-            "false"
-          ],
           "fullSyncPeriod": [
             "-1"
+          ],
+          "pagination": [
+            "false"
           ],
           "startTls": [
             "false"
@@ -1967,11 +2062,11 @@
           "changedSyncPeriod": [
             "-1"
           ],
-          "usernameLDAPAttribute": [
-            "uid"
-          ],
           "bindDn": [
             "cn=${LDAP_ADMIN_USERNAME},dc=company,dc=net"
+          ],
+          "usernameLDAPAttribute": [
+            "uid"
           ],
           "bindCredential": [
             "${LDAP_ADMIN_PASSWORD}"
