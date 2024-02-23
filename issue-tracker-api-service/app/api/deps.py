@@ -69,4 +69,4 @@ def get_db() -> Generator:
 
 SessionDep = Annotated[Session, Depends(get_db)]
 
-#TokenDep = Annotated[str, Depends(get_user_info)]
+TokenDep = Annotated[str, Depends(get_user_info)]

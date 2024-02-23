@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlmodel import select
 from uuid import UUID
-from app.models import TokenUser, User, UserOut
-from app.api.deps import SessionDep, get_user_info
+from app.models import User, UserOut
+from app.api.deps import SessionDep, TokenDep
 
 router = APIRouter()
 
 @router.get("/")
-def read_users(session: SessionDep, token_user: TokenUser = Depends(get_user_info)) -> list[UserOut]:
+def read_users(session: SessionDep, token: TokenDep) -> list[UserOut]:
     """
     Retrieve all users.
     """
@@ -15,7 +15,7 @@ def read_users(session: SessionDep, token_user: TokenUser = Depends(get_user_inf
     return session.exec(statement).all()
 
 @router.get("/{id}")
-def read_user(session: SessionDep, id: UUID) -> UserOut:
+def read_user(session: SessionDep, token: TokenDep, id: UUID) -> UserOut:
     """
     Retrieve user by id.
     """
