@@ -33,7 +33,7 @@ class Settings(BaseSettings):
             path=values.data.get("POSTGRES_DB")
         ).unicode_string()
     
-    KC_SERVER_URL: str = "http://keycloak-service:8080" # os.getenv("KC_SERVER_URL")
+    KC_SERVER_URL: str = "http://localhost:8080" # os.getenv("KC_SERVER_URL")
     KC_AUTH_URL: str = "http://localhost:8080" # os.getenv("KC_AUTH_URL")
     KC_TOKEN_URL: str = "http://localhost:8080" # os.getenv("KC_TOKEN_URL")
     KC_CLIENT_ID: str = "issue-tracker-api" # os.getenv("KC_CLIENT_ID")
