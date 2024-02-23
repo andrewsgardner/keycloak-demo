@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status
 from sqlmodel import select
 from uuid import UUID
 from app.models import User, UserOut
