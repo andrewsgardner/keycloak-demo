@@ -30,11 +30,16 @@ def create_project(*, session: SessionDep, project_in: ProjectCreate) -> Project
     """
     Create a project.
     """
-    project = Project.model_validate(project_in)
-    session.add(project)
+    project = Project(
+        project_name=project_in.project_name,
+        created_by=project_in.created_by,
+        modified_by=project_in.created_by
+    )
+    model = Project.model_validate(project)
+    session.add(model)
     session.commit()
-    session.refresh(project)
-    return project
+    session.refresh(model)
+    return model
 
 @router.patch("/{id}")
 def update_project(*, session: SessionDep, id: int, project_in: ProjectUpdate) -> ProjectOut:
