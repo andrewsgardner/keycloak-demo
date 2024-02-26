@@ -52,6 +52,7 @@ def update_project(*, session: SessionDep, id: int, project_in: ProjectUpdate) -
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found.")
     
     project.project_name = project_in.project_name
+    project.modified_by = project_in.modified_by
     session.add(project)
     session.commit()
     session.refresh(project)

@@ -73,6 +73,7 @@ class ProjectCreate(ProjectBase):
 
 class ProjectUpdate(ProjectBase):
     project_name: str
+    modified_by: Union[str, None]
 
 class ProjectOut(ProjectBase):
     id: int
