@@ -33,7 +33,6 @@ class User(UserBase, table=True):
 class UserOut(UserBase):
     id: uuid.UUID
 
-
 class ProjectBase(SQLModel):
     project_name: Optional[str]
 
@@ -44,10 +43,6 @@ class Project(ProjectBase, table=True):
         default=None, 
         primary_key=True,
         index=True,
-        nullable=False
-    )
-    project_id: Optional[str] = Field(
-        default=None,
         nullable=False
     )
     created_by: Union[str, None] = Field(
@@ -82,7 +77,6 @@ class ProjectUpdate(ProjectBase):
 
 class ProjectOut(ProjectBase):
     id: int
-    project_id: str
     created_by: Union[str, None]
     create_date: datetime
     modified_by: Union[str, None]
