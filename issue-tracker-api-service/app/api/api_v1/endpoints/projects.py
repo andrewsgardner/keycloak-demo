@@ -57,3 +57,17 @@ def update_project(*, session: SessionDep, id: int, project_in: ProjectUpdate) -
     session.commit()
     session.refresh(project)
     return project
+
+@router.delete("/{id}")
+def delete_project(session: SessionDep, id: int) -> ProjectOut:
+    """
+    Delete a project.
+    """
+    project = session.get(Project, id)
+
+    if not project:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found.")
+    
+    session.delete(project)
+    session.commit()
+    return project
