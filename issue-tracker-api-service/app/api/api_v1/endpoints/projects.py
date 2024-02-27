@@ -6,7 +6,7 @@ from app.api.deps import SessionDep, TokenDep
 router = APIRouter()
 
 @router.get("/")
-def read_projects(session: SessionDep) -> list[ProjectOut]:
+def read_projects(session: SessionDep, token: TokenDep) -> list[ProjectOut]:
     """
     Retrieve all projects.
     """
@@ -14,7 +14,7 @@ def read_projects(session: SessionDep) -> list[ProjectOut]:
     return session.exec(statement).all()
 
 @router.get("/{id}")
-def read_projects(session: SessionDep, id: int) -> ProjectOut:
+def read_projects(session: SessionDep, token: TokenDep, id: int) -> ProjectOut:
     """
     Retrieve project by id.
     """
@@ -26,7 +26,7 @@ def read_projects(session: SessionDep, id: int) -> ProjectOut:
     return project
 
 @router.post("/")
-def create_project(*, session: SessionDep, project_in: ProjectCreate) -> ProjectOut:
+def create_project(*, session: SessionDep, token: TokenDep, project_in: ProjectCreate) -> ProjectOut:
     """
     Create a project.
     """
@@ -42,7 +42,7 @@ def create_project(*, session: SessionDep, project_in: ProjectCreate) -> Project
     return model
 
 @router.patch("/{id}")
-def update_project(*, session: SessionDep, id: int, project_in: ProjectUpdate) -> ProjectOut:
+def update_project(*, session: SessionDep, token: TokenDep, id: int, project_in: ProjectUpdate) -> ProjectOut:
     """
     Update a project.
     """
@@ -59,7 +59,7 @@ def update_project(*, session: SessionDep, id: int, project_in: ProjectUpdate) -
     return project
 
 @router.delete("/{id}")
-def delete_project(session: SessionDep, id: int) -> ProjectOut:
+def delete_project(session: SessionDep, token: TokenDep, id: int) -> ProjectOut:
     """
     Delete a project.
     """
