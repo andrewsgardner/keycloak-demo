@@ -6,7 +6,8 @@ from app.core.tags import tags_metadata
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
-    SERVER_HOST: AnyHttpUrl = "http://localhost:9000" # os.getenv("SERVER_HOST")
+    SERVER_HOST: str = "localhost" # os.getenv("SERVER_HOST")
+    SERVER_PORT: int = 9000
     PROJECT_TITLE: str = "Issue Tracker API Service"
     PROJECT_DESCRIPTION: str = "A FastAPI server for the Issue Tracker Client."
     PROJECT_VERSION: str = "1.0.0"
