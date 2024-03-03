@@ -95,7 +95,7 @@ class IssuePriority(Enum):
 
 class IssueBase(SQLModel):
     issue_summary: str
-    issue_description: Union[str, None]
+    #issue_description: Union[str, None]
 
 class Issue(IssueBase, table=True):
     __tablename__: str = "issues"
@@ -105,6 +105,10 @@ class Issue(IssueBase, table=True):
         primary_key=True,
         index=True,
         nullable=False
+    )
+    issue_description: Union[str, None] = Field(
+        default=None,
+        nullable=True
     )
     issue_status: str = Field(
         default=IssueStatus.OPEN
@@ -151,12 +155,14 @@ class Issue(IssueBase, table=True):
 
 class IssueCreate(IssueBase):
     created_by: str
+    issue_description: Union[str, None]
     issue_priority: Union[str, None]
     assigned_to: Union[str, None]
     target_resolution_date: Union[date, None]
 
 class IssueUpdate(IssueBase):
     modified_by: str
+    issue_description: Union[str, None]
     issue_priority: Union[str, None]
     target_resolution_date: Union[date, None]
     actual_resolution_date: Union[date, None]
@@ -165,6 +171,7 @@ class IssueUpdate(IssueBase):
 
 class IssueOut(IssueBase):
     id: int
+    issue_description: Union[str, None]
     issue_status: str
     issue_priority: Union[str, None]
     created_by: str
