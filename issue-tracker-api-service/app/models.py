@@ -157,6 +157,11 @@ class IssueCreate(IssueBase):
 
 class IssueUpdate(IssueBase):
     modified_by: str
+    issue_priority: Union[str, None]
+    target_resolution_date: Union[date, None]
+    actual_resolution_date: Union[date, None]
+    resolution_summary: Union[str, None]
+    assigned_to: Union[str, None]
 
 class IssueOut(IssueBase):
     id: int
