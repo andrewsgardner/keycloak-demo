@@ -2,8 +2,7 @@ import uuid
 from datetime import datetime, date
 from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
-from sqlalchemy import text, Column
-from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy import text
 from enum import Enum
 from typing import List, Optional, Union
 
@@ -95,13 +94,8 @@ class IssuePriority(Enum):
     LOW = "Low"
 
 class IssueBase(SQLModel):
-    issue_summary: Optional[str]
+    issue_summary: str
     issue_description: Union[str, None]
-    issue_status: str = Column(ENUM(IssueStatus), nullable=False)
-    issue_priority: Union[str, None] = Column(ENUM(IssuePriority), default=None, nullable=True)
-    target_resolution_date: Union[date, None]
-    actual_resolution_date: Union[date, None]
-    resolution_summary: Union[str, None]
 
 class Issue(IssueBase, table=True):
     __tablename__: str = "issues"
@@ -111,6 +105,13 @@ class Issue(IssueBase, table=True):
         primary_key=True,
         index=True,
         nullable=False
+    )
+    issue_status: str = Field(
+        default=IssueStatus.OPEN
+    )
+    issue_priority: Union[str, None] = Field(
+        default=None,
+        nullable=True
     )
     created_by: Union[str, None] = Field(
         index=True,
@@ -136,17 +137,36 @@ class Issue(IssueBase, table=True):
     assigned_to: Union[str, None] = Field(
         index=True,
     )
+    target_resolution_date: Union[date, None] = Field(
+        default=None,
+        nullable=True
+    )
+    actual_resolution_date: Union[date, None] = Field(
+        default=None,
+        nullable=True
+    )
+    resolution_summary: Union[str, None] = Field(
+        nullable=True
+    )
 
 class IssueCreate(IssueBase):
     created_by: str
+    issue_priority: Union[str, None]
+    assigned_to: Union[str, None]
+    target_resolution_date: Union[date, None]
 
 class IssueUpdate(IssueBase):
     modified_by: str
 
 class IssueOut(IssueBase):
     id: int
+    issue_status: str
+    issue_priority: Union[str, None]
     created_by: str
     create_date: datetime
     modified_by: str
     modified_date: datetime
     assigned_to: Union[str, None]
+    target_resolution_date: Union[date, None]
+    actual_resolution_date: Union[date, None]
+    resolution_summary: Union[str, None]
