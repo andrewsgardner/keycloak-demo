@@ -14,7 +14,7 @@ def read_projects(session: SessionDep, token: TokenDep) -> list[ProjectOut]:
     return session.exec(statement).all()
 
 @router.get("/{id}")
-def read_projects(session: SessionDep, token: TokenDep, id: int) -> ProjectOut:
+def read_project(session: SessionDep, token: TokenDep, id: int) -> ProjectOut:
     """
     Retrieve project by id.
     """
