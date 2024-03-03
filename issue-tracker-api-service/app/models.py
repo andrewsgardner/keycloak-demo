@@ -2,7 +2,8 @@ import uuid
 from datetime import datetime, date
 from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
-from sqlalchemy import text
+from sqlalchemy import text, Column
+from sqlalchemy.dialects.postgresql import ENUM
 from enum import Enum
 from typing import List, Optional, Union
 
@@ -96,8 +97,8 @@ class IssuePriority(Enum):
 class IssueBase(SQLModel):
     issue_summary: Optional[str]
     issue_description: Union[str, None]
-    issue_status: IssueStatus
-    issue_priority: Union[IssuePriority, None]
+    issue_status: str = Column(ENUM(IssueStatus), nullable=False)
+    issue_priority: Union[str, None] = Column(ENUM(IssuePriority), default=None, nullable=True)
     target_resolution_date: Union[date, None]
     actual_resolution_date: Union[date, None]
     resolution_summary: Union[str, None]
