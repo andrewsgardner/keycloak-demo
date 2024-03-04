@@ -67,3 +67,17 @@ def update_issue(*, session: SessionDep, id: int, issue_in: IssueUpdate) -> Issu
     session.commit()
     session.refresh(issue)
     return issue
+
+@router.delete("/{id}")
+def delete_issue(session: SessionDep, id: int) -> IssueOut:
+    """
+    Delete an issue.
+    """
+    issue = session.get(Issue, id)
+
+    if not issue:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Issue not found.")
+
+    session.delete(issue)
+    session.commit()
+    return issue
