@@ -6,7 +6,7 @@ from app.api.deps import SessionDep, TokenDep
 router = APIRouter()
 
 @router.get("/")
-def read_issues(session: SessionDep) -> list[IssueOut]:
+def read_issues(session: SessionDep, token: TokenDep) -> list[IssueOut]:
     """
     Retrieve all issues.
     """
@@ -14,7 +14,7 @@ def read_issues(session: SessionDep) -> list[IssueOut]:
     return session.exec(statement).all()
 
 @router.get("/{id}")
-def read_issue(session: SessionDep, id: int) -> IssueOut:
+def read_issue(session: SessionDep, token: TokenDep, id: int) -> IssueOut:
     """
     Retrieve issue by id.
     """
@@ -26,7 +26,7 @@ def read_issue(session: SessionDep, id: int) -> IssueOut:
     return issue
 
 @router.post("/")
-def create_issue(*, session: SessionDep, issue_in: IssueCreate) -> IssueOut:
+def create_issue(*, session: SessionDep, token: TokenDep, issue_in: IssueCreate) -> IssueOut:
     """
     Create an issue.
     """
@@ -46,7 +46,7 @@ def create_issue(*, session: SessionDep, issue_in: IssueCreate) -> IssueOut:
     return model
 
 @router.patch("/{id}")
-def update_issue(*, session: SessionDep, id: int, issue_in: IssueUpdate) -> IssueOut:
+def update_issue(*, session: SessionDep, token: TokenDep, id: int, issue_in: IssueUpdate) -> IssueOut:
     """
     Update an issue.
     """
@@ -69,7 +69,7 @@ def update_issue(*, session: SessionDep, id: int, issue_in: IssueUpdate) -> Issu
     return issue
 
 @router.delete("/{id}")
-def delete_issue(session: SessionDep, id: int) -> IssueOut:
+def delete_issue(session: SessionDep, token: TokenDep, id: int) -> IssueOut:
     """
     Delete an issue.
     """
