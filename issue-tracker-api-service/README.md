@@ -6,6 +6,20 @@ A FastAPI server for the Issue Tracker Client.
 
 - Python 3.11.2
 
+## Environment Variables
+
+| Name   | Type |
+|--------|-----|
+| SERVER_HOST | str |
+| SERVER_PORT | int |
+| POSTGRES_SERVER | str |
+| POSTGRES_USER | str |
+| POSTGRES_PASSWORD | str |
+| POSTGRES_DB | str |
+| KC_SERVER_URL | str |
+| KC_CLIENT_ID | str |
+| KC_REALM | str |
+
 ## Run Local
 
 ### Setup virtual environment
