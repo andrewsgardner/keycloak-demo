@@ -35,6 +35,8 @@ class Settings(BaseSettings):
         ).unicode_string()
     
     KC_SERVER_URL: str = os.getenv("KC_SERVER_URL")
+    KC_AUTH_URL: str = os.getenv("KC_AUTH_URL")
+    KC_TOKEN_URL: str = os.getenv("KC_TOKEN_URL")
     KC_CLIENT_ID: str = os.getenv("KC_CLIENT_ID")
     KC_REALM: str = os.getenv("KC_REALM")
 

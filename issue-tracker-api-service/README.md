@@ -17,6 +17,8 @@ A FastAPI server for the Issue Tracker Client.
 | POSTGRES_PASSWORD | str |
 | POSTGRES_DB | str |
 | KC_SERVER_URL | str |
+| KC_AUTH_URL | str |
+| KC_TOKEN_URL | str |
 | KC_CLIENT_ID | str |
 | KC_REALM | str |
 
