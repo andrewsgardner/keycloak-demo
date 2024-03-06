@@ -75,7 +75,7 @@ services:
     build:
       context: ./blog-api-service
       dockerfile: Dockerfile
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
     depends_on:
       - keycloak-service
       - postgres-service
@@ -83,14 +83,15 @@ services:
     ports:
       - 8000:8000
     environment:
-      SERVER_HOST: http://localhost:8000
+      SERVER_HOST: localhost
+      SERVER_PORT: 8000
       POSTGRES_SERVER: postgres-service:5432
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: blog_data
       KC_SERVER_URL: http://keycloak-service:8080
-      KC_AUTH_URL: http://localhost:8080
-      KC_TOKEN_URL: http://localhost:8080
+      KC_AUTH_URL: http://localhost:8080/realms/demo/protocol/openid-connect/auth
+      KC_TOKEN_URL: http://localhost:8080/realms/demo/protocol/openid-connect/token
       KC_CLIENT_ID: blog-api
       KC_REALM: demo
     networks:
