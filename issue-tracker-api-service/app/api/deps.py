@@ -8,8 +8,8 @@ from app.models import TokenUser
 from app.core.config import settings
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
-    authorizationUrl = f"{settings.KC_AUTH_URL}/realms/{settings.KC_REALM}/protocol/openid-connect/auth",
-    tokenUrl = f"{settings.KC_TOKEN_URL}/realms/{settings.KC_REALM}/protocol/openid-connect/token"
+    authorizationUrl = settings.KC_AUTH_URL,
+    tokenUrl = settings.KC_TOKEN_URL
 )
 
 keycloak_openid = KeycloakOpenID(

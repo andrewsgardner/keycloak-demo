@@ -16,7 +16,7 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "http://localhost:4000"
     ]
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER")
+    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER") # Use localhost:5432 if running outside of a docker container
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
     POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD")
     POSTGRES_DB: str = os.getenv("POSTGRES_DB")
@@ -34,7 +34,7 @@ class Settings(BaseSettings):
             path=values.data.get("POSTGRES_DB")
         ).unicode_string()
     
-    KC_SERVER_URL: str = os.getenv("KC_SERVER_URL")
+    KC_SERVER_URL: str = os.getenv("KC_SERVER_URL") # Use localhost if running outside of a docker container
     KC_AUTH_URL: str = os.getenv("KC_AUTH_URL")
     KC_TOKEN_URL: str = os.getenv("KC_TOKEN_URL")
     KC_CLIENT_ID: str = os.getenv("KC_CLIENT_ID")

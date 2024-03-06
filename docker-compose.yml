@@ -139,8 +139,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: issue_tracker_data
       KC_SERVER_URL: http://keycloak-service:8080
-      KC_AUTH_URL: http://localhost:8080
-      KC_TOKEN_URL: http://localhost:8080
+      KC_AUTH_URL: http://localhost:8080/realms/demo/protocol/openid-connect/auth
+      KC_TOKEN_URL: http://localhost:8080/realms/demo/protocol/openid-connect/token
       KC_CLIENT_ID: issue-tracker-api
       KC_REALM: demo
     networks:
