@@ -1,7 +1,7 @@
 import os
 from typing import List, Optional, Union
 from pydantic_settings import BaseSettings
-from pydantic import AnyHttpUrl, PostgresDsn, field_validator, ValidationInfo
+from pydantic import PostgresDsn, field_validator, ValidationInfo
 from app.core.tags import tags_metadata
 
 
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     PROJECT_DESCRIPTION: str = "A FastAPI server for the Blog Client."
     PROJECT_VERSION: str = "1.0.0"
     PROJECT_TAGS: List = tags_metadata
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+    BACKEND_CORS_ORIGINS: List[str] = [
         "http://localhost:4200",
         "http://localhost:2000"
     ]
