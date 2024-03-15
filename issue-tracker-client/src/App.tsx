@@ -12,10 +12,13 @@ import routes from './routes';
 import Toolbar from './components/Toolbar/Toolbar';
 import { IReducerAction, IReducerState, ReducerActionKind } from './interfaces/reducer-state.interface';
 import { AppContext } from './contexts/AppContext';
+import { UsersAPI } from './apis/UsersAPI';
+import { api } from './apis/axios-config';
 
 const initialState: IReducerState = {
   colorMode: 'light',
   profile: undefined,
+  accessToken: undefined,
   accessTokenParsed: undefined,
   idTokenParsed: undefined,
   refreshTokenParsed: undefined,
@@ -33,6 +36,11 @@ const reducer = (state: IReducerState, action: IReducerAction) => {
       return {
         ...state,
         profile: action.payload,
+      };
+    case ReducerActionKind.UPDATE_ACCESS_TOKEN:
+      return {
+        ...state,
+        accessToken: action.payload,
       };
     case ReducerActionKind.UPDATE_ACCESS_TOKEN_PARSED:
       return {
@@ -80,20 +88,25 @@ const App = () => {
       payload: auth?.user?.profile,
     });
 
-    const accessTokenParsed = parseJwt(auth?.user?.access_token);
+    const accessToken = auth?.user?.access_token;
+    const accessTokenParsed = parseJwt(accessToken);
+    const roles: string[] = accessTokenParsed?.realm_access?.roles;
+
+    dispatch({
+      type: ReducerActionKind.UPDATE_ACCESS_TOKEN,
+      payload: accessToken,
+    });
 
     dispatch({
       type: ReducerActionKind.UPDATE_ACCESS_TOKEN_PARSED,
       payload: accessTokenParsed,
     });
-
-    const roles: string[] = accessTokenParsed?.realm_access?.roles;
     
     dispatch({
       type: ReducerActionKind.UPDATE_ROLES,
       payload: roles,
     });
-
+    
     dispatch({
       type: ReducerActionKind.UPDATE_ID_TOKEN_PARSED,
       payload: parseJwt(auth?.user?.id_token),
@@ -104,6 +117,19 @@ const App = () => {
       payload: parseJwt(auth?.user?.refresh_token),
     });
   }, [auth?.user]);
+  
+  useEffect(() => {
+    if (!state.accessToken) {
+      return;
+    }
+
+    // Add access token to axios request headers
+    api.defaults.headers.common['Authorization'] = `Bearer ${state.accessToken}`;
+
+    UsersAPI.getUsers().then((res) => {
+      console.log('users: ', res);
+    });
+  }, [state.accessToken]);
 
   const parseJwt = (token: string | undefined) => {
     if (!token) {
