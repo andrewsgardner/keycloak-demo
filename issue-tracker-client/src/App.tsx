@@ -28,6 +28,9 @@ const initialState: IReducerState = {
   idTokenParsed: undefined,
   refreshTokenParsed: undefined,
   roles: [],
+  users: [],
+  projects: [],
+  issues: [],
 };
 
 const reducer = (state: IReducerState, action: IReducerAction) => {
@@ -66,6 +69,21 @@ const reducer = (state: IReducerState, action: IReducerAction) => {
       return {
         ...state,
         roles: action.payload,
+      };
+    case ReducerActionKind.UPDATE_USERS:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case ReducerActionKind.UPDATE_PROJECTS:
+      return {
+        ...state,
+        projects: action.payload,
+      };
+    case ReducerActionKind.UPDATE_ISSUES:
+      return {
+        ...state,
+        issues: action.payload,
       };
     default:
       throw new Error(`[reducer] Unknown operation! state: ${state} action: ${action}`);
@@ -130,17 +148,29 @@ const App = () => {
 
     // Add access token to axios request headers
     api.defaults.headers.common['Authorization'] = `Bearer ${state.accessToken}`;
-    
+
+    // Set users into state
     UsersAPI.getUsers().then((res: IUser[]) => {
-      console.log('users: ', res);
+      dispatch({
+        type: ReducerActionKind.UPDATE_USERS,
+        payload: res,
+      });
     });
 
+    // Set projects into state
     ProjectsAPI.getProjects().then((res: IProject[]) => {
-      console.log('projects: ', res);
+      dispatch({
+        type: ReducerActionKind.UPDATE_PROJECTS,
+        payload: res,
+      });
     });
 
+    // Set issues into state
     IssuesAPI.getIssues().then((res: IIssue[]) => {
-      console.log('issues: ', res);
+      dispatch({
+        type: ReducerActionKind.UPDATE_ISSUES,
+        payload: res,
+      });
     });
   }, [state.accessToken]);
 
