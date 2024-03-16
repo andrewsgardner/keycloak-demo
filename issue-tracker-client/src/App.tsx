@@ -14,6 +14,9 @@ import { IReducerAction, IReducerState, ReducerActionKind } from './interfaces/r
 import { AppContext } from './contexts/AppContext';
 import { UsersAPI } from './apis/UsersAPI';
 import { api } from './apis/axios-config';
+import { ProjectsAPI } from './apis/ProjectsAPI';
+import { IUser } from './interfaces/user.interface';
+import { IProject } from './interfaces/project.interface';
 
 const initialState: IReducerState = {
   colorMode: 'light',
@@ -126,8 +129,12 @@ const App = () => {
     // Add access token to axios request headers
     api.defaults.headers.common['Authorization'] = `Bearer ${state.accessToken}`;
 
-    UsersAPI.getUsers().then((res) => {
+    UsersAPI.getUsers().then((res: IUser[]) => {
       console.log('users: ', res);
+    });
+    
+    ProjectsAPI.getProjects().then((res: IProject[]) => {
+      console.log('projects: ', res);
     });
   }, [state.accessToken]);
 
