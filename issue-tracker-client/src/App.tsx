@@ -17,6 +17,8 @@ import { api } from './apis/axios-config';
 import { ProjectsAPI } from './apis/ProjectsAPI';
 import { IUser } from './interfaces/user.interface';
 import { IProject } from './interfaces/project.interface';
+import { IssuesAPI } from './apis/IssuesAPI';
+import { IIssue } from './interfaces/issue.interface';
 
 const initialState: IReducerState = {
   colorMode: 'light',
@@ -128,13 +130,17 @@ const App = () => {
 
     // Add access token to axios request headers
     api.defaults.headers.common['Authorization'] = `Bearer ${state.accessToken}`;
-
+    
     UsersAPI.getUsers().then((res: IUser[]) => {
       console.log('users: ', res);
     });
-    
+
     ProjectsAPI.getProjects().then((res: IProject[]) => {
       console.log('projects: ', res);
+    });
+
+    IssuesAPI.getIssues().then((res: IIssue[]) => {
+      console.log('issues: ', res);
     });
   }, [state.accessToken]);
 
