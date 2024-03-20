@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
 
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, Typography } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import './Dashboard.scss';
 import { AppContext } from '../../contexts/AppContext';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import routes from '../../routes';
 
 const Dashboard = () => {
+  const router = createBrowserRouter(routes);
   const appCtx = useContext(AppContext);
   
   return (
@@ -172,7 +175,7 @@ const Dashboard = () => {
         </AccordionSummary>
         <AccordionDetails>
         <div className="description">
-          <p>Test...</p>
+          <RouterProvider router={router} fallbackElement={<CircularProgress />} />
         </div>
         </AccordionDetails>
       </Accordion>

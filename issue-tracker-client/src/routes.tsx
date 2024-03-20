@@ -1,11 +1,11 @@
 import { RouteObject } from "react-router";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import ProjectList from "./components/ProjectList/ProjectList";
 
 const routes: RouteObject[] = [
     {
         path: '/',
         //loader() { return true; },
-        element: <Dashboard />
+        element: <ProjectList />
     },
 ];
 

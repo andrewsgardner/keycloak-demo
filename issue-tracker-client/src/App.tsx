@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useReducer } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useAuth } from "react-oidc-context";
 import { ThemeProvider } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,7 +7,6 @@ import { CssBaseline, createTheme } from '@mui/material';
 import './App.scss';
 import { lightTheme } from './themes/light';
 import { darkTheme } from './themes/dark';
-import routes from './routes';
 import Toolbar from './components/Toolbar/Toolbar';
 import { IReducerAction, IReducerState, ReducerActionKind } from './interfaces/reducer-state.interface';
 import { AppContext } from './contexts/AppContext';
@@ -19,6 +17,7 @@ import { IUser } from './interfaces/user.interface';
 import { IProject } from './interfaces/project.interface';
 import { IssuesAPI } from './apis/IssuesAPI';
 import { IIssue } from './interfaces/issue.interface';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 const initialState: IReducerState = {
   colorMode: 'light',
@@ -96,7 +95,6 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
   const theme = useMemo(() => createTheme(state.colorMode === 'light' ? lightTheme : darkTheme), [state.colorMode]);
-  const router = createBrowserRouter(routes);
 
   useEffect(() => {
     if (!auth.isAuthenticated && !auth.activeNavigator && !auth.isLoading && !hasTriedSignin) {
@@ -203,7 +201,7 @@ const App = () => {
           <CssBaseline />
           <Toolbar />
             <main>
-              <RouterProvider router={router} fallbackElement={<CircularProgress />} />
+              <Dashboard />
             </main>
         </ThemeProvider>
       </AppContext.Provider>
