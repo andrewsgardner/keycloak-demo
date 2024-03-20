@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router";
-import ProjectList from "./components/ProjectList/ProjectList";
+import ProjectList from "./pages/ProjectList/ProjectList";
 
 const routes: RouteObject[] = [
     {

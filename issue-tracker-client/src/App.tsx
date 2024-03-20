@@ -17,7 +17,7 @@ import { IUser } from './interfaces/user.interface';
 import { IProject } from './interfaces/project.interface';
 import { IssuesAPI } from './apis/IssuesAPI';
 import { IIssue } from './interfaces/issue.interface';
-import Dashboard from './pages/Dashboard/Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
 
 const initialState: IReducerState = {
   colorMode: 'light',
