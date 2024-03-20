@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router";
 import ProjectList from "./pages/ProjectList/ProjectList";
 import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
+import IssueList from "./pages/IssueList/IssueList";
 
 const routes: RouteObject[] = [
     {
@@ -11,7 +12,13 @@ const routes: RouteObject[] = [
     {
         path: 'projects/:id',
         //loader() { return true; },
-        element: <ProjectDetail />
+        element: <ProjectDetail />,
+        children: [
+            {
+                path: 'issues',
+                element: <IssueList />
+            }
+        ]
     }
 ];
 
