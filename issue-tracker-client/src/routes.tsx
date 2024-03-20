@@ -14,23 +14,33 @@ const routes: RouteObject[] = [
     },
     {
         path: 'projects',
-        //loader() { return true; },
-        element: <ProjectList />
-    },
-    {
-        path: 'projects/:id',
-        //loader() { return true; },
-        element: <ProjectDetail />
+        children: [
+            {
+                index: true,
+                //loader() { return true; },
+                element: <ProjectList />
+            },
+            {
+                path: ':id',
+                //loader() { return true; },
+                element: <ProjectDetail />
+            }
+        ]
     },
     {
         path: 'issues',
-        //loader() { return true; },
-        element: <IssueList />,
-    },
-    {
-        path: 'issues/:id',
-        //loader() { return true; },
-        element: <IssueDetail />
+        children: [
+            {
+                index: true,
+                //loader() { return true; },
+                element: <IssueList />
+            },
+            {
+                path: ':id',
+                //loader() { return true; },
+                element: <IssueDetail />
+            }
+        ]
     }
 ];
 
