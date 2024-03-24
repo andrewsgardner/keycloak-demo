@@ -51,10 +51,10 @@ const Dashboard = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <div className="description">
-          <p>A token that allows a client to access a specific resource to perform specific actions on behalf of the user.</p>
-        </div>
-        { appCtx.state.accessTokenParsed ? <pre>{JSON.stringify(appCtx.state.accessTokenParsed, null, 2)}</pre> : '' }
+          <div className="description">
+            <p>A token that allows a client to access a specific resource to perform specific actions on behalf of the user.</p>
+          </div>
+          { appCtx.state.accessTokenParsed ? <pre>{JSON.stringify(appCtx.state.accessTokenParsed, null, 2)}</pre> : '' }
         </AccordionDetails>
       </Accordion>
       <Accordion sx={{
@@ -92,10 +92,10 @@ const Dashboard = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <div className="description">
-          <p>A token that provides identity information about the user.</p>
-        </div>
-        { appCtx.state.idTokenParsed ? <pre>{JSON.stringify(appCtx.state.idTokenParsed, null, 2)}</pre> : '' }
+          <div className="description">
+            <p>A token that provides identity information about the user.</p>
+          </div>
+          { appCtx.state.idTokenParsed ? <pre>{JSON.stringify(appCtx.state.idTokenParsed, null, 2)}</pre> : '' }
         </AccordionDetails>
       </Accordion>
       <Accordion sx={{
@@ -133,10 +133,10 @@ const Dashboard = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <div className="description">
-          <p>A token used to request a new access token in cases where it is expired.</p>
-        </div>
-        { appCtx.state.refreshTokenParsed ? <pre>{JSON.stringify(appCtx.state.refreshTokenParsed, null, 2)}</pre> : '' }
+          <div className="description">
+            <p>A token used to request a new access token in cases where it is expired.</p>
+          </div>
+          { appCtx.state.refreshTokenParsed ? <pre>{JSON.stringify(appCtx.state.refreshTokenParsed, null, 2)}</pre> : '' }
         </AccordionDetails>
       </Accordion>
       <Accordion 
@@ -174,9 +174,9 @@ const Dashboard = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <div className="description">
-          <RouterProvider router={router} fallbackElement={<CircularProgress />} />
-        </div>
+          <div className="app-content">
+            <RouterProvider router={router} fallbackElement={<CircularProgress />} />
+          </div>
         </AccordionDetails>
       </Accordion>
     </Box>
