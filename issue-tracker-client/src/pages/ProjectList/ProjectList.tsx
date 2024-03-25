@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import './ProjectList.scss';
 import { AppContext } from '../../contexts/AppContext';
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, styled, tableCellClasses } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled, tableCellClasses } from '@mui/material';
 import { IProject } from '../../interfaces/project.interface';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
@@ -23,6 +23,7 @@ const ProjectList = () => {
 
     return (
         <Box>
+            <Typography variant="h4" component="h1" gutterBottom>Projects</Typography>
             <TableContainer 
                 component={Paper}>
                 <Table 
