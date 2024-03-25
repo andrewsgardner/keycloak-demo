@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 
 import './ProjectList.scss';
 import { AppContext } from '../../contexts/AppContext';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, styled, tableCellClasses } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, styled, tableCellClasses } from '@mui/material';
 import { IProject } from '../../interfaces/project.interface';
 import { useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 const ProjectList = () => {
     const appCtx = useContext(AppContext);
@@ -16,7 +17,7 @@ const ProjectList = () => {
             color: theme.palette.common.white,
         },
         [`&.${tableCellClasses.body}`]: {
-            padding: '14px 16px',
+            padding: '10px 16px',
         },
       }));
 
@@ -42,7 +43,9 @@ const ProjectList = () => {
                             <TableRow
                                 key={project.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <StyledTableCell component="th" scope="row">{project.project_name}</StyledTableCell>
+                                <StyledTableCell component="th" scope="row">
+                                    <Button component={Link} to={`/projects/${project.id}`}>{project.project_name}</Button>
+                                </StyledTableCell>
                                 <StyledTableCell>By {project.modified_by} on {project.modified_date}</StyledTableCell>
                                 <StyledTableCell align="right">{project.create_date}</StyledTableCell>
                             </TableRow>
