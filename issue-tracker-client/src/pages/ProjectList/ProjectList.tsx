@@ -6,6 +6,7 @@ import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableH
 import { IProject } from '../../interfaces/project.interface';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import { DateAgo, DateLocaleString } from '../../utils/general.util';
 
 const ProjectList = () => {
     const appCtx = useContext(AppContext);
@@ -47,8 +48,8 @@ const ProjectList = () => {
                                 <StyledTableCell component="th" scope="row">
                                     <Button component={Link} to={`/projects/${project.id}`}>{project.project_name}</Button>
                                 </StyledTableCell>
-                                <StyledTableCell>By {project.modified_by} on {project.modified_date}</StyledTableCell>
-                                <StyledTableCell align="right">{project.create_date}</StyledTableCell>
+                                <StyledTableCell>By {project.modified_by} {DateAgo(project.modified_date)}</StyledTableCell>
+                                <StyledTableCell align="right">{DateLocaleString(project.create_date)}</StyledTableCell>
                             </TableRow>
                         ))}
                     </TableBody>
