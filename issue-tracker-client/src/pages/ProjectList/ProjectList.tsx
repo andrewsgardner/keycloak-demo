@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import './ProjectList.scss';
 import { AppContext } from '../../contexts/AppContext';
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled, tableCellClasses } from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled, tableCellClasses } from '@mui/material';
 import { IProject } from '../../interfaces/project.interface';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
@@ -46,7 +46,12 @@ const ProjectList = () => {
                                 key={project.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <StyledTableCell component="th" scope="row">
-                                    <Button component={Link} to={`/projects/${project.id}`}>{project.project_name}</Button>
+                                <Link 
+                                    style={{
+                                        color: theme.palette.text.primary,
+                                        fontWeight: 500,
+                                    }} 
+                                    to={`/projects/${project.id}`}>{project.project_name}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell>By {project.modified_by} {DateAgo(project.modified_date)}</StyledTableCell>
                                 <StyledTableCell align="right">{DateLocaleString(project.create_date)}</StyledTableCell>
