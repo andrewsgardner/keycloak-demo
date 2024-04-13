@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS issues (
     --issue_id TEXT GENERATED ALWAYS AS ('ISSUE-' || id::text) STORED,
     issue_summary VARCHAR(255) NOT NULL,
     issue_description VARCHAR(4000),
+    related_project_id INT NOT NULL,
     created_by VARCHAR REFERENCES users(username),
     create_date TIMESTAMP DEFAULT current_timestamp,
     modified_by VARCHAR REFERENCES users(username),
@@ -66,8 +67,8 @@ CREATE TRIGGER issue_status_change
 BEFORE INSERT OR UPDATE ON issues
 FOR EACH ROW EXECUTE PROCEDURE issue_status_trg();
 
-INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, issue_priority, assigned_to) VALUES ('Hook up endpoints in new XYZ service', 'Integrate the client application with all endpoints of the XYZ service. This includes GET, POST, PUT, and DELETE operations.', 'rsmith', 'rsmith', 'High', 'fwatkins');
-INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, issue_priority, assigned_to) VALUES ('Whitelist XYZ service as an allowed CORS origin', 'Update the list of allowed CORS origins to include the address for XYZ service on http://localhost:7000.', 'rsmith', 'rsmith', 'Medium', 'fwatkins');
-INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, issue_priority, assigned_to) VALUES ('Store all timestamps in UTC', 'All timestamps should be stored in PostgreSQL in UTC, and then displayed to the user in their local timezone. Audit the application to find and fix all occurrences where EST timestamps are propagated to PostgreSQL.', 'fwatkins', 'fwatkins', 'Medium', 'fwatkins');
-INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, issue_priority, assigned_to) VALUES ('Fix broken link to about page', 'There is a broken link to the about page in the header. Please fix the url to point to the correct location.', 'fwatkins', 'fwatkins', 'Low', 'fwatkins');
-INSERT INTO issues (issue_summary, issue_description, created_by, modified_by, issue_status, issue_priority, actual_resolution_date, resolution_summary, assigned_to) VALUES ('Upgrade Node.js', 'Upgrade Node.js in the client to version 20.11.1.', 'fwatkins', 'fwatkins', 'Closed', 'Low', DATE '2024-02-19', 'The client has successfully been upgraded to Node.js 20.11.1. I performed all unit tests and there are no known issues.', 'fwatkins');
+INSERT INTO issues (issue_summary, issue_description, related_project_id, created_by, modified_by, issue_priority, assigned_to) VALUES ('Hook up endpoints in new XYZ service', 'Integrate the client application with all endpoints of the XYZ service. This includes GET, POST, PUT, and DELETE operations.', 1, 'rsmith', 'rsmith', 'High', 'fwatkins');
+INSERT INTO issues (issue_summary, issue_description, related_project_id, created_by, modified_by, issue_priority, assigned_to) VALUES ('Whitelist XYZ service as an allowed CORS origin', 'Update the list of allowed CORS origins to include the address for XYZ service on http://localhost:7000.', 1, 'rsmith', 'rsmith', 'Medium', 'fwatkins');
+INSERT INTO issues (issue_summary, issue_description, related_project_id, created_by, modified_by, issue_priority, assigned_to) VALUES ('Store all timestamps in UTC', 'All timestamps should be stored in PostgreSQL in UTC, and then displayed to the user in their local timezone. Audit the application to find and fix all occurrences where EST timestamps are propagated to PostgreSQL.', 1, 'fwatkins', 'fwatkins', 'Medium', 'fwatkins');
+INSERT INTO issues (issue_summary, issue_description, related_project_id, created_by, modified_by, issue_priority, assigned_to) VALUES ('Fix broken link to about page', 'There is a broken link to the about page in the header. Please fix the url to point to the correct location.', 1, 'fwatkins', 'fwatkins', 'Low', 'fwatkins');
+INSERT INTO issues (issue_summary, issue_description, related_project_id, created_by, modified_by, issue_status, issue_priority, actual_resolution_date, resolution_summary, assigned_to) VALUES ('Upgrade Node.js', 'Upgrade Node.js in the client to version 20.11.1.', 1, 'fwatkins', 'fwatkins', 'Closed', 'Low', DATE '2024-02-19', 'The client has successfully been upgraded to Node.js 20.11.1. I performed all unit tests and there are no known issues.', 'fwatkins');
