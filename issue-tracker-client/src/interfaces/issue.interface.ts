@@ -5,6 +5,7 @@ export interface IIssue {
     id: number;
     issue_summary: string;
     issue_description: string | null;
+    related_project_id: number;
     created_by: string;
     create_date: string;
     modified_by: string;
