@@ -100,7 +100,7 @@ const ProjectDetail = () => {
                                             value={status}
                                             label="Status"
                                             onChange={handleStatusChange}>
-                                            {Object.keys(IssueStatus).map((key: string) => (<MenuItem value={key}>{key}</MenuItem>))}
+                                            {Object.keys(IssueStatus).map((key: string, index: number) => (<MenuItem value={key} key={index}>{key}</MenuItem>))}
                                         </Select>
                                     </FormControl>
                                 </StyledTableCell>
