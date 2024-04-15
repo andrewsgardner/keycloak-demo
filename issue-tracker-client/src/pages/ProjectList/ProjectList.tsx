@@ -46,12 +46,12 @@ const ProjectList = () => {
                                 key={project.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                 <StyledTableCell component="th" scope="row">
-                                <Link 
-                                    style={{
-                                        color: theme.palette.text.primary,
-                                        fontWeight: 500,
-                                    }} 
-                                    to={`/projects/${project.id}`}>{project.project_name}</Link>
+                                    <Link
+                                        style={{
+                                            color: theme.palette.text.primary,
+                                            fontWeight: 500,
+                                        }}
+                                        to={`/projects/${project.id}`}>{project.project_name}</Link>
                                 </StyledTableCell>
                                 <StyledTableCell>By {project.modified_by} {DateAgo(project.modified_date)}</StyledTableCell>
                                 <StyledTableCell align="right">{DateLocaleString(project.create_date)}</StyledTableCell>
