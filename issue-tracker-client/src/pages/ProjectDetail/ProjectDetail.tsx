@@ -114,7 +114,7 @@ const ProjectDetail = () => {
                                     key={issue.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <StyledTableCell component="th" scope="row">
-                                        {issue.id}
+                                        {`ISSUE-${issue.id}`}
                                     </StyledTableCell>
                                     <StyledTableCell>{issue.issue_summary}</StyledTableCell>
                                     <StyledTableCell>{issue.issue_priority}</StyledTableCell>
