@@ -1,6 +1,5 @@
 import { RouteObject } from "react-router";
 import ProjectList from "./pages/ProjectList/ProjectList";
-import ProjectDetail from "./pages/ProjectDetail/ProjectDetail";
 import IssueList from "./pages/IssueList/IssueList";
 import IssueDetail from "./pages/IssueDetail/IssueDetail";
 import { redirect } from "react-router-dom";
@@ -23,18 +22,13 @@ const routes: RouteObject[] = [
             {
                 path: ':id',
                 //loader() { return true; },
-                element: <ProjectDetail />
+                element: <IssueList />
             }
         ]
     },
     {
         path: 'issues',
         children: [
-            {
-                index: true,
-                //loader() { return true; },
-                element: <IssueList />
-            },
             {
                 path: ':id',
                 //loader() { return true; },
