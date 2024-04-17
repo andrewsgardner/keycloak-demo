@@ -5,7 +5,6 @@ import './IssueList.scss';
 import { AppContext } from '../../contexts/AppContext';
 import { Box, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Typography, styled, tableCellClasses, useTheme } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import routes from '../../routes';
 import { IProject } from '../../interfaces/project.interface';
 import { IIssue } from '../../interfaces/issue.interface';
 import { DateAgo } from '../../utils/general.util';
