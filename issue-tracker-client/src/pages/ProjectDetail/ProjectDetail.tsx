@@ -114,7 +114,12 @@ const ProjectDetail = () => {
                                     key={issue.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <StyledTableCell component="th" scope="row">
-                                        {`ISSUE-${issue.id}`}
+                                        <Link
+                                            style={{
+                                                color: theme.palette.text.primary,
+                                                fontWeight: 500,
+                                            }}
+                                            to={`/issues/${issue.id}`}>{`ISSUE-${issue.id}`}</Link>
                                     </StyledTableCell>
                                     <StyledTableCell>{issue.issue_summary}</StyledTableCell>
                                     <StyledTableCell>{issue.issue_priority}</StyledTableCell>
