@@ -12,5 +12,9 @@ tags_metadata: List = [
     {
         "name": "issues",
         "description": "Manage issues."
+    },
+    {
+        "name": "comments",
+        "description": "Manage comments."
     }
 ]

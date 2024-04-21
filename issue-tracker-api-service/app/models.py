@@ -188,3 +188,53 @@ class IssueOut(IssueBase):
     target_resolution_date: Union[date, None]
     actual_resolution_date: Union[date, None]
     resolution_summary: Union[str, None]
+
+class CommentBase(SQLModel):
+    comment_text: Optional[str]
+
+class Comment(CommentBase, table=True):
+    __tablename__: str = "comments"
+
+    id: uuid.UUID = Field(
+        default_factory=uuid.uuid4,
+        primary_key=True,
+        index=True,
+        nullable=False
+    )
+    related_issue_id: Optional[int] = Field(
+        default=None,
+        nullable=False
+    )
+    userid: Union[str, None] = Field(
+        index=True,
+    )
+    create_date: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp")
+        }
+    )
+    modified_date: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp"),
+            "onupdate": text("current_timestamp")
+       }
+    )
+
+class CommentCreate(CommentBase):
+    related_issue_id: int
+    userid: str
+    comment_text: str
+
+class CommentUpdate(CommentBase):
+    comment_text: str
+
+class CommentOut(CommentBase):
+    id: uuid.UUID
+    related_issue_id: int
+    userid: Union[str, None]
+    create_date: datetime
+    modified_date: datetime
