@@ -7,6 +7,8 @@ import { Box, Theme, Typography, useTheme } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { IIssue } from '../../interfaces/issue.interface';
 import { IProject } from '../../interfaces/project.interface';
+import { IComment } from '../../interfaces/comment.interface';
+import { CommentsAPI } from '../../apis/CommentsAPI';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -14,6 +16,7 @@ const IssueDetail = () => {
     const { id } = useParams();
     const [issue, setIssue] = React.useState<IIssue | undefined>(undefined);
     const [project, setProject] = React.useState<IProject | undefined>(undefined);
+    const [comments, setComments] = React.useState<IComment[] | undefined>(undefined);
 
     useEffect(() => {
         setIssue(id ? appCtx.state.issues.find((x: IIssue) => x.id === Number.parseInt(id)) : undefined);
@@ -21,6 +24,16 @@ const IssueDetail = () => {
 
     useEffect(() => {
         setProject(appCtx.state.projects.find((x: IProject) => x.id === issue?.related_project_id));
+    }, [issue]);
+    
+    useEffect(() => {
+        if (!issue) {
+            return;
+        }
+
+        CommentsAPI.getComments(issue.id).then((res: IComment[]) => {
+            setComments(res);
+        });
     }, [issue]);
     
     return (

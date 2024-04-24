@@ -9,9 +9,9 @@ export const CommentsAPI = {
         const response = await api.request<IComment[]>({
             url: '/comments',
             method: 'GET',
-            params: JSON.stringify({
+            params: {
                 related_issue_id: related_issue_id,
-            }),
+            },
         });
 
         return response.data;
