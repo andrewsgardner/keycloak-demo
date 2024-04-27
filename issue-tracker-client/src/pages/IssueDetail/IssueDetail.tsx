@@ -105,7 +105,7 @@ const IssueDetail = () => {
                                         transformOrigin: { horizontal: 'left', vertical: 'top' },
                                         anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
                                     }}
-                                    value={assignedTo} // displayedUsers.map((x: IUser) => x.username).includes(assignedTo) ? assignedTo : ''
+                                    value={assignedTo}
                                     onChange={handleAssigneeChange}
                                     onClose={handleUserSearchReset}
                                     renderValue={(selected: string) => selected}>
