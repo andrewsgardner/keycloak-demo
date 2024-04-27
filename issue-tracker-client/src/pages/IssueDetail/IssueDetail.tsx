@@ -47,6 +47,14 @@ const IssueDetail = () => {
     const handleAssigneeChange = (event: SelectChangeEvent<string>): void => {
         setAssignedTo(event.target.value);
     };
+
+    const handleUserSearchReset = (): void => {
+        setUserSearchText('');
+    };
+
+    const handleUserSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+        setUserSearchText(event.target.value);
+    };
     
     return (
         <Box>
@@ -94,14 +102,13 @@ const IssueDetail = () => {
                                 <Select
                                     MenuProps={{ 
                                         autoFocus: false,
+                                        transformOrigin: { horizontal: 'left', vertical: 'top' },
+                                        anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
                                     }}
-                                    sx={{
-                                        minWidth: 'calc(100% + 242px)',
-                                    }}
-                                    value={assignedTo}
+                                    value={assignedTo} // displayedUsers.map((x: IUser) => x.username).includes(assignedTo) ? assignedTo : ''
                                     onChange={handleAssigneeChange}
-                                    onClose={() => setUserSearchText('')}
-                                    renderValue={(selected: string) => users.find((x: IUser) => x.username === selected)?.username}>
+                                    onClose={handleUserSearchReset}
+                                    renderValue={(selected: string) => selected}>
                                     <ListSubheader>
                                         <TextField
                                             autoFocus
@@ -115,7 +122,7 @@ const IssueDetail = () => {
                                                     </InputAdornment>
                                                 )
                                             }}
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setUserSearchText(e.target.value)}
+                                            onChange={handleUserSearch}
                                             onKeyDown={(e) => {
                                                 if (e.key !== 'Escape') {
                                                     // Prevents autoselecting item while typing.
@@ -128,6 +135,11 @@ const IssueDetail = () => {
                                             {user.username}
                                         </MenuItem>
                                     ))}
+                                    {assignedTo !== '' && (
+                                        <MenuItem value={assignedTo} sx={{ display: 'none' }}>
+                                            {assignedTo}
+                                        </MenuItem>
+                                    )}
                                 </Select>
                             </FormControl>
                         ) : 'No one - Assign yourself'}
