@@ -15,5 +15,5 @@ export interface IIssue {
     target_resolution_date: string | null;
     actual_resolution_date: string | null;
     resolution_summary: string | null;
-    assigned_to: string;
+    assigned_to: string | null;
 }

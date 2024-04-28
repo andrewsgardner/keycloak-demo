@@ -18,22 +18,38 @@ const IssueDetail = () => {
     const appCtx = useContext(AppContext);
     const theme: Theme = useTheme();
     const { id } = useParams();
+    const [users, setUsers] = React.useState<IUser[]>([]);
     const [issue, setIssue] = React.useState<IIssue | undefined>(undefined);
     const [project, setProject] = React.useState<IProject | undefined>(undefined);
     const [comments, setComments] = React.useState<IComment[] | undefined>(undefined);
     const [assignedTo, setAssignedTo] = React.useState<string | undefined>(undefined);
     const containsText = (text: string, searchText: string): boolean => text.toLowerCase().includes(searchText.toLowerCase());
-    const users: IUser[] = appCtx.state.users;
     const [userSearchText, setUserSearchText] = React.useState<string>('');
     const displayedUsers = useMemo(() => users.filter((user: IUser) => containsText(user.username, userSearchText)), [users, userSearchText]);
+
+    useEffect(() => {
+        const users: IUser[] = appCtx.state.users;
+        users.push({
+            id: '',
+            username: 'None',
+            first_name: '',
+            last_name: '',
+        });
+        setUsers(users);
+    }, [appCtx.state.users]);
 
     useEffect(() => {
         setIssue(id ? appCtx.state.issues.find((x: IIssue) => x.id === Number.parseInt(id)) : undefined);
     }, [appCtx.state.issues]);
 
     useEffect(() => {
+        if (issue?.assigned_to == null) {
+            setAssignedTo('None');
+            return;
+        }
+
         setProject(appCtx.state.projects.find((x: IProject) => x.id === issue?.related_project_id));
-        setAssignedTo(issue?.assigned_to);
+        setAssignedTo(issue.assigned_to);
     }, [issue]);
 
     useEffect(() => {
@@ -60,11 +76,11 @@ const IssueDetail = () => {
             target_resolution_date: issue.target_resolution_date,
             actual_resolution_date: issue.actual_resolution_date,
             resolution_summary: issue.resolution_summary,
-            assigned_to: event.target.value,
+            assigned_to: event.target.value === 'None' ? null : event.target.value,
         };
         
         IssuesAPI.patchIssue(params).then((res: IIssue) => {
-            setAssignedTo(res.assigned_to);
+            setAssignedTo(res.assigned_to === null ? 'None' : res.assigned_to);
         });
     };
 
@@ -117,15 +133,14 @@ const IssueDetail = () => {
                             sx={{
                                 color: theme.palette.common.black
                             }}>Assignee</Typography>
-                        {assignedTo ? (
-                            <FormControl variant="standard">
+                        <FormControl variant="standard">
                                 <Select
                                     MenuProps={{ 
                                         autoFocus: false,
                                         transformOrigin: { horizontal: 'left', vertical: 'top' },
                                         anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
                                     }}
-                                    value={assignedTo}
+                                    value={assignedTo || ''}
                                     onChange={handleAssigneeChange}
                                     onClose={handleUserSearchReset}
                                     renderValue={(selected: string) => selected}>
@@ -162,7 +177,6 @@ const IssueDetail = () => {
                                     )}
                                 </Select>
                             </FormControl>
-                        ) : 'No one - Assign yourself'}
                     </Box>
                 </Grid>
             </Grid>
