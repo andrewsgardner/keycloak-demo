@@ -11,6 +11,8 @@ import { IProject } from '../../interfaces/project.interface';
 import { IComment } from '../../interfaces/comment.interface';
 import { CommentsAPI } from '../../apis/CommentsAPI';
 import { IUser } from '../../interfaces/user.interface';
+import { IssuePatch } from '../../types/issue-patch.type';
+import { IssuesAPI } from '../../apis/IssuesAPI';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -45,7 +47,25 @@ const IssueDetail = () => {
     }, [issue]);
 
     const handleAssigneeChange = (event: SelectChangeEvent<string>): void => {
-        setAssignedTo(event.target.value);
+        if (issue == null) {
+            return;
+        }
+        
+        const params: IssuePatch = {
+            id: issue.id,
+            issue_summary: issue.issue_summary,
+            modified_by: issue.modified_by,
+            issue_description: issue.issue_description,
+            issue_priority: issue.issue_priority,
+            target_resolution_date: issue.target_resolution_date,
+            actual_resolution_date: issue.actual_resolution_date,
+            resolution_summary: issue.resolution_summary,
+            assigned_to: event.target.value,
+        };
+        
+        IssuesAPI.patchIssue(params).then((res: IIssue) => {
+            setAssignedTo(res.assigned_to);
+        });
     };
 
     const handleUserSearchReset = (): void => {
