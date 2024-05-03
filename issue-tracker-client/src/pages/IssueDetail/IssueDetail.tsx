@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useMemo } from 'react';
 
 import './IssueDetail.scss';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { AppContext } from '../../contexts/AppContext';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Box, FormControl, Grid, InputAdornment, ListSubheader, MenuItem, Select, SelectChangeEvent, TextField, Theme, Typography, useTheme } from '@mui/material';
+import { Box, FormControl, Grid, IconButton, InputAdornment, ListSubheader, MenuItem, Select, SelectChangeEvent, Snackbar, TextField, Theme, Typography, useTheme } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { IIssue } from '../../interfaces/issue.interface';
 import { IProject } from '../../interfaces/project.interface';
@@ -19,6 +20,7 @@ const IssueDetail = () => {
     const appCtx = useContext(AppContext);
     const theme: Theme = useTheme();
     const { id } = useParams();
+    const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false);
     const [users, setUsers] = React.useState<IUser[]>([]);
     const [issue, setIssue] = React.useState<IIssue | undefined>(undefined);
     const [project, setProject] = React.useState<IProject | undefined>(undefined);
@@ -65,6 +67,14 @@ const IssueDetail = () => {
         });
     }, [issue]);
 
+    const handleSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackbarOpen(false);
+    };
+
     const handleAssigneeChange = (event: SelectChangeEvent<string>): void => {
         if (issue == null) {
             return;
@@ -84,6 +94,7 @@ const IssueDetail = () => {
         
         IssuesAPI.patchIssue(params).then((res: IIssue) => {
             setAssignedTo(res.assigned_to === null ? 'None' : res.assigned_to);
+            setSnackbarOpen(true);
         });
     };
 
@@ -114,6 +125,7 @@ const IssueDetail = () => {
 
         IssuesAPI.patchIssue(params).then((res: IIssue) => {
             setPriority(res.issue_priority);
+            setSnackbarOpen(true);
         });
     };
     
@@ -225,6 +237,20 @@ const IssueDetail = () => {
                     </Box>
                 </Grid>
             </Grid>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                message="Issue updated"
+                action={
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={handleSnackbarClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                } />
         </Box>
     );
 };
