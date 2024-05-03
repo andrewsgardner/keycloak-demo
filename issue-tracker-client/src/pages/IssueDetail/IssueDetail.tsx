@@ -13,6 +13,7 @@ import { CommentsAPI } from '../../apis/CommentsAPI';
 import { IUser } from '../../interfaces/user.interface';
 import { IssuePatch } from '../../types/issue-patch.type';
 import { IssuesAPI } from '../../apis/IssuesAPI';
+import { IssuePriority } from '../../enums/issue-priority.enum';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -23,6 +24,7 @@ const IssueDetail = () => {
     const [project, setProject] = React.useState<IProject | undefined>(undefined);
     const [comments, setComments] = React.useState<IComment[] | undefined>(undefined);
     const [assignedTo, setAssignedTo] = React.useState<string | undefined>(undefined);
+    const [priority, setPriority] = React.useState<IssuePriority | undefined>(undefined);
     const containsText = (text: string, searchText: string): boolean => text.toLowerCase().includes(searchText.toLowerCase());
     const [userSearchText, setUserSearchText] = React.useState<string>('');
     const displayedUsers = useMemo(() => users.filter((user: IUser) => containsText(user.username, userSearchText)), [users, userSearchText]);
@@ -50,6 +52,7 @@ const IssueDetail = () => {
 
         setProject(appCtx.state.projects.find((x: IProject) => x.id === issue?.related_project_id));
         setAssignedTo(issue.assigned_to);
+        setPriority(issue.issue_priority);
     }, [issue]);
 
     useEffect(() => {
@@ -90,6 +93,28 @@ const IssueDetail = () => {
 
     const handleUserSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         setUserSearchText(event.target.value);
+    };
+
+    const handlePriorityChange = (event: SelectChangeEvent<IssuePriority>): void => {
+        if (issue == null) {
+            return;
+        }
+        
+        const params: IssuePatch = {
+            id: issue.id,
+            issue_summary: issue.issue_summary,
+            modified_by: issue.modified_by,
+            issue_description: issue.issue_description,
+            issue_priority: event.target.value as IssuePriority,
+            target_resolution_date: issue.target_resolution_date,
+            actual_resolution_date: issue.actual_resolution_date,
+            resolution_summary: issue.resolution_summary,
+            assigned_to: issue.assigned_to,
+        };
+
+        IssuesAPI.patchIssue(params).then((res: IIssue) => {
+            setPriority(res.issue_priority);
+        });
     };
     
     return (
@@ -177,6 +202,26 @@ const IssueDetail = () => {
                                     )}
                                 </Select>
                             </FormControl>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant="h6"
+                            component="h3"
+                            gutterBottom
+                            sx={{
+                                color: theme.palette.common.black
+                            }}>Priority</Typography>
+                        <FormControl variant="standard">
+                            <Select
+                                value={priority || ''}
+                                onChange={handlePriorityChange}>
+                                {(Object.values(IssuePriority) as string[]).map((value: string, index: number) => (
+                                    <MenuItem key={index} value={value}>
+                                        {value}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Box>
                 </Grid>
             </Grid>
