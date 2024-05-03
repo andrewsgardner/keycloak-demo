@@ -15,6 +15,8 @@ import { IUser } from '../../interfaces/user.interface';
 import { IssuePatch } from '../../types/issue-patch.type';
 import { IssuesAPI } from '../../apis/IssuesAPI';
 import { IssuePriority } from '../../enums/issue-priority.enum';
+import { IssueStatus } from '../../enums/issue-status.enum';
+import { DateLocaleString } from '../../utils/general.util';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -27,6 +29,7 @@ const IssueDetail = () => {
     const [comments, setComments] = React.useState<IComment[] | undefined>(undefined);
     const [assignedTo, setAssignedTo] = React.useState<string | undefined>(undefined);
     const [priority, setPriority] = React.useState<IssuePriority | undefined>(undefined);
+    const [status, setStatus] = React.useState<IssueStatus | undefined>(undefined);
     const containsText = (text: string, searchText: string): boolean => text.toLowerCase().includes(searchText.toLowerCase());
     const [userSearchText, setUserSearchText] = React.useState<string>('');
     const displayedUsers = useMemo(() => users.filter((user: IUser) => containsText(user.username, userSearchText)), [users, userSearchText]);
@@ -55,6 +58,7 @@ const IssueDetail = () => {
         setProject(appCtx.state.projects.find((x: IProject) => x.id === issue?.related_project_id));
         setAssignedTo(issue.assigned_to);
         setPriority(issue.issue_priority);
+        setStatus(issue.issue_status);
     }, [issue]);
 
     useEffect(() => {
@@ -169,6 +173,16 @@ const IssueDetail = () => {
                             gutterBottom
                             sx={{
                                 color: theme.palette.common.black
+                            }}>Status</Typography>
+                        <Typography>{status ?? ''}</Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant="h6"
+                            component="h3"
+                            gutterBottom
+                            sx={{
+                                color: theme.palette.common.black
                             }}>Assignee</Typography>
                         <FormControl variant="standard">
                                 <Select
@@ -234,6 +248,16 @@ const IssueDetail = () => {
                                 ))}
                             </Select>
                         </FormControl>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant="h6"
+                            component="h3"
+                            gutterBottom
+                            sx={{
+                                color: theme.palette.common.black
+                            }}>Created By</Typography>
+                        <Typography>{issue?.created_by} {issue ? `on ${DateLocaleString(issue.create_date)}` : null}</Typography>
                     </Box>
                 </Grid>
             </Grid>
