@@ -195,12 +195,18 @@ const IssueDetail = () => {
                 <Grid item={true} xs={12} md={8}>
                     Left
                 </Grid>
-                <Grid item={true} xs={12} md={4}>
+                <Grid item={true} xs={12} md={4} sx={{
+                    '> *': {
+                        margin: '0 0 24px 0',
+                        '&:last-of-type': {
+                            margin: 0,
+                        }
+                    }
+                }}>
                     <Box>
                         <Typography
                             variant="h6"
                             component="h3"
-                            gutterBottom
                             sx={{
                                 color: theme.palette.common.black
                             }}>Status</Typography>
@@ -210,7 +216,6 @@ const IssueDetail = () => {
                         <Typography
                             variant="h6"
                             component="h3"
-                            gutterBottom
                             sx={{
                                 color: theme.palette.common.black
                             }}>Assignee</Typography>
@@ -263,7 +268,6 @@ const IssueDetail = () => {
                         <Typography
                             variant="h6"
                             component="h3"
-                            gutterBottom
                             sx={{
                                 color: theme.palette.common.black
                             }}>Priority</Typography>
@@ -283,7 +287,6 @@ const IssueDetail = () => {
                         <Typography
                             variant="h6"
                             component="h3"
-                            gutterBottom
                             sx={{
                                 color: theme.palette.common.black
                             }}>Created By</Typography>
@@ -293,7 +296,6 @@ const IssueDetail = () => {
                         <Typography
                             variant="h6"
                             component="h3"
-                            gutterBottom
                             sx={{
                                 color: theme.palette.common.black
                             }}>{actualResolutionDate ? 'Resolution Date' : 'Target Resolution Date'}</Typography>
