@@ -3,6 +3,9 @@ import React, { useContext, useEffect, useMemo } from 'react';
 import './IssueDetail.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DateTime } from 'luxon';
 import { AppContext } from '../../contexts/AppContext';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Box, FormControl, Grid, IconButton, InputAdornment, ListSubheader, MenuItem, Select, SelectChangeEvent, Snackbar, TextField, Theme, Typography, useTheme } from '@mui/material';
@@ -30,6 +33,8 @@ const IssueDetail = () => {
     const [assignedTo, setAssignedTo] = React.useState<string | undefined>(undefined);
     const [priority, setPriority] = React.useState<IssuePriority | undefined>(undefined);
     const [status, setStatus] = React.useState<IssueStatus | undefined>(undefined);
+    const [actualResolutionDate, setActualResolutionDate] = React.useState<string | null>(null);
+    const [targetResolutionDate, setTargetResolutionDate] = React.useState<string | null>(null);
     const containsText = (text: string, searchText: string): boolean => text.toLowerCase().includes(searchText.toLowerCase());
     const [userSearchText, setUserSearchText] = React.useState<string>('');
     const displayedUsers = useMemo(() => users.filter((user: IUser) => containsText(user.username, userSearchText)), [users, userSearchText]);
@@ -59,6 +64,8 @@ const IssueDetail = () => {
         setAssignedTo(issue.assigned_to);
         setPriority(issue.issue_priority);
         setStatus(issue.issue_status);
+        setActualResolutionDate(issue.actual_resolution_date);
+        setTargetResolutionDate(issue.target_resolution_date);
     }, [issue]);
 
     useEffect(() => {
@@ -129,6 +136,29 @@ const IssueDetail = () => {
 
         IssuesAPI.patchIssue(params).then((res: IIssue) => {
             setPriority(res.issue_priority);
+            setSnackbarOpen(true);
+        });
+    };
+
+    const handleTargetResolutionDateChange = (event: DateTime | null): void => {
+        if (issue == null) {
+            return;
+        }
+        
+        const params: IssuePatch = {
+            id: issue.id,
+            issue_summary: issue.issue_summary,
+            modified_by: issue.modified_by,
+            issue_description: issue.issue_description,
+            issue_priority: issue.issue_priority,
+            target_resolution_date: event?.toISODate() ?? null,
+            actual_resolution_date: issue.actual_resolution_date,
+            resolution_summary: issue.resolution_summary,
+            assigned_to: issue.assigned_to,
+        };
+
+        IssuesAPI.patchIssue(params).then((res: IIssue) => {
+            setTargetResolutionDate(res.target_resolution_date);
             setSnackbarOpen(true);
         });
     };
@@ -258,6 +288,29 @@ const IssueDetail = () => {
                                 color: theme.palette.common.black
                             }}>Created By</Typography>
                         <Typography>{issue?.created_by} {issue ? `on ${DateLocaleString(issue.create_date)}` : null}</Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant="h6"
+                            component="h3"
+                            gutterBottom
+                            sx={{
+                                color: theme.palette.common.black
+                            }}>{actualResolutionDate ? 'Resolution Date' : 'Target Resolution Date'}</Typography>
+                        {actualResolutionDate ? (
+                            <Typography>{DateLocaleString(actualResolutionDate)}</Typography>
+                        ) : (
+                            <LocalizationProvider dateAdapter={AdapterLuxon}>
+                                <DatePicker
+                                    value={targetResolutionDate ? DateTime.fromISO(targetResolutionDate) : null}
+                                    onChange={handleTargetResolutionDateChange}
+                                    slotProps={{
+                                        textField: {
+                                            variant: 'standard',
+                                        }
+                                    }} />
+                            </LocalizationProvider>
+                        )}
                     </Box>
                 </Grid>
             </Grid>
