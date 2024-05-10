@@ -20,6 +20,7 @@ import { IssuesAPI } from '../../apis/IssuesAPI';
 import { IssuePriority } from '../../enums/issue-priority.enum';
 import { IssueStatus } from '../../enums/issue-status.enum';
 import { DateLocaleString } from '../../utils/general.util';
+import IssueDescription from '../../components/IssueDescription/IssueDescription';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -162,6 +163,10 @@ const IssueDetail = () => {
             setSnackbarOpen(true);
         });
     };
+
+    const handleIssueDescriptionChange = (event: string | null): void => {
+        console.log('handleIssueDescriptionChange: ', event);
+    };
     
     return (
         <Box>
@@ -193,14 +198,21 @@ const IssueDetail = () => {
             <Typography variant="h4" component="h2" gutterBottom>{issue?.issue_summary}</Typography>
             <Grid container spacing={0}>
                 <Grid item={true} xs={12} md={8}>
-                    Left
+                    {issue?.issue_description ? (<IssueDescription issue_description={issue?.issue_description} onIssueDescriptionChange={handleIssueDescriptionChange} />) : null}
                 </Grid>
-                <Grid item={true} xs={12} md={4} sx={{
+                <Grid 
+                    item={true} 
+                    xs={12} 
+                    md={4} 
+                    sx={{
                     '> *': {
                         margin: '0 0 24px 0',
                         '&:last-of-type': {
                             margin: 0,
                         }
+                    },
+                    [theme.breakpoints.up('md')]: {
+                        padding: '0 0 0 32px',
                     }
                 }}>
                     <Box>
