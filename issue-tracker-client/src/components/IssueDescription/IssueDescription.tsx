@@ -1,15 +1,16 @@
 import React from 'react';
 
 import './IssueDescription.scss';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import EditIcon from '@mui/icons-material/Edit';
+import SendIcon from '@mui/icons-material/Send';
 import { IIssueDescriptionProps } from '../../interfaces/issue-description-props.interface';
-import { AppBar, Card, IconButton, Theme, Toolbar, Typography, useTheme, TextareaAutosize as BaseTextareaAutosize, styled, Box, Button, Link } from '@mui/material';
+import { Card, IconButton, Theme, Typography, useTheme, TextareaAutosize as BaseTextareaAutosize, styled, Box, Link } from '@mui/material';
 import { KeyEvent } from '../../enums/key-event.enum';
 
 const IssueDescription = (props: IIssueDescriptionProps) => {
     const theme: Theme = useTheme();
     const [editMode, setEditMode] = React.useState<boolean>(false);
+    const textAreaRef: React.RefObject<HTMLTextAreaElement> = React.useRef<HTMLTextAreaElement>(null);
 
     const TextareaAutosize = styled(BaseTextareaAutosize)(({ theme: Theme }) => `
         box-sizing: border-box;
@@ -41,25 +42,23 @@ const IssueDescription = (props: IIssueDescriptionProps) => {
     `);
 
     const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
-        const keys: KeyEvent[] = [
-            KeyEvent.Enter,
-            KeyEvent.Escape,
-        ];
-
-        for (const k of keys) {
-            if (k === KeyEvent.Enter) {
-                const value: string = (event.target as HTMLTextAreaElement).value;
-                updateIssue(value);
-            }
-
-            if (k === KeyEvent.Escape) {
-                setEditMode(false);
-            }
+        if (event.key === KeyEvent.Enter) {
+            event.preventDefault();
+            updateIssue();
+        }
+        
+        if (event.key === KeyEvent.Escape) {
+            setEditMode(false);
         }
     };
 
-    const updateIssue = (value: string): void => {
-        console.log('updateIssue: ', value); // TODO: remove...
+    const updateIssue = (): void => {
+        if (!textAreaRef.current?.value) {
+            return;
+        }
+        
+        props.onIssueDescriptionChange(textAreaRef.current?.value);
+        setEditMode(false);
     };
     
     return (
@@ -80,11 +79,22 @@ const IssueDescription = (props: IIssueDescriptionProps) => {
             <div className="card-content">
                 {editMode ? (
                     <Box>
-                        <TextareaAutosize 
-                            aria-label="Description textarea" 
-                            placeholder="Description..."
-                            defaultValue={props.issue_description || ''}
-                            onKeyDown={handleKeydown} />
+                        <Box sx={{
+                            display: 'flex',
+                        }}>
+                            <TextareaAutosize 
+                                aria-label="Description textarea" 
+                                placeholder="Description..."
+                                defaultValue={props.issue_description || ''}
+                                ref={textAreaRef}
+                                onKeyDown={handleKeydown} />
+                            <IconButton 
+                                aria-label="send" 
+                                color="primary"
+                                onClick={updateIssue}>
+                                <SendIcon />
+                            </IconButton>
+                        </Box>
                         <Box>
                             <span style={{
                                 fontSize: '14px',

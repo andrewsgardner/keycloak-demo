@@ -36,6 +36,7 @@ const IssueDetail = () => {
     const [status, setStatus] = React.useState<IssueStatus | undefined>(undefined);
     const [actualResolutionDate, setActualResolutionDate] = React.useState<string | null>(null);
     const [targetResolutionDate, setTargetResolutionDate] = React.useState<string | null>(null);
+    const [issueDescription, setIssueDescription] = React.useState<string | null>(null);
     const containsText = (text: string, searchText: string): boolean => text.toLowerCase().includes(searchText.toLowerCase());
     const [userSearchText, setUserSearchText] = React.useState<string>('');
     const displayedUsers = useMemo(() => users.filter((user: IUser) => containsText(user.username, userSearchText)), [users, userSearchText]);
@@ -67,6 +68,7 @@ const IssueDetail = () => {
         setStatus(issue.issue_status);
         setActualResolutionDate(issue.actual_resolution_date);
         setTargetResolutionDate(issue.target_resolution_date);
+        setIssueDescription(issue.issue_description);
     }, [issue]);
 
     useEffect(() => {
@@ -165,7 +167,26 @@ const IssueDetail = () => {
     };
 
     const handleIssueDescriptionChange = (event: string | null): void => {
-        console.log('handleIssueDescriptionChange: ', event);
+        if (issue == null) {
+            return;
+        }
+
+        const params: IssuePatch = {
+            id: issue.id,
+            issue_summary: issue.issue_summary,
+            modified_by: issue.modified_by,
+            issue_description: event ?? null,
+            issue_priority: issue.issue_priority,
+            target_resolution_date: issue.target_resolution_date,
+            actual_resolution_date: issue.actual_resolution_date,
+            resolution_summary: issue.resolution_summary,
+            assigned_to: issue.assigned_to,
+        }
+
+        IssuesAPI.patchIssue(params).then((res: IIssue) => {
+            setIssueDescription(res.issue_description);
+            setSnackbarOpen(true);
+        });
     };
     
     return (
@@ -198,7 +219,7 @@ const IssueDetail = () => {
             <Typography variant="h4" component="h2" gutterBottom>{issue?.issue_summary}</Typography>
             <Grid container spacing={0}>
                 <Grid item={true} xs={12} md={8}>
-                    {issue?.issue_description ? (<IssueDescription issue_description={issue?.issue_description} onIssueDescriptionChange={handleIssueDescriptionChange} />) : null}
+                    {issue?.issue_description ? (<IssueDescription issue_description={issueDescription} onIssueDescriptionChange={handleIssueDescriptionChange} />) : null}
                 </Grid>
                 <Grid 
                     item={true} 
