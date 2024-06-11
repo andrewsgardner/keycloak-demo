@@ -21,6 +21,7 @@ import { IssuePriority } from '../../enums/issue-priority.enum';
 import { IssueStatus } from '../../enums/issue-status.enum';
 import { DateLocaleString } from '../../utils/general.util';
 import IssueDescription from '../../components/IssueDescription/IssueDescription';
+import Comment from '../../components/Comment/Comment';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -188,6 +189,10 @@ const IssueDetail = () => {
             setSnackbarOpen(true);
         });
     };
+
+    const handleCommentChange = (event: string): void => {
+        console.log('handleCommentChange: ', event);
+    };
     
     return (
         <Box>
@@ -220,6 +225,8 @@ const IssueDetail = () => {
             <Grid container spacing={0}>
                 <Grid item={true} xs={12} md={8}>
                     {issue?.issue_description ? (<IssueDescription issue_description={issueDescription} onIssueDescriptionChange={handleIssueDescriptionChange} />) : null}
+                    
+                    {comments?.map((comment: IComment, index: number) => <Comment key={index} comment_text={comment.comment_text} onCommentChange={handleCommentChange} />)}
                 </Grid>
                 <Grid 
                     item={true} 
