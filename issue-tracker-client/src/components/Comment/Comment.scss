@@ -1,0 +1,44 @@
+.comment {
+    display: flex;
+    padding: 16px;
+    margin: 0 0 16px 0;
+    
+    .card-header {
+        display: flex;
+
+        .MuiAvatar-root {
+            width: 50px;
+            height: 50px;
+        }
+
+        header {
+            h1 {
+                font-size: 20px;
+                font-weight: 500;
+                line-height: normal;
+                margin: 0;
+                padding: 0 0 0 16px;
+            }
+
+            h2 {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: normal;
+                color: rgba(0, 0, 0, 0.54);
+                margin: 0;
+                padding: 0 0 0 16px;
+            }
+        }
+
+        .actions {
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+    }
+
+    .card-content {
+        margin: 0 0 0 65px;
+    }
+}

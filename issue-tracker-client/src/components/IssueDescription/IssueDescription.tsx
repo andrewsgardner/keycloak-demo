@@ -11,7 +11,6 @@ const IssueDescription = (props: IIssueDescriptionProps) => {
     const theme: Theme = useTheme();
     const [editMode, setEditMode] = React.useState<boolean>(false);
     const textAreaRef: React.RefObject<HTMLTextAreaElement> = React.useRef<HTMLTextAreaElement>(null);
-
     const TextareaAutosize = styled(BaseTextareaAutosize)(({ theme: Theme }) => `
         box-sizing: border-box;
         width: 100%;
