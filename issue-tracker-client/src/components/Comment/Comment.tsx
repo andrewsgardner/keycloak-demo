@@ -42,7 +42,7 @@ const Comment = (props: ICommentProps) => {
     };
 
     const deleteComment = (): void => {
-        // TODO...
+        props.onCommentDelete(props.id);
     };
 
     const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {

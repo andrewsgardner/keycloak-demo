@@ -193,6 +193,10 @@ const IssueDetail = () => {
     const handleCommentChange = (event: string): void => {
         console.log('handleCommentChange: ', event);
     };
+
+    const handleCommentDelete = (event: string): void => {
+        console.log('handleCommentDelete: ', event);
+    }
     
     return (
         <Box>
@@ -226,7 +230,7 @@ const IssueDetail = () => {
                 <Grid item={true} xs={12} md={8}>
                     {issue?.issue_description ? (<IssueDescription issue_description={issueDescription} onIssueDescriptionChange={handleIssueDescriptionChange} />) : null}
 
-                    {comments?.map((comment: IComment, index: number) => <Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} />)}
+                    {comments?.map((comment: IComment, index: number) => <Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />)}
                 </Grid>
                 <Grid 
                     item={true} 

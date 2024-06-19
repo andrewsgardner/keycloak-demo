@@ -4,4 +4,5 @@ export interface ICommentProps {
     modified_date: string;
     comment_text: string;
     onCommentChange: (update: string) => void;
+    onCommentDelete: (id: string) => void;
 }
