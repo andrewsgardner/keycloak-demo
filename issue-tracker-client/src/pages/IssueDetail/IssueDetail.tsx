@@ -200,14 +200,18 @@ const IssueDetail = () => {
                     c.comment_text = res.comment_text;
                 }
             }
-            
+
             setComments(updateComments);
             setSnackbarOpen(true);
         });
     };
 
     const handleCommentDelete = (event: string): void => {
-        console.log('handleCommentDelete: ', event);
+        CommentsAPI.deleteComment(event).then((res: IComment) => {
+            const updateComments: IComment[] = comments?.filter((x) => x.id !== res.id) || [];
+            setComments(updateComments);
+            setSnackbarOpen(true);
+        });
     }
     
     return (
