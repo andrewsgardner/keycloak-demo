@@ -61,7 +61,10 @@ const Comment = (props: ICommentProps) => {
             return;
         }
 
-        props.onCommentChange(textAreaRef.current?.value);
+        props.onCommentChange({
+            id: props.id,
+            comment_text: textAreaRef.current?.value,
+        });
         setEditMode(false);
     };
 

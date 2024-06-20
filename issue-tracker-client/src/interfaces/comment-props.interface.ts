@@ -1,8 +1,10 @@
+import { CommentPatch } from "../types/comment-patch.type";
+
 export interface ICommentProps {
     id: string;
     userid: string;
     modified_date: string;
     comment_text: string;
-    onCommentChange: (update: string) => void;
+    onCommentChange: (update: CommentPatch) => void;
     onCommentDelete: (id: string) => void;
 }

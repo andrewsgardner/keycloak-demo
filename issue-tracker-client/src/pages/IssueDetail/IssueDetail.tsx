@@ -22,6 +22,7 @@ import { IssueStatus } from '../../enums/issue-status.enum';
 import { DateLocaleString } from '../../utils/general.util';
 import IssueDescription from '../../components/IssueDescription/IssueDescription';
 import Comment from '../../components/Comment/Comment';
+import { CommentPatch } from '../../types/comment-patch.type';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -190,8 +191,19 @@ const IssueDetail = () => {
         });
     };
 
-    const handleCommentChange = (event: string): void => {
-        console.log('handleCommentChange: ', event);
+    const handleCommentChange = (event: CommentPatch): void => {
+        CommentsAPI.patchComment(event).then((res: IComment) => {
+            const updateComments: IComment[] = comments || [];
+
+            for (const c of updateComments) {
+                if (c.id === res.id) {
+                    c.comment_text = res.comment_text;
+                }
+            }
+            
+            setComments(updateComments);
+            setSnackbarOpen(true);
+        });
     };
 
     const handleCommentDelete = (event: string): void => {
