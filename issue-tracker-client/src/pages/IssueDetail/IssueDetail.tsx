@@ -208,7 +208,7 @@ const IssueDetail = () => {
 
     const handleCommentDelete = (event: string): void => {
         CommentsAPI.deleteComment(event).then((res: IComment) => {
-            const updateComments: IComment[] = comments?.filter((x) => x.id !== res.id) || [];
+            const updateComments: IComment[] = comments?.filter((x: IComment) => x.id !== res.id) || [];
             setComments(updateComments);
             setSnackbarOpen(true);
         });
