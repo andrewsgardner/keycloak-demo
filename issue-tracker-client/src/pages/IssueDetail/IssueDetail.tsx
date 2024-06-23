@@ -23,6 +23,7 @@ import { DateLocaleString } from '../../utils/general.util';
 import IssueDescription from '../../components/IssueDescription/IssueDescription';
 import Comment from '../../components/Comment/Comment';
 import { CommentPatch } from '../../types/comment-patch.type';
+import NewComment from '../../components/NewComment/NewComment';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -30,6 +31,7 @@ const IssueDetail = () => {
     const { id } = useParams();
     const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false);
     const [users, setUsers] = React.useState<IUser[]>([]);
+    const [authUser, setAuthUser] = React.useState<IUser | undefined>(undefined);
     const [issue, setIssue] = React.useState<IIssue | undefined>(undefined);
     const [project, setProject] = React.useState<IProject | undefined>(undefined);
     const [comments, setComments] = React.useState<IComment[] | undefined>(undefined);
@@ -57,6 +59,10 @@ const IssueDetail = () => {
     useEffect(() => {
         setIssue(id ? appCtx.state.issues.find((x: IIssue) => x.id === Number.parseInt(id)) : undefined);
     }, [appCtx.state.issues]);
+
+    useEffect(() => {
+        setAuthUser(users.find((x: IUser) => x.username === x.username));
+    }, [users, appCtx.state.profile]);
 
     useEffect(() => {
         if (issue?.assigned_to == null) {
@@ -213,6 +219,14 @@ const IssueDetail = () => {
             setSnackbarOpen(true);
         });
     }
+
+    const handleNewComment = (comment_text: string): void => {
+        console.log('handleNewComment: ', comment_text);
+    };
+
+    const handleCloseIssue = (): void => {
+        console.log('handleCloseIssue: ');
+    };
     
     return (
         <Box>
@@ -245,8 +259,8 @@ const IssueDetail = () => {
             <Grid container spacing={0}>
                 <Grid item={true} xs={12} md={8}>
                     {issue?.issue_description ? (<IssueDescription issue_description={issueDescription} onIssueDescriptionChange={handleIssueDescriptionChange} />) : null}
-
                     {comments?.map((comment: IComment, index: number) => <Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />)}
+                    {authUser ? <NewComment authUser={authUser} onNewComment={handleNewComment} onCloseIssue={handleCloseIssue} /> : null}
                 </Grid>
                 <Grid 
                     item={true} 
