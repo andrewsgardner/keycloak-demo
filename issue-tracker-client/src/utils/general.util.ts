@@ -1,3 +1,5 @@
+import { IUser } from "../interfaces/user.interface";
+
 export const DateAgo = (value: string): string => {
     if (value) {
         const seconds: number = Math.floor((+new Date() - +new Date(`${value}Z`)) / 1000);
@@ -42,4 +44,12 @@ export const DateLocaleString = (value: string): string => {
     };
     
     return date.toLocaleString(undefined, opts);
+};
+
+export const GetInitials = (user: IUser) => {
+  if (user == null) {
+    return '';
+  }
+
+  return `${user.first_name[0]?.toUpperCase()}${user.last_name[0]?.toUpperCase()}`;
 };

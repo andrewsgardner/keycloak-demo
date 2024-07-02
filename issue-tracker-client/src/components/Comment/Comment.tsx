@@ -9,7 +9,7 @@ import { AppContext } from '../../contexts/AppContext';
 import { ICommentProps } from '../../interfaces/comment-props.interface';
 import { Avatar, Card, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, TextareaAutosize as BaseTextareaAutosize, styled, Theme, useTheme, Box, Typography, Link } from '@mui/material';
 import { IUser } from '../../interfaces/user.interface';
-import { DateAgo } from '../../utils/general.util';
+import { DateAgo, GetInitials } from '../../utils/general.util';
 import { KeyEvent } from '../../enums/key-event.enum';
 
 const Comment = (props: ICommentProps) => {
@@ -24,15 +24,7 @@ const Comment = (props: ICommentProps) => {
     useEffect(() => {
         setUser(appCtx.state.users.find((x: IUser) => x.username === props.userid));
     }, [appCtx.state.users]);
-
-    const getInitials = (user: IUser): string => {
-        if (user == null) {
-            return '';
-        }
-        
-        return `${user.first_name[0]?.toUpperCase()}${user.last_name[0]?.toUpperCase()}`;
-    };
-
+    
     const toggleEditMode = (): void => {
         setEditMode(!editMode);
         
@@ -102,7 +94,7 @@ const Comment = (props: ICommentProps) => {
             className="comment"
             variant="outlined">
             <div className="card-header">
-                {user ? <Avatar>{getInitials(user)}</Avatar> : null}
+                {user ? <Avatar>{GetInitials(user)}</Avatar> : null}
                 <header>
                     <h1>{user?.first_name} {user?.last_name}</h1>
                     <h2>{DateAgo(props.modified_date)}</h2>
