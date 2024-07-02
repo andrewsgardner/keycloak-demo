@@ -54,17 +54,19 @@ const NewComment = (props: INewCommentProps) => {
             variant="outlined">
             <div className="card-header">
                 {props.authUser ? <Avatar>{GetInitials(props.authUser)}</Avatar> : null}
-                <header>
-                    <h1>{mode === CommentOperation.Comment ? 'New Comment' : 'Resolve Issue'}</h1>
-                    <FormControl 
-                        sx={{ 
-                            m: 1, 
-                            minWidth: 120, 
+                <div className="card-header-inner">
+                    <header>
+                        <h1>{mode === CommentOperation.Comment ? 'New Comment' : 'Resolve Issue'}</h1>
+                    </header>
+                    <FormControl
+                        sx={{
+                            m: 1,
+                            minWidth: 120,
                             margin: '0 0 10px 0'
-                        }} 
+                        }}
                         size="small">
-                        <InputLabel 
-                            id="comment-mode-label" 
+                        <InputLabel
+                            id="comment-mode-label"
                             sx={{
                                 display: 'none'
                             }}>Mode</InputLabel>
@@ -79,21 +81,21 @@ const NewComment = (props: INewCommentProps) => {
                             <MenuItem value={CommentOperation.CloseIssue}>Close Issue</MenuItem>
                         </Select>
                     </FormControl>
-                </header>
+                </div>
                 <div className="actions"></div>
             </div>
             <div className="card-content">
                 <TextareaAutosize
-                        aria-label={mode === CommentOperation.Comment ? 'Comment textarea' : 'Resolve issue textarea'}
-                        placeholder={mode === CommentOperation.Comment ? 'Write a comment...' : 'Issue Resolution Summary...'}
-                        ref={textAreaRef}
-                        onKeyDown={handleKeydown} />
-                    <IconButton
-                        aria-label="send"
-                        color="primary"
-                        onClick={createComment}>
-                        <SendIcon />
-                    </IconButton>
+                    aria-label={mode === CommentOperation.Comment ? 'Comment textarea' : 'Resolve issue textarea'}
+                    placeholder={mode === CommentOperation.Comment ? 'Write a comment...' : 'Issue resolution Summary...'}
+                    ref={textAreaRef}
+                    onKeyDown={handleKeydown} />
+                <IconButton
+                    aria-label="send"
+                    color="primary"
+                    onClick={createComment}>
+                    <SendIcon />
+                </IconButton>
             </div>
         </Card>
     );

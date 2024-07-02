@@ -11,15 +11,17 @@
             height: 50px;
         }
 
-        header {
-            h1 {
-                font-size: 20px;
-                font-weight: 500;
-                line-height: normal;
-                margin: 0;
-                padding: 0 0 0 16px;
+        .card-header-inner {
+            header {
+                h1 {
+                    font-size: 20px;
+                    font-weight: 500;
+                    line-height: normal;
+                    margin: 0;
+                    padding: 0 0 0 16px;
+                }
             }
-            
+
             .MuiFormControl-root {
                 margin: 2px 0 0 16px;
     
