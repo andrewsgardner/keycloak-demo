@@ -24,6 +24,7 @@ import IssueDescription from '../../components/IssueDescription/IssueDescription
 import Comment from '../../components/Comment/Comment';
 import { CommentPatch } from '../../types/comment-patch.type';
 import NewComment from '../../components/NewComment/NewComment';
+import { CommentCreate } from '../../types/comment-create.type';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -221,7 +222,20 @@ const IssueDetail = () => {
     }
 
     const handleNewComment = (comment_text: string): void => {
-        console.log('handleNewComment: ', comment_text);
+        if (issue == null || authUser == null) {
+            return;
+        }
+        
+        const params: CommentCreate = {
+            comment_text: comment_text,
+            related_issue_id: issue.id,
+            userid: authUser.username,
+        };
+
+        CommentsAPI.createComment(params).then((res) => {
+            setComments((prev: IComment[] | undefined) => [...prev || [], res]);
+            setSnackbarOpen(true);
+        });
     };
 
     const handleCloseIssue = (resolution_summary: string): void => {
