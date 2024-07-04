@@ -40,7 +40,31 @@ const NewComment = (props: INewCommentProps) => {
         }
     `);
 
+    const getTextareaAriaLabel = (): string => {
+        switch (mode) {
+            case CommentOperation.Comment:
+                return 'Comment textarea';
+            case CommentOperation.CloseIssue:
+                return 'Resolve issue textarea';
+            default:
+                return 'textarea';
+        }
+    };
+
+    const getTextareaPlaceholder = (): string => {
+        switch (mode) {
+            case CommentOperation.Comment:
+                return 'Write a comment...';
+            case CommentOperation.CloseIssue:
+                return 'Issue resolution summary...';
+            default:
+                return '';
+        }
+    };
+
     const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {};
+
+    const submit = () => {};
 
     const createComment = () => {};
 
@@ -86,8 +110,8 @@ const NewComment = (props: INewCommentProps) => {
             </div>
             <div className="card-content">
                 <TextareaAutosize
-                    aria-label={mode === CommentOperation.Comment ? 'Comment textarea' : 'Resolve issue textarea'}
-                    placeholder={mode === CommentOperation.Comment ? 'Write a comment...' : 'Issue resolution Summary...'}
+                    aria-label={getTextareaAriaLabel()}
+                    placeholder={getTextareaPlaceholder()}
                     ref={textAreaRef}
                     onKeyDown={handleKeydown} />
                 <IconButton
