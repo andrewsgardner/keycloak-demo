@@ -225,21 +225,41 @@ const IssueDetail = () => {
         if (issue == null || authUser == null) {
             return;
         }
-        
+
         const params: CommentCreate = {
             comment_text: comment_text,
             related_issue_id: issue.id,
             userid: authUser.username,
         };
 
-        CommentsAPI.createComment(params).then((res) => {
+        CommentsAPI.createComment(params).then((res: IComment) => {
             setComments((prev: IComment[] | undefined) => [...prev || [], res]);
             setSnackbarOpen(true);
         });
     };
 
     const handleCloseIssue = (resolution_summary: string): void => {
-        console.log('handleCloseIssue: ', resolution_summary);
+        if (issue == null) {
+            return;
+        }
+        
+        const params: IssuePatch = {
+            id: issue.id,
+            issue_summary: issue.issue_summary,
+            modified_by: issue.modified_by,
+            issue_description: issue.issue_description,
+            issue_priority: issue.issue_priority,
+            target_resolution_date: issue.target_resolution_date,
+            actual_resolution_date: new Date().toISOString().substring(0, 10),
+            resolution_summary: resolution_summary ?? null,
+            assigned_to: issue.assigned_to,
+        };
+        
+        IssuesAPI.patchIssue(params).then((res: IIssue) => {
+            setActualResolutionDate(res.actual_resolution_date);
+            setStatus(res.issue_status);
+            setSnackbarOpen(true);
+        });
     };
     
     return (
