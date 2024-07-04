@@ -40,6 +40,17 @@ const NewComment = (props: INewCommentProps) => {
         }
     `);
 
+    const getCardTitle = (): string => {
+        switch (mode) {
+            case CommentOperation.Comment:
+                return 'New Comment';
+            case CommentOperation.CloseIssue:
+                return 'Resolve Issue';
+            default:
+                return '';
+        }
+    };
+
     const getTextareaAriaLabel = (): string => {
         switch (mode) {
             case CommentOperation.Comment:
@@ -80,7 +91,7 @@ const NewComment = (props: INewCommentProps) => {
                 {props.authUser ? <Avatar>{GetInitials(props.authUser)}</Avatar> : null}
                 <div className="card-header-inner">
                     <header>
-                        <h1>{mode === CommentOperation.Comment ? 'New Comment' : 'Resolve Issue'}</h1>
+                        <h1>{getCardTitle()}</h1>
                     </header>
                     <FormControl
                         sx={{
