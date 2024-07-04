@@ -37,6 +37,8 @@ const IssueList = () => {
             const statusMatch: boolean = issue.issue_status === status;
             
             return projectIdMatch && statusMatch;
+        }).sort((a: IIssue, b: IIssue) => {
+            return Date.parse(b.modified_date) - Date.parse(a.modified_date);
         });
       };
 
