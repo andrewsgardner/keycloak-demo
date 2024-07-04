@@ -6,6 +6,7 @@ import { Avatar, Card, TextareaAutosize as BaseTextareaAutosize, styled, useThem
 import { INewCommentProps } from '../../interfaces/new-comment-props.interface';
 import { GetInitials } from '../../utils/general.util';
 import { CommentOperation } from '../../enums/comment-operation.enum';
+import { KeyEvent } from '../../enums/key-event.enum';
 
 const NewComment = (props: INewCommentProps) => {
     const theme: Theme = useTheme();
@@ -73,11 +74,43 @@ const NewComment = (props: INewCommentProps) => {
         }
     };
 
-    const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {};
+    const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+        if (event.key === KeyEvent.Enter) {
+            event.preventDefault();
+            submit();
+        }
+    };
 
-    const submit = () => {};
+    const submit = (): void => {
+        switch (mode) {
+            case CommentOperation.Comment:
+                createComment();
+                break;
+            case CommentOperation.CloseIssue:
+                closeIssue();
+                break;
+            default:
+                break;
+        }
+    };
 
-    const createComment = () => {};
+    const createComment = (): void => {
+        if (!textAreaRef.current?.value) {
+            return;
+        }
+
+        props.onNewComment(textAreaRef.current.value);
+        textAreaRef.current.value = '';
+    };
+
+    const closeIssue = (): void => {
+        if (!textAreaRef.current?.value) {
+            return;
+        }
+        
+        props.onCloseIssue(textAreaRef.current.value);
+        textAreaRef.current.value = '';
+    };
 
     const handleChange = (event: SelectChangeEvent) => {
         setMode(event.target.value as CommentOperation);
@@ -128,7 +161,7 @@ const NewComment = (props: INewCommentProps) => {
                 <IconButton
                     aria-label="send"
                     color="primary"
-                    onClick={createComment}>
+                    onClick={submit}>
                     <SendIcon />
                 </IconButton>
             </div>

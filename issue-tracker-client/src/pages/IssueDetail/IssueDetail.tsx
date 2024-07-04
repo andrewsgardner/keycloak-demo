@@ -224,8 +224,8 @@ const IssueDetail = () => {
         console.log('handleNewComment: ', comment_text);
     };
 
-    const handleCloseIssue = (): void => {
-        console.log('handleCloseIssue: ');
+    const handleCloseIssue = (resolution_summary: string): void => {
+        console.log('handleCloseIssue: ', resolution_summary);
     };
     
     return (
