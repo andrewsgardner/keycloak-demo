@@ -263,7 +263,7 @@ const IssueDetail = () => {
     };
     
     return (
-        <Box>
+        <Box className="issue-detail">
             <Typography variant="h4" component="h1" gutterBottom>
                 <Link 
                     style={{
@@ -290,11 +290,46 @@ const IssueDetail = () => {
                 {`ISSUE-${issue?.id}`}
             </Typography>
             <Typography variant="h4" component="h2" gutterBottom>{issue?.issue_summary}</Typography>
-            <Grid container spacing={0}>
-                <Grid item={true} xs={12} md={8}>
+            <Grid 
+                container 
+                spacing={0}>
+                <Grid 
+                    item={true} 
+                    xs={12} 
+                    md={8}
+                    className="main">
                     {issue?.issue_description ? <IssueDescription issue_description={issueDescription} onIssueDescriptionChange={handleIssueDescriptionChange} /> : null}
-                    {comments?.map((comment: IComment, index: number) => <Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />)}
-                    {authUser ? <NewComment authUser={authUser} onNewComment={handleNewComment} onCloseIssue={handleCloseIssue} /> : null}
+                    {comments?.map((comment: IComment, index: number) => (
+                        <Box sx={{
+                            position: 'relative',
+                            '::before': {
+                                content: `""`,
+                                position: 'absolute',
+                                top: '-16px',
+                                left: '82px',
+                                width: '4px',
+                                height: '16px',
+                                backgroundColor: theme.palette.primary.main,
+                            }
+                        }}><Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />
+                        </Box>
+                    ))}
+                    {authUser ? (
+                        <Box sx={{
+                            position: 'relative',
+                            '::before': {
+                                content: `""`,
+                                position: 'absolute',
+                                top: '-16px',
+                                left: '82px',
+                                width: '4px',
+                                height: '16px',
+                                backgroundColor: theme.palette.primary.main,
+                            }
+                        }}>
+                            <NewComment authUser={authUser} onNewComment={handleNewComment} onCloseIssue={handleCloseIssue} />
+                        </Box>
+                    ) : null}
                 </Grid>
                 <Grid 
                     item={true} 
