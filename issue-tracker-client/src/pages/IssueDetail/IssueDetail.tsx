@@ -62,7 +62,7 @@ const IssueDetail = () => {
     }, [id, appCtx.state.issues]);
 
     useEffect(() => {
-        setAuthUser(users.find((x: IUser) => x.username === x.username));
+        setAuthUser(users.find((x: IUser) => x.username === appCtx.state.profile?.preferred_username));
     }, [users, appCtx.state.profile]);
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const IssueDetail = () => {
         setActualResolutionDate(issue.actual_resolution_date);
         setTargetResolutionDate(issue.target_resolution_date);
         setIssueDescription(issue.issue_description);
-    }, [issue]);
+    }, [issue, appCtx.state.projects]);
 
     useEffect(() => {
         if (!issue) {
