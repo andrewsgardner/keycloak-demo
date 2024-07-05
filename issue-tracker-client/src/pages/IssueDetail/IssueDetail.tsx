@@ -306,18 +306,21 @@ const IssueDetail = () => {
                     className="main">
                     {issue?.issue_description ? <IssueDescription issue_description={issueDescription} onIssueDescriptionChange={handleIssueDescriptionChange} /> : null}
                     {comments?.map((comment: IComment, index: number) => (
-                        <Box sx={{
-                            position: 'relative',
-                            '::before': {
-                                content: `""`,
-                                position: 'absolute',
-                                top: '-16px',
-                                left: '82px',
-                                width: '4px',
-                                height: '16px',
-                                backgroundColor: theme.palette.primary.main,
-                            }
-                        }}><Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />
+                        <Box
+                            key={index}
+                            sx={{
+                                position: 'relative',
+                                '::before': {
+                                    content: `""`,
+                                    position: 'absolute',
+                                    top: '-16px',
+                                    left: '82px',
+                                    width: '4px',
+                                    height: '16px',
+                                    backgroundColor: theme.palette.primary.main,
+                                }
+                            }}>
+                                <Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />
                         </Box>
                     ))}
                     {authUser ? (
