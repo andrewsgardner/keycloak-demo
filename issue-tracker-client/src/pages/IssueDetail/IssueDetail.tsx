@@ -59,7 +59,7 @@ const IssueDetail = () => {
 
     useEffect(() => {
         setIssue(id ? appCtx.state.issues.find((x: IIssue) => x.id === Number.parseInt(id)) : undefined);
-    }, [appCtx.state.issues]);
+    }, [id, appCtx.state.issues]);
 
     useEffect(() => {
         setAuthUser(users.find((x: IUser) => x.username === x.username));
