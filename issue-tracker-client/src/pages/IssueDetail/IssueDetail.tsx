@@ -264,7 +264,7 @@ const IssueDetail = () => {
     
     return (
         <Box className="issue-detail">
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="body1" component="span" gutterBottom>
                 <Link 
                     style={{
                         color: theme.palette.text.primary,
@@ -275,6 +275,8 @@ const IssueDetail = () => {
                     style={{
                         margin: '0 3px',
                         verticalAlign: 'middle',
+                        width: '19px',
+                        height: '19px',
                     }} />
                 <Link
                     style={{
@@ -286,10 +288,14 @@ const IssueDetail = () => {
                     style={{
                         margin: '0 3px',
                         verticalAlign: 'middle',
+                        width: '19px',
+                        height: '19px',
                     }} />
                 {`ISSUE-${issue?.id}`}
             </Typography>
-            <Typography variant="h4" component="h2" gutterBottom>{issue?.issue_summary}</Typography>
+            <header>
+                <Typography variant="h4" component="h1">{issue?.issue_summary}</Typography>
+            </header>
             <Grid 
                 container 
                 spacing={0}>

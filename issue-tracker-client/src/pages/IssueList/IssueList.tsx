@@ -47,8 +47,8 @@ const IssueList = () => {
       };
 
     return (
-        <Box>
-            <Typography variant="h4" component="h1" gutterBottom>
+        <Box className="issue-list">
+            <Typography variant="body1" component="span" gutterBottom>
                 <Link 
                     style={{
                         color: theme.palette.text.primary,
@@ -59,9 +59,14 @@ const IssueList = () => {
                     style={{
                         margin: '0 3px',
                         verticalAlign: 'middle',
+                        width: '19px',
+                        height: '19px',
                     }} />
                 {project?.project_name}
             </Typography>
+            <header>
+                <Typography variant="h4" component="h1">Issues</Typography>
+            </header>
             <TableContainer
                 component={Paper}>
                     <Table

@@ -23,8 +23,10 @@ const ProjectList = () => {
       }));
 
     return (
-        <Box>
-            <Typography variant="h4" component="h1" gutterBottom>Projects</Typography>
+        <Box className="project-list">
+            <header>
+                <Typography variant="h4" component="h1">Projects</Typography>
+            </header>
             <TableContainer 
                 component={Paper}>
                 <Table 
