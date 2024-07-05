@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Link, createBrowserRouter, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import './IssueList.scss';
 import { AppContext } from '../../contexts/AppContext';
@@ -19,7 +19,7 @@ const IssueList = () => {
     
     useEffect(() => {
         setProject(id ? appCtx.state.projects.find((x: IProject) => x.id === Number.parseInt(id)) : undefined);
-    }, [appCtx.state.projects]);
+    }, [id, appCtx.state.projects]);
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
