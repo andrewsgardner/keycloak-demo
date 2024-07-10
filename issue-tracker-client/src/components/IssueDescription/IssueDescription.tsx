@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import './IssueDescription.scss';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
+import { AppContext } from '../../contexts/AppContext';
 import { IIssueDescriptionProps } from '../../interfaces/issue-description-props.interface';
 import { Card, IconButton, Theme, Typography, useTheme, TextareaAutosize as BaseTextareaAutosize, styled, Box, Link } from '@mui/material';
 import { KeyEvent } from '../../enums/key-event.enum';
+import { IsUserInRole } from '../../utils/general.util';
+import { AuthRole } from '../../enums/auth-role.enum';
 
 const IssueDescription = (props: IIssueDescriptionProps) => {
+    const appCtx = useContext(AppContext);
     const theme: Theme = useTheme();
     const [editMode, setEditMode] = React.useState<boolean>(false);
     const textAreaRef: React.RefObject<HTMLTextAreaElement> = React.useRef<HTMLTextAreaElement>(null);
@@ -67,12 +71,14 @@ const IssueDescription = (props: IIssueDescriptionProps) => {
                     <h1>Description</h1>
                 </header>
                 <div className="actions">
-                    <IconButton 
-                        disabled={editMode}
-                        aria-label="Edit description"
-                        onClick={() => setEditMode(!editMode)}>
-                        <EditIcon />
-                    </IconButton>
+                    {IsUserInRole(AuthRole.Contributor, appCtx.state.roles) ? (
+                        <IconButton 
+                            disabled={editMode}
+                            aria-label="Edit description"
+                            onClick={() => setEditMode(!editMode)}>
+                            <EditIcon />
+                        </IconButton>
+                    ) : null}
                 </div>
             </div>
             <div className="card-content">

@@ -9,7 +9,7 @@ import { AppContext } from '../../contexts/AppContext';
 import { ICommentProps } from '../../interfaces/comment-props.interface';
 import { Avatar, Card, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, TextareaAutosize as BaseTextareaAutosize, styled, Theme, useTheme, Box, Typography, Link } from '@mui/material';
 import { IUser } from '../../interfaces/user.interface';
-import { DateAgo, GetInitials } from '../../utils/general.util';
+import { DateAgo, GetInitials, IsAccessAllowed, IsAuthUser } from '../../utils/general.util';
 import { KeyEvent } from '../../enums/key-event.enum';
 
 const Comment = (props: ICommentProps) => {
@@ -17,6 +17,8 @@ const Comment = (props: ICommentProps) => {
     const theme: Theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [user, setUser] = React.useState<IUser | undefined>(undefined);
+    const [isAuthUser, setIsAuthUser] = React.useState<boolean>(false);
+    const [tokenRoles, setTokenRoles] = React.useState<string[]>([]);
     const [editMode, setEditMode] = React.useState<boolean>(false);
     const open: boolean = Boolean(anchorEl);
     const textAreaRef: React.RefObject<HTMLTextAreaElement> = React.useRef<HTMLTextAreaElement>(null);
@@ -24,6 +26,18 @@ const Comment = (props: ICommentProps) => {
     useEffect(() => {
         setUser(appCtx.state.users.find((x: IUser) => x.username === props.userid));
     }, [appCtx.state.users]);
+
+    useEffect(() => {
+        if (props.authUsername && user?.username) {
+            setIsAuthUser(IsAuthUser(props.authUsername, user.username));
+        }
+    }, [props.authUsername, user?.username]);
+
+    useEffect(() => {
+        if (appCtx.state.roles) {
+            setTokenRoles(appCtx.state.roles);
+        }
+    }, [appCtx.state.roles]);
     
     const toggleEditMode = (): void => {
         setEditMode(!editMode);
@@ -100,15 +114,17 @@ const Comment = (props: ICommentProps) => {
                     <h2>{DateAgo(props.modified_date)}</h2>
                 </header>
                 <div className="actions">
-                    <IconButton
-                        aria-label="Actions for this comment"
-                        id={`actions-btn-${props.id}`}
-                        aria-controls={open ? `actions-menu-${props.id}` : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={(e: React.MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget)}>
-                        <MoreHorizIcon />
-                    </IconButton>
+                    {IsAccessAllowed(isAuthUser, tokenRoles) ? (
+                        <IconButton
+                            aria-label="Actions for this comment"
+                            id={`actions-btn-${props.id}`}
+                            aria-controls={open ? `actions-menu-${props.id}` : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                            onClick={(e: React.MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget)}>
+                            <MoreHorizIcon />
+                        </IconButton>
+                    ) : null}
                     <Menu
                         id={`actions-menu-${props.id}`}
                         MenuListProps={{

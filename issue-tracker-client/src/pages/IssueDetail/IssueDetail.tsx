@@ -19,12 +19,13 @@ import { IssuePatch } from '../../types/issue-patch.type';
 import { IssuesAPI } from '../../apis/IssuesAPI';
 import { IssuePriority } from '../../enums/issue-priority.enum';
 import { IssueStatus } from '../../enums/issue-status.enum';
-import { DateLocaleString } from '../../utils/general.util';
+import { DateLocaleString, IsUserInRole } from '../../utils/general.util';
 import IssueDescription from '../../components/IssueDescription/IssueDescription';
 import Comment from '../../components/Comment/Comment';
 import { CommentPatch } from '../../types/comment-patch.type';
 import NewComment from '../../components/NewComment/NewComment';
 import { CommentCreate } from '../../types/comment-create.type';
+import { AuthRole } from '../../enums/auth-role.enum';
 
 const IssueDetail = () => {
     const appCtx = useContext(AppContext);
@@ -33,6 +34,7 @@ const IssueDetail = () => {
     const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(false);
     const [users, setUsers] = React.useState<IUser[]>([]);
     const [authUser, setAuthUser] = React.useState<IUser | undefined>(undefined);
+    const [tokenRoles, setTokenRoles] = React.useState<string[]>([]);
     const [issue, setIssue] = React.useState<IIssue | undefined>(undefined);
     const [project, setProject] = React.useState<IProject | undefined>(undefined);
     const [comments, setComments] = React.useState<IComment[] | undefined>(undefined);
@@ -89,6 +91,12 @@ const IssueDetail = () => {
             setComments(res);
         });
     }, [issue]);
+
+    useEffect(() => {
+        if (appCtx.state.roles) {
+            setTokenRoles(appCtx.state.roles);
+        }
+    }, [appCtx.state.roles]);
 
     const handleSnackbarClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -320,10 +328,10 @@ const IssueDetail = () => {
                                     backgroundColor: theme.palette.primary.main,
                                 }
                             }}>
-                                <Comment key={index} id={comment.id} comment_text={comment.comment_text} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />
+                                <Comment key={index} id={comment.id} comment_text={comment.comment_text} authUsername={authUser?.username ?? ''} userid={comment.userid} modified_date={comment.modified_date} onCommentChange={handleCommentChange} onCommentDelete={handleCommentDelete} />
                         </Box>
                     ))}
-                    {authUser ? (
+                    {authUser && IsUserInRole(AuthRole.Contributor, tokenRoles) ? (
                         <Box sx={{
                             position: 'relative',
                             '::before': {
@@ -381,7 +389,8 @@ const IssueDetail = () => {
                                     value={assignedTo || ''}
                                     onChange={handleAssigneeChange}
                                     onClose={handleUserSearchReset}
-                                    renderValue={(selected: string) => selected}>
+                                    renderValue={(selected: string) => selected}
+                                    disabled={!IsUserInRole(AuthRole.Contributor, tokenRoles)}>
                                     <ListSubheader>
                                         <TextField
                                             autoFocus
@@ -426,7 +435,8 @@ const IssueDetail = () => {
                         <FormControl variant="standard">
                             <Select
                                 value={priority || ''}
-                                onChange={handlePriorityChange}>
+                                onChange={handlePriorityChange}
+                                disabled={!IsUserInRole(AuthRole.Contributor, tokenRoles)}>
                                 {(Object.values(IssuePriority) as string[]).map((value: string, index: number) => (
                                     <MenuItem key={index} value={value}>
                                         {value}
@@ -462,7 +472,8 @@ const IssueDetail = () => {
                                         textField: {
                                             variant: 'standard',
                                         }
-                                    }} />
+                                    }}
+                                    disabled={!IsUserInRole(AuthRole.Contributor, tokenRoles)} />
                             </LocalizationProvider>
                         )}
                     </Box>

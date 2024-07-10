@@ -1,3 +1,4 @@
+import { AuthRole } from "../enums/auth-role.enum";
 import { IUser } from "../interfaces/user.interface";
 
 export const DateAgo = (value: string): string => {
@@ -52,4 +53,32 @@ export const GetInitials = (user: IUser) => {
   }
 
   return `${user.first_name[0]?.toUpperCase()}${user.last_name[0]?.toUpperCase()}`;
+};
+
+export const IsUserInRole = (authRole: AuthRole, tokenRoles: string[]): boolean => {
+  return tokenRoles.includes(authRole);
+};
+
+export const IsAuthUser = (authUsername: string, username: string): boolean => {
+  return authUsername === username;
+};
+
+export const IsAccessAllowed = (isAuthUser: boolean, tokenRoles: string[]): boolean => {
+  const administrator: boolean = IsUserInRole(AuthRole.Administrator, tokenRoles);
+  const contributor: boolean = IsUserInRole(AuthRole.Contributor, tokenRoles);
+  const observer: boolean = IsUserInRole(AuthRole.Observer, tokenRoles);
+  
+  if (administrator) {
+    // Administrators can edit/delete comments and modify issues created by any user.
+    return true;
+  } else if (isAuthUser && contributor) {
+    // Contributors can only edit/delete comments and modify issues they have created.
+    return true;
+  } else if (observer) {
+    // Observers can't edit/delete comments or modify issues.
+    return false;
+  } else {
+    // Refuse access for everything else.
+    return false;
+  }
 };
