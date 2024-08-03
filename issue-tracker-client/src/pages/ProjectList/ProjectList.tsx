@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
 
 import './ProjectList.scss';
+import AddIcon from '@mui/icons-material/Add';
 import { AppContext } from '../../contexts/AppContext';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled, tableCellClasses } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled, tableCellClasses } from '@mui/material';
 import { IProject } from '../../interfaces/project.interface';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { DateAgo, DateLocaleString } from '../../utils/general.util';
+import { ReducerActionKind } from '../../interfaces/reducer-state.interface';
+import { FormDialogType } from '../../enums/form-dialog-type.enum';
 
 const ProjectList = () => {
     const appCtx = useContext(AppContext);
     const theme = useTheme();
-
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
             padding: '10px 16px',
@@ -20,13 +22,33 @@ const ProjectList = () => {
         [`&.${tableCellClasses.body}`]: {
             padding: '10px 16px',
         },
-      }));
+    }));
+
+    const handleUpdateFormDialogStatus = (): void => {
+        appCtx.dispatch({
+            type: ReducerActionKind.UPDATE_FORM_DIALOG_STATUS,
+            payload: {
+                type: FormDialogType.Project,
+                isOpen: true,
+            },
+        });
+    };
 
     return (
         <Box className="project-list">
-            <header>
-                <Typography variant="h4" component="h1">Projects</Typography>
-            </header>
+            <div className="heading">
+                <header>
+                    <Typography variant="h4" component="h1">Projects</Typography>
+                </header>
+                <div className="actions">
+                    <Button 
+                        variant="outlined" 
+                        startIcon={<AddIcon />}
+                        onClick={handleUpdateFormDialogStatus}>
+                        New Project
+                    </Button>
+                </div>
+            </div>
             <TableContainer 
                 component={Paper}>
                 <Table 

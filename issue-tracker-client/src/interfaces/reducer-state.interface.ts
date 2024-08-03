@@ -3,6 +3,7 @@ import { UserProfile } from "oidc-client-ts";
 import { IUser } from "./user.interface";
 import { IProject } from "./project.interface";
 import { IIssue } from "./issue.interface";
+import { IFormDialogStatus } from "./form-dialog-status.interface";
 
 export enum ReducerActionKind {
     UPDATE_COLOR_MODE = 'UPDATE_COLOR_MODE',
@@ -15,6 +16,7 @@ export enum ReducerActionKind {
     UPDATE_USERS = 'UPDATE_USERS',
     UPDATE_PROJECTS = 'UPDATE_PROJECTS',
     UPDATE_ISSUES = 'UPDATE_ISSUES',
+    UPDATE_FORM_DIALOG_STATUS = 'UPDATE_FORM_DIALOG_STATUS',
 }
 
 export interface IReducerState {
@@ -28,6 +30,7 @@ export interface IReducerState {
     users: IUser[];
     projects: IProject[];
     issues: IIssue[];
+    formDialogStatus: IFormDialogStatus;
 }
 
 export interface IReducerAction {

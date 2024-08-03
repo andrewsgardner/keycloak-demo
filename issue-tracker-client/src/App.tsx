@@ -18,6 +18,7 @@ import { IProject } from './interfaces/project.interface';
 import { IssuesAPI } from './apis/IssuesAPI';
 import { IIssue } from './interfaces/issue.interface';
 import Dashboard from './components/Dashboard/Dashboard';
+import FormDialog from './dialogs/FormDialog';
 
 const initialState: IReducerState = {
   colorMode: 'light',
@@ -30,6 +31,10 @@ const initialState: IReducerState = {
   users: [],
   projects: [],
   issues: [],
+  formDialogStatus: {
+    type: null,
+    isOpen: false,
+  },
 };
 
 const reducer = (state: IReducerState, action: IReducerAction) => {
@@ -84,6 +89,11 @@ const reducer = (state: IReducerState, action: IReducerAction) => {
         ...state,
         issues: action.payload,
       };
+    case ReducerActionKind.UPDATE_FORM_DIALOG_STATUS:
+      return {
+        ...state,
+        formDialogStatus: action.payload,
+      }
     default:
       throw new Error(`[reducer] Unknown operation! state: ${state} action: ${action}`);
   }
@@ -202,6 +212,7 @@ const App = () => {
           <Toolbar />
             <main>
               <Dashboard />
+              {state.formDialogStatus.isOpen ? <FormDialog /> : null}
             </main>
         </ThemeProvider>
       </AppContext.Provider>
