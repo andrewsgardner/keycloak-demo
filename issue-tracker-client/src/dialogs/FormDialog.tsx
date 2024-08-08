@@ -13,7 +13,7 @@ import { FormDetails } from '../types/form-details.type';
 const FormDialog = () => {
     const appCtx = useContext(AppContext);
     const newProjectConfig = (onChange: (value: string, field: string) => void, formDetails: FormDetails): IFormConfig => ({
-        grid: { xs: 12, sm: 6, },
+        grid: { xs: 12 },
         fields: [
             {
                 label: 'Name',
