@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import './FormDialog.scss';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
@@ -73,6 +73,16 @@ const FormDialog = () => {
         };
     };
     const [formDetails, setFormDetails] = React.useState<FormDetails>({});
+    const [formConfig, setFormConfig] = React.useState<IFormConfig>({
+        grid: {},
+        fields: [],
+    });
+
+    useEffect(() => {
+        if (appCtx.state.formDialogStatus.type) {
+            setFormConfig(getFormConfig(appCtx.state.formDialogStatus.type));
+        }
+    }, [appCtx.state.formDialogStatus.type]);
 
     const onChange = (value: string, dataLabel: string): void => {
         setFormDetails({
@@ -89,6 +99,21 @@ const FormDialog = () => {
                 isOpen: false,
             },
         });
+    };
+
+    const getFormConfig = (type: FormDialogType): IFormConfig => {
+        switch (type) {
+            case FormDialogType.Project:
+                return newProjectConfig(onChange, formDetails);
+            case FormDialogType.Issue:
+                return newIssueConfig(onChange, formDetails);
+            default:
+                console.error(`Unknown FormDialogType: '${type}'`);
+                return {
+                    grid: {},
+                    fields: [],
+                }
+        }
     };
 
     const getDialogTitle = (): string => {
@@ -111,7 +136,7 @@ const FormDialog = () => {
             <DialogTitle id="alert-dialog-title">{getDialogTitle()}</DialogTitle>
             <DialogContent>
                 <form>
-                    <FormFactory {...newProjectConfig(onChange, formDetails)} />
+                    <FormFactory {...formConfig} />
                 </form>
             </DialogContent>
         </Dialog>
