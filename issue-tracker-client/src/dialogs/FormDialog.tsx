@@ -39,7 +39,7 @@ const FormDialog = () => {
                 },
                 {
                     label: 'Description',
-                    type: FormType.Text, // TODO: change to textarea type...
+                    type: FormType.Textarea,
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'issue_description'),
                     value: formDetails.value,
                     errorFlag: false,

@@ -18,6 +18,18 @@ const FormFactory = (props: IFormConfig) => {
                         margin="dense"
                         onChange={field.onChange} />
                 );
+            case FormType.Textarea:
+                return (
+                    <TextField
+                        multiline
+                        rows={3}
+                        error={field.errorFlag}
+                        label={field.label}
+                        value={field.value}
+                        helperText={field.errorFlag ? field.errorMsg : null}
+                        size="small"
+                        onChange={field.onChange} />
+                );
             default:
                 return;
         }
