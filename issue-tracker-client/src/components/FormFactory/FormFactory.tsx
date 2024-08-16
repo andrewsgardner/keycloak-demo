@@ -16,6 +16,7 @@ const FormFactory = (props: IFormConfig) => {
                         helperText={field.errorFlag ? field.errorMsg : null}
                         size="small"
                         margin="dense"
+                        sx={{ display: 'flex' }}
                         onChange={field.onChange} />
                 );
             case FormType.Textarea:
@@ -28,6 +29,8 @@ const FormFactory = (props: IFormConfig) => {
                         value={field.value}
                         helperText={field.errorFlag ? field.errorMsg : null}
                         size="small"
+                        margin="dense"
+                        sx={{ display: 'flex' }}
                         onChange={field.onChange} />
                 );
             default:
