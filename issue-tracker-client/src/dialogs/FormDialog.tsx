@@ -10,6 +10,7 @@ import { IFormConfig } from '../interfaces/form-config.interface';
 import { FormType } from '../enums/form-type.enum';
 import { FormDetails } from '../types/form-details.type';
 import { IssuePriority } from '../enums/issue-priority.enum';
+import { IUser } from '../interfaces/user.interface';
 
 const FormDialog = () => {
     const appCtx = useContext(AppContext);
@@ -57,9 +58,10 @@ const FormDialog = () => {
                 },
                 {
                     label: 'Assignee',
-                    type: FormType.Text, // TODO: change to select type...
+                    type: FormType.Select,
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'assigned_to'),
                     value: formDetails.value,
+                    options: ['None', ...appCtx.state.users.map((x: IUser) => x.username)],
                     errorFlag: false,
                     errorMsg: 'Please select an assignee.',
                 },
