@@ -1,11 +1,11 @@
 import './FormFactory.scss';
-import { TextField } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { FormType } from '../../enums/form-type.enum';
 import { IFormConfig, IFormFields } from '../../interfaces/form-config.interface';
 
 const FormFactory = (props: IFormConfig) => {
-    const getField = (field: IFormFields): JSX.Element | undefined => {
+    const getField = (field: IFormFields, index: number): JSX.Element | undefined => {
         switch (field.type) {
             case FormType.Text:
                 return (
@@ -33,6 +33,30 @@ const FormFactory = (props: IFormConfig) => {
                         sx={{ display: 'flex' }}
                         onChange={field.onChange} />
                 );
+            case FormType.Select:
+                return (
+                    <FormControl 
+                        size="small"
+                        sx={{ 
+                            display: 'flex',
+                            margin: '8px 0 4px 0',
+                        }}>
+                        <InputLabel id={`form-factory-select-${index}-label`}>{field.label}</InputLabel>
+                        <Select
+                            error={field.errorFlag}
+                            labelId={`form-factory-select-${index}-label`}
+                            label={field.label}
+                            value={field.value}
+                            size="small"
+                            margin="dense"
+                            onChange={() => field.onChange}>
+                                {field.options?.map((value: string, index: number) => (
+                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                ))}
+                        </Select>
+                        {field.errorFlag ? <FormHelperText>{field.errorMsg}</FormHelperText> : null}
+                    </FormControl>
+                );
             default:
                 return;
         }
@@ -42,9 +66,9 @@ const FormFactory = (props: IFormConfig) => {
         <Grid
             container
             spacing={2}>
-            {props.fields.map((f: IFormFields, index: number) => (
-                <Grid key={index} {...props.grid}>
-                    {getField(f)}
+            {props.fields.map((f: IFormFields, i: number) => (
+                <Grid key={i} {...props.grid}>
+                    {getField(f, i)}
                 </Grid>
             ))}
         </Grid>

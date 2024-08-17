@@ -9,6 +9,7 @@ import { FormDialogType } from '../enums/form-dialog-type.enum';
 import { IFormConfig } from '../interfaces/form-config.interface';
 import { FormType } from '../enums/form-type.enum';
 import { FormDetails } from '../types/form-details.type';
+import { IssuePriority } from '../enums/issue-priority.enum';
 
 const FormDialog = () => {
     const appCtx = useContext(AppContext);
@@ -47,14 +48,15 @@ const FormDialog = () => {
                 },
                 {
                     label: 'Priority',
-                    type: FormType.Text, // TODO: change to select type...
+                    type: FormType.Select,
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'issue_priority'),
                     value: formDetails.value,
+                    options: Object.values(IssuePriority),
                     errorFlag: false,
                     errorMsg: 'Please select a priority.',
                 },
                 {
-                    label: 'assignee',
+                    label: 'Assignee',
                     type: FormType.Text, // TODO: change to select type...
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'assigned_to'),
                     value: formDetails.value,
