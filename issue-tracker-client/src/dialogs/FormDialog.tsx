@@ -6,7 +6,7 @@ import FormFactory from '../components/FormFactory/FormFactory';
 import { AppContext } from '../contexts/AppContext';
 import { ReducerActionKind } from '../interfaces/reducer-state.interface';
 import { FormDialogType } from '../enums/form-dialog-type.enum';
-import { IFormConfig } from '../interfaces/form-config.interface';
+import { IFormConfig, IFormFields } from '../interfaces/form-config.interface';
 import { FormType } from '../enums/form-type.enum';
 import { FormDetails } from '../types/form-details.type';
 import { IssuePriority } from '../enums/issue-priority.enum';
@@ -20,12 +20,18 @@ const FormDialog = () => {
             {
                 label: 'Name',
                 type: FormType.Text,
+                required: true,
+                pattern: '.',
+                isValid: false,
+                fieldName: 'project_name',
                 onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'project_name'),
                 value: formDetails.value,
                 errorFlag: false,
                 errorMsg: 'Please enter a name.',
             }
         ],
+        submitBtnLabel: 'Create Project',
+        isFormValid: false,
     });
     const newIssueConfig = (onChange: (value: string, field: string) => void, formDetails: FormDetails): IFormConfig => {
         return {
@@ -34,6 +40,10 @@ const FormDialog = () => {
                 {
                     label: 'Summary',
                     type: FormType.Text,
+                    required: true,
+                    pattern: '.',
+                    isValid: false,
+                    fieldName: 'issue_summary',
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'issue_summary'),
                     value: formDetails.value,
                     errorFlag: false,
@@ -42,6 +52,9 @@ const FormDialog = () => {
                 {
                     label: 'Description',
                     type: FormType.Textarea,
+                    required: false,
+                    isValid: true,
+                    fieldName: 'issue_description',
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'issue_description'),
                     value: formDetails.value,
                     errorFlag: false,
@@ -50,7 +63,11 @@ const FormDialog = () => {
                 {
                     label: 'Priority',
                     type: FormType.Select,
+                    required: false,
+                    isValid: true,
+                    fieldName: 'issue_priority',
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'issue_priority'),
+                    defaultValue: IssuePriority.High,
                     value: formDetails.value,
                     options: Object.values(IssuePriority),
                     errorFlag: false,
@@ -59,27 +76,38 @@ const FormDialog = () => {
                 {
                     label: 'Assignee',
                     type: FormType.Select,
+                    required: false,
+                    isValid: true,
+                    fieldName: 'assigned_to',
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'assigned_to'),
+                    defaultValue: appCtx.state.profile?.preferred_username,
                     value: formDetails.value,
-                    options: ['None', ...appCtx.state.users.map((x: IUser) => x.username)],
+                    options: appCtx.state.users.map((x: IUser) => x.username),
                     errorFlag: false,
                     errorMsg: 'Please select an assignee.',
                 },
                 {
                     label: 'Target Resolution Date',
-                    type: FormType.Text, // TODO: change to date type...
+                    type: FormType.Date,
+                    required: false,
+                    isValid: true,
+                    fieldName: 'target_resolution_date',
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value, 'target_resolution_date'),
                     value: formDetails.value,
                     errorFlag: false,
-                    errorMsg: 'Please enter a target resolution date.',
+                    errorMsg: 'Please enter a valid target resolution date.',
                 },
             ],
+            submitBtnLabel: 'Create Issue',
+            isFormValid: false,
         };
     };
     const [formDetails, setFormDetails] = React.useState<FormDetails>({});
     const [formConfig, setFormConfig] = React.useState<IFormConfig>({
         grid: {},
         fields: [],
+        submitBtnLabel: 'Create',
+        isFormValid: false,
     });
 
     useEffect(() => {
@@ -87,6 +115,24 @@ const FormDialog = () => {
             setFormConfig(getFormConfig(appCtx.state.formDialogStatus.type));
         }
     }, [appCtx.state.formDialogStatus.type]);
+
+    useEffect(() => {
+        const updateFormConfig: IFormConfig = formConfig;
+
+        for (const i in formDetails) {
+            const index: number = updateFormConfig.fields.findIndex((x: IFormFields) => x.fieldName === i);
+            const required: boolean = updateFormConfig.fields[index].required;
+            const pattern: string | undefined = updateFormConfig.fields[index].pattern;
+
+            if (required && pattern) {
+                updateFormConfig.fields[index].errorFlag = new RegExp(i).test(pattern);
+                updateFormConfig.fields[index].isValid = !updateFormConfig.fields[index].errorFlag && formDetails[i].length > 0;
+            }
+        }
+        
+        updateFormConfig.isFormValid = updateFormConfig.fields.every((x: IFormFields) => x.isValid);
+        setFormConfig((prev) => ({...prev, updateFormConfig}));
+    }, [formConfig, formDetails]);
 
     const onChange = (value: string, dataLabel: string): void => {
         setFormDetails({
@@ -116,6 +162,8 @@ const FormDialog = () => {
                 return {
                     grid: {},
                     fields: [],
+                    submitBtnLabel: 'Create',
+                    isFormValid: false,
                 }
         }
     };

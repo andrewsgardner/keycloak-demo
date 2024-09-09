@@ -6,6 +6,8 @@ import { IFormConfig } from '../../interfaces/form-config.interface';
 const props: IFormConfig = {
   grid: {},
   fields: [],
+  submitBtnLabel: 'Create',
+  isFormValid: false,
 };
 
 test('renders dynamic forms', () => {

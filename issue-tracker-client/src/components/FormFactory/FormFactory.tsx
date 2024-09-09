@@ -1,5 +1,9 @@
 import './FormFactory.scss';
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { ChangeEvent } from 'react';
+import { DateTime } from 'luxon';
+import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import Grid from '@mui/material/Unstable_Grid2';
 import { FormType } from '../../enums/form-type.enum';
 import { IFormConfig, IFormFields } from '../../interfaces/form-config.interface';
@@ -10,6 +14,7 @@ const FormFactory = (props: IFormConfig) => {
             case FormType.Text:
                 return (
                     <TextField
+                        required={field.required}
                         error={field.errorFlag}
                         label={field.label}
                         value={field.value}
@@ -24,6 +29,7 @@ const FormFactory = (props: IFormConfig) => {
                     <TextField
                         multiline
                         rows={3}
+                        required={field.required}
                         error={field.errorFlag}
                         label={field.label}
                         value={field.value}
@@ -43,19 +49,43 @@ const FormFactory = (props: IFormConfig) => {
                         }}>
                         <InputLabel id={`form-factory-select-${index}-label`}>{field.label}</InputLabel>
                         <Select
+                            required={field.required}
                             error={field.errorFlag}
                             labelId={`form-factory-select-${index}-label`}
                             label={field.label}
+                            defaultValue={field.defaultValue}
                             value={field.value}
                             size="small"
                             margin="dense"
-                            onChange={() => field.onChange}>
+                            onChange={(e: SelectChangeEvent<string>) => field.onChange(e as ChangeEvent<HTMLInputElement>)}>
                                 {field.options?.map((value: string, index: number) => (
                                     <MenuItem key={index} value={value}>{value}</MenuItem>
                                 ))}
                         </Select>
                         {field.errorFlag ? <FormHelperText>{field.errorMsg}</FormHelperText> : null}
                     </FormControl>
+                );
+            case FormType.Date:
+                return (
+                    <LocalizationProvider dateAdapter={AdapterLuxon}>
+                        <DatePicker 
+                            label={field.label}
+                            defaultValue={DateTime.fromISO(new Date().toISOString().substring(0, 10))}
+                            value={DateTime.fromISO(field.value)}
+                            slotProps={{
+                                textField: {
+                                    required: field.required,
+                                    error: field.errorFlag,
+                                    helperText: field.errorFlag ? field.errorMsg : null,
+                                    size: "small",
+                                    margin: "dense",
+                                },
+                            }}
+                            sx={{ display: 'flex' }}
+                            onChange={(e: DateTime<true> | DateTime<false> | null) => {
+                                return field.onChange({target: {value: e?.toString().substring(0, 10)}} as ChangeEvent<HTMLInputElement>);
+                            }} />
+                    </LocalizationProvider>
                 );
             default:
                 return;
@@ -71,6 +101,14 @@ const FormFactory = (props: IFormConfig) => {
                     {getField(f, i)}
                 </Grid>
             ))}
+            <Grid xs={12}>
+                <Button
+                    fullWidth
+                    disabled={!props.isFormValid}
+                    variant="contained">
+                    {props.submitBtnLabel}
+                </Button>
+            </Grid>
         </Grid>
     );
 };
