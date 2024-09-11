@@ -144,7 +144,20 @@ const FormDialog = () => {
     };
 
     const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        console.log('onSubmit: ', event);
+        const isValid: boolean = (event.target as HTMLButtonElement).validity.valid;
+
+        if (!isValid) {
+            return;
+        }
+        
+        switch (appCtx.state.formDialogStatus.type) {
+            case FormDialogType.Project:
+                break;
+            case FormDialogType.Issue:
+                break;
+            default:
+                throw new Error(`Unknown FormDialogType: '${appCtx.state.formDialogStatus.type}'`);
+        }
     };
 
     const handleUpdateFormDialogStatus = (): void => {
