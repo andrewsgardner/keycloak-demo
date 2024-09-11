@@ -104,8 +104,9 @@ const FormFactory = (props: IFormConfig) => {
             <Grid xs={12}>
                 <Button
                     fullWidth
+                    variant="contained"
                     disabled={!props.isFormValid}
-                    variant="contained">
+                    onClick={props.onSubmit}>
                     {props.submitBtnLabel}
                 </Button>
             </Grid>

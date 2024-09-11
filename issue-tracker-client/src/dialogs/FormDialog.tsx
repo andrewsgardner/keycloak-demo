@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import './FormDialog.scss';
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import FormFactory from '../components/FormFactory/FormFactory';
 import { AppContext } from '../contexts/AppContext';
 import { ReducerActionKind } from '../interfaces/reducer-state.interface';
@@ -14,7 +14,7 @@ import { IUser } from '../interfaces/user.interface';
 
 const FormDialog = () => {
     const appCtx = useContext(AppContext);
-    const newProjectConfig = (onChange: (value: string, field: string) => void, formDetails: FormDetails): IFormConfig => ({
+    const newProjectConfig = (onChange: (value: string, field: string) => void, formDetails: FormDetails, onSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void): IFormConfig => ({
         grid: { xs: 12, },
         fields: [
             {
@@ -32,10 +32,11 @@ const FormDialog = () => {
         ],
         submitBtnLabel: 'Create Project',
         isFormValid: false,
+        onSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSubmit(e),
     });
-    const newIssueConfig = (onChange: (value: string, field: string) => void, formDetails: FormDetails): IFormConfig => {
+    const newIssueConfig = (onChange: (value: string, field: string) => void, formDetails: FormDetails, onSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void): IFormConfig => {
         return {
-            grid: { xs: 12, sm: 6, },
+            grid: { xs: 12, },
             fields: [
                 {
                     label: 'Summary',
@@ -100,6 +101,7 @@ const FormDialog = () => {
             ],
             submitBtnLabel: 'Create Issue',
             isFormValid: false,
+            onSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSubmit(e),
         };
     };
     const [formDetails, setFormDetails] = React.useState<FormDetails>({});
@@ -118,7 +120,7 @@ const FormDialog = () => {
 
     useEffect(() => {
         const updateFormConfig: IFormConfig = formConfig;
-
+        
         for (const i in formDetails) {
             const index: number = updateFormConfig.fields.findIndex((x: IFormFields) => x.fieldName === i);
             const required: boolean = updateFormConfig.fields[index].required;
@@ -132,13 +134,17 @@ const FormDialog = () => {
         
         updateFormConfig.isFormValid = updateFormConfig.fields.every((x: IFormFields) => x.isValid);
         setFormConfig((prev) => ({...prev, updateFormConfig}));
-    }, [formConfig, formDetails]);
+    }, [formDetails]);
 
     const onChange = (value: string, dataLabel: string): void => {
         setFormDetails({
             ...formDetails,
             [dataLabel]: value,
         });
+    };
+
+    const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        console.log('onSubmit: ', event);
     };
 
     const handleUpdateFormDialogStatus = (): void => {
@@ -154,9 +160,9 @@ const FormDialog = () => {
     const getFormConfig = (type: FormDialogType): IFormConfig => {
         switch (type) {
             case FormDialogType.Project:
-                return newProjectConfig(onChange, formDetails);
+                return newProjectConfig(onChange, formDetails, onSubmit);
             case FormDialogType.Issue:
-                return newIssueConfig(onChange, formDetails);
+                return newIssueConfig(onChange, formDetails, onSubmit);
             default:
                 console.error(`Unknown FormDialogType: '${type}'`);
                 return {
@@ -187,9 +193,9 @@ const FormDialog = () => {
             aria-describedby="form-dialog-description">
             <DialogTitle id="alert-dialog-title">{getDialogTitle()}</DialogTitle>
             <DialogContent>
-                <form>
+                <Box component="form">
                     <FormFactory {...formConfig} />
-                </form>
+                </Box>
             </DialogContent>
         </Dialog>
     );

@@ -20,4 +20,5 @@ export interface IFormConfig {
     fields: IFormFields[];
     submitBtnLabel: string;
     isFormValid: boolean;
+    onSubmit?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
